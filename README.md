@@ -14,6 +14,41 @@ https://kh-labs.org/subleq/
 
 https://web.archive.org/web/20160304174314/http://mazonka.com/subleq/hsq.html
 
+
+
+|A  |B  |C  |
+|---|---|---|
+| Bus | Blahhh | <a href="Images/Bus.png" target="_blank"><img src="Images/Bus.png" alt="" xwidth="300" height="300"></a> |
+| BusConnector | Blahhh | <img src="Images/BusConnector.png" alt="" width="300" xheight="300"> |
+| ControlPanel | Blahhh | <img src="Images/ControlPanel.png" alt="" width="300" xheight="300"> |
+| Disp247 | Blahhh | <img src="Images/Disp247.png" alt="" width="300" xheight="300"> |
+| MAR | Blahhh | <img src="Images/MAR.png" alt="" width="300" xheight="300"> |
+| Memory | Blahhh | <img src="Images/Memory.png" alt="" width="300" xheight="300"> |
+| MopProto | Blahhh | <img src="Images/MopProto.png" alt="" width="300" xheight="300"> |
+| PORTS | Blahhh | <img src="Images/PORTS.png" alt="" width="300" xheight="300"> |
+| ProgramCounter | Blahhh | <img src="Images/ProgramCounter.png" alt="" width="300" xheight="300"> |
+| Proto | Blahhh | <img src="Images/Proto.png" alt="" width="300" xheight="300"> |
+| SignalBus | Blahhh | <img src="Images/SignalBus.png" alt="" xwidth="300" height="300"> |
+| Subtractor | Blahhh | <img src="Images/Subtractor.png" alt="" width="300" xheight="300"> |
+| UART | Blahhh | <img src="Images/UART.png" alt="" width="300" xheight="300"> |
+
+
+
+Bus.png
+BusConnector.png
+ControlPanel.png
+Disp247.png
+MAR.png
+Memory.png
+MopProto.png
+PORTS.png
+ProgramCounter.png
+Proto.png
+SignalBus.png
+Subtractor.png
+UART.png
+
+
 ```
 -------------------------
 FLASH ADDRESS SCRAMBLING
@@ -210,20 +245,5 @@ Z Z 0
 
 
 
-Controlpanel    
-GPIO            
-Memory          
-Proto           
-Subtractor      
-UART
-MAR             
-MopSequencer    
-Programcounter  
-
-Bus             
-BusConnector    
-SignalBus       
-
-Template
-Disp24-7        
+ 
 
