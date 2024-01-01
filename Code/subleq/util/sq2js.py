@@ -21,16 +21,16 @@
 
 """Converts sqasm output to Javascript array."""
 
-print 'var mem = new Array('
+print ('var mem = new Array(')
 while True:
     try:
-        for val in raw_input().split():
+        for val in input().split():
             if val == '#OUT' or val == '#IN':
                 val = -1
             else:
                 val = int(val)
-            print "%d," % val,
+            print ("%d," % val,)
         print
     except EOFError:
         break
-print '0);'
+print ('0);')

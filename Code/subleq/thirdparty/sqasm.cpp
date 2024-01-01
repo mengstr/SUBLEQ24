@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <ctype.h>
+#include <sstream>
 
 using namespace std;
 
@@ -52,9 +53,19 @@ struct item
 string item::dump(bool extra)
 {
 	string r;
-	if( extra ) r = int2str(addr)+":";
-	if( state==RES ) return r+int2str(i);
-	return r+ string("#")+s;
+	std::stringstream ss1;
+	std::stringstream ss2;
+    ss1 << std::hex << addr;
+    ss2 << std::hex << i;
+	if( extra ) r = ss1.str()+":";
+	// if( extra ) r = int2str(addr)+":";
+	if (extra) {
+		if( state==RES ) return r+ss2.str();
+		return r+ string("#")+s;
+	} else {
+		if( state==RES ) return r+int2str(i);
+		return r+ string("#")+s;
+    }
 }
 
 struct instruction
@@ -439,6 +450,7 @@ int main()
 	{
 		resolve(pr[i]);
 		cout<<pr[i].dump()<<"\n";
+		cerr<<pr[i].dump(true)<<"\n";
 	}
 
 	if( unres.size() )

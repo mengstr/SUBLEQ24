@@ -243,7 +243,7 @@
     <visualElement>
       <elementName>Not</elementName>
       <elementAttributes/>
-      <pos x="640" y="-380"/>
+      <pos x="640" y="-400"/>
     </visualElement>
     <visualElement>
       <elementName>Probe</elementName>
@@ -344,12 +344,12 @@
       <p2 x="700" y="40"/>
     </wire>
     <wire>
-      <p1 x="40" y="-140"/>
-      <p2 x="80" y="-140"/>
-    </wire>
-    <wire>
       <p1 x="180" y="-140"/>
       <p2 x="220" y="-140"/>
+    </wire>
+    <wire>
+      <p1 x="40" y="-140"/>
+      <p2 x="80" y="-140"/>
     </wire>
     <wire>
       <p1 x="220" y="-140"/>
@@ -378,6 +378,14 @@
     <wire>
       <p1 x="880" y="-240"/>
       <p2 x="960" y="-240"/>
+    </wire>
+    <wire>
+      <p1 x="600" y="-400"/>
+      <p2 x="640" y="-400"/>
+    </wire>
+    <wire>
+      <p1 x="680" y="-400"/>
+      <p2 x="700" y="-400"/>
     </wire>
     <wire>
       <p1 x="600" y="-20"/>
@@ -420,12 +428,8 @@
       <p2 x="220" y="-60"/>
     </wire>
     <wire>
-      <p1 x="680" y="-380"/>
+      <p1 x="700" y="-380"/>
       <p2 x="760" y="-380"/>
-    </wire>
-    <wire>
-      <p1 x="600" y="-380"/>
-      <p2 x="640" y="-380"/>
     </wire>
     <wire>
       <p1 x="60" y="-160"/>
@@ -461,14 +465,14 @@
     </wire>
     <wire>
       <p1 x="600" y="-420"/>
-      <p2 x="600" y="-380"/>
+      <p2 x="600" y="-400"/>
     </wire>
     <wire>
       <p1 x="600" y="-20"/>
       <p2 x="600" y="120"/>
     </wire>
     <wire>
-      <p1 x="600" y="-380"/>
+      <p1 x="600" y="-400"/>
       <p2 x="600" y="-240"/>
     </wire>
     <wire>
@@ -498,6 +502,10 @@
     <wire>
       <p1 x="700" y="-220"/>
       <p2 x="700" y="40"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="-400"/>
+      <p2 x="700" y="-380"/>
     </wire>
   </wires>
   <measurementOrdering/>

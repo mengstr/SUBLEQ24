@@ -20,20 +20,50 @@
 
 # A menu presented to the user for interacting with the program.
 
-.string_menu:-? "\r\n\r\nMenu\r\n"
+#.gpiovalues:-? "@ABCDEFH" 0
+
+.string_menu:-? "@ABCD\r\n\r\nMenu v1\r\n"
 .               "1) Bubblesort\r\n"
 .               "2) Calculator\r\n"
 .               "3) Factorial\r\n"
-.               "4) Primes\r\n"
+.               "4) Primes\r\n"  
 .               "5) Halt\r\n"
 .               "> "
 .            0
 main:
+
+#        c;       # clear c
+#        (-8) c   # input to c
+#        inc c
+#        Z c main # loop if c <= 0  
+
+
     # puts(string_menu)
+#    Z Z
+#    (-1) 3
+#    Z Z
+#    3 (-1)
+#    Z Z main
+
+
+#5c:31f 31f 5f 
+#5f:6 31f 62 
     puts_arg_s; string_menu puts_arg_s
+
+#62:32d 32d 65 
+#65:6b 32d 68 
     puts_return_address; ?+5 puts_return_address
+
+#68:0 0 310 
+#6b:ffffff94 
     Z Z puts;.-?
-    
+
+    # putgpio(gpiovalues)
+ #   putgpio_arg_s; gpiovalues putgpio_arg_s
+ #   putgpio_return_address; ?+5 putgpio_return_address
+ #   Z Z putgpio;.-?
+
+
     # x = getint()
     getint_return_address; ?+5 getint_return_address
     Z Z getint;.-?

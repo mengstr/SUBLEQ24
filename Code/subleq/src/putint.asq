@@ -65,7 +65,7 @@
 #     if x' = x+1, then x < 0 is the same as x' <= 0.
 
 # 0-terminated list of powers of 10
-.p10:1000000 100000 10000 1000 100 10 1 0
+.p10:1000000 1000000 1000000 1000000 100000 10000 1000 100 10 1 0
 # leading0 == 1 => only leading 0s have been encountered so far
 # leading0 <= 0 => something other than a 0 has already been printed
 # used to determine whether to print the current character, as we don't
