@@ -18,19 +18,19 @@ https://web.archive.org/web/20160304174314/http://mazonka.com/subleq/hsq.html
 
 |.  |.  |.  |
 |---|---|---|
-| ControlPanel | A simple control interface for Starting and Stopping the CPU, Single Stepping of intructions and Micro steps. It also have a 64 bit shift register that can take over the data- and address busses to upload code to RAM and/or Flash using bitbanging from a USB port. | <img src="Images/ControlPanel.png" alt="" width="300" xheight="300"> |
-| MAR |  | <img src="Images/MAR.png" alt="" width="300" xheight="300"> |
-| Memory | Blahhh | <img src="Images/Memory.png" alt="" width="300" xheight="300"> |
-| MopProto | Blahhh | <img src="Images/MopProto.png" alt="" width="300" xheight="300"> |
-| PORTS | Blahhh | <img src="Images/PORTS.png" alt="" width="300" xheight="300"> |
-| ProgramCounter | Blahhh | <img src="Images/ProgramCounter.png" alt="" width="300" xheight="300"> |
-| Proto | A prototyping and test board that can hold 20-30 DIP ICs. The lower two rows accepts 0.6" ICs if needed. Soldering wires is done directly on the DIP (socket) pins on the backside of the board and then brought up to the top via slots to connect to the bug as signal backplane connectors whenever neccessary.| <img src="Images/Proto.png" alt="" width="300" xheight="300"> |
-| Subtractor | Blahhh | <img src="Images/Subtractor.png" alt="" width="300" xheight="300"> |
-| UART | Blahhh | <img src="Images/UART.png" alt="" width="300" xheight="300"> |
-| Bus | Backplane distributing the 24 bit data- & address busses to the PCBs. If more than six PCBs are required one more bus can be connected using two of the (horizontal) "Bus Connector" boards.| <a href="Images/Bus.png" target="_blank"><img src="Images/Bus.png" alt="" width="300" xheight="200" style="transform: rotate(90deg)"></a> |
-| BusConnector | Connects two bus/backplanes | <img src="Images/BusConnector.png" alt="" width="300" xheight="300"> |
-| SignalBus | Not really a bus but rather a way of having the control signals for the boards not being hooked up by flywires directly between the boards. | <img src="Images/SignalBus.png" alt="" width="300" xheight="200" style="transform: rotate(90deg)"> |
-| Disp247 | Display board that takes a 24 bit binary bus and displays it as HEX values on six 7-segment displays. The PCB is panelized with five copies on a 0.8 mm PCB for easy cutting. | <img src="Images/Disp247.png" alt="" width="300" xheight="300"> |
+| MAR | Register that temporary holds the memory address for the A and B parts of the instruction so the required indirect addressing can be done. This board also holds the two "Address is negative" flags used to trigger the I/O memory ranges.| <img src="Images/MAR.png" alt="" width="300" > |
+| Memory | RAM (6 pcs of 2M bytes) and FLASH (3 pcs of 512K bytes). The RAM is organized as two groups of three giving a total of 4 million intructions. Only the first bank of three RAMs needs to be populated. | <img src="Images/Memory.png" alt="" width="300" > |
+| ProgramCounter | 24 bit program counter that can be incremented or loaded with a new address from the databus. It can also set the PC to 0x0 (start of RAM) or 0x600000 (start of FLASH) as a part of the Reset.| <img src="Images/ProgramCounter.png" alt="" width="300" > |
+| Subtractor | Subtracts the two 24-bit values latched at the board. Also holds the LEQ flag. | <img src="Images/Subtractor.png" alt="" width="300" > |
+| ControlPanel | A simple control interface for Starting and Stopping the CPU, Single Stepping of intructions and Micro steps. It also have a 64 bit shift register that can take over the data- and address busses to upload code to RAM and/or Flash using bitbanging from a USB port. | <img src="Images/ControlPanel.png" alt="" width="300"> |
+| MopProto | Protoboard for the microcontrol/sequencer. Does not use the address- or databusses, but requires that the signals from the Control-PCB are patched into part of the data-bus since the control/signal bus is not wide enough to support all required signals. | <img src="Images/MopProto.png" alt="" width="300" > |
+| PORTS | I/O ports and also decoding for the UART board and a character LCD interface. | <img src="Images/PORTS.png" alt="" width="300" > |
+| UART | Serial interface connecting to either USB or a standard RS-232 connector. | <img src="Images/UART.png" alt="" width="300" > |
+| Proto | A prototyping and test board that can hold 20-30 DIP ICs. The lower two rows accepts 0.6" ICs if needed. Soldering wires is done directly on the DIP (socket) pins on the backside of the board and then brought up to the top via slots to connect to the bug as signal backplane connectors whenever neccessary.| <img src="Images/Proto.png" alt="" width="300" > |
+| Bus | Backplane distributing the 24 bit data- & address busses to the PCBs. If more than six PCBs are required one more bus can be connected using two of the (horizontal) "Bus Connector" boards.| <a href="Images/Bus.png" target="_blank"><img src="Images/Bus.png" alt="" width="300"></a> |
+| BusConnector | Connects two bus/backplanes | <img src="Images/BusConnector.png" alt="" width="300"> |
+| SignalBus | Not really a bus but rather a way of having the control signals for the boards not being hooked up by flywires directly between the boards. | <img src="Images/SignalBus.png" alt="" width="300"> |
+| Disp247 | Display board that takes a 24 bit binary bus and displays it as HEX values on six 7-segment displays. The PCB is panelized with five copies on a 0.8 mm PCB for easy cutting. | <img src="Images/Disp247.png" alt="" width="300"> |
 
 
 
