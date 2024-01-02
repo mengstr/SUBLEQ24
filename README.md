@@ -16,37 +16,22 @@ https://web.archive.org/web/20160304174314/http://mazonka.com/subleq/hsq.html
 
 
 
-|A  |B  |C  |
+|.  |.  |.  |
 |---|---|---|
-| Bus | Blahhh | <a href="Images/Bus.png" target="_blank"><img src="Images/Bus.png" alt="" xwidth="300" height="300"></a> |
-| BusConnector | Blahhh | <img src="Images/BusConnector.png" alt="" width="300" xheight="300"> |
-| ControlPanel | Blahhh | <img src="Images/ControlPanel.png" alt="" width="300" xheight="300"> |
-| Disp247 | Blahhh | <img src="Images/Disp247.png" alt="" width="300" xheight="300"> |
-| MAR | Blahhh | <img src="Images/MAR.png" alt="" width="300" xheight="300"> |
+| ControlPanel | A simple control interface for Starting and Stopping the CPU, Single Stepping of intructions and Micro steps. It also have a 64 bit shift register that can take over the data- and address busses to upload code to RAM and/or Flash using bitbanging from a USB port. | <img src="Images/ControlPanel.png" alt="" width="300" xheight="300"> |
+| MAR |  | <img src="Images/MAR.png" alt="" width="300" xheight="300"> |
 | Memory | Blahhh | <img src="Images/Memory.png" alt="" width="300" xheight="300"> |
 | MopProto | Blahhh | <img src="Images/MopProto.png" alt="" width="300" xheight="300"> |
 | PORTS | Blahhh | <img src="Images/PORTS.png" alt="" width="300" xheight="300"> |
 | ProgramCounter | Blahhh | <img src="Images/ProgramCounter.png" alt="" width="300" xheight="300"> |
-| Proto | Blahhh | <img src="Images/Proto.png" alt="" width="300" xheight="300"> |
-| SignalBus | Blahhh | <img src="Images/SignalBus.png" alt="" xwidth="300" height="300"> |
+| Proto | A prototyping and test board that can hold 20-30 DIP ICs. The lower two rows accepts 0.6" ICs if needed. Soldering wires is done directly on the DIP (socket) pins on the backside of the board and then brought up to the top via slots to connect to the bug as signal backplane connectors whenever neccessary.| <img src="Images/Proto.png" alt="" width="300" xheight="300"> |
 | Subtractor | Blahhh | <img src="Images/Subtractor.png" alt="" width="300" xheight="300"> |
 | UART | Blahhh | <img src="Images/UART.png" alt="" width="300" xheight="300"> |
+| Bus | Backplane distributing the 24 bit data- & address busses to the PCBs. If more than six PCBs are required one more bus can be connected using two of the (horizontal) "Bus Connector" boards.| <a href="Images/Bus.png" target="_blank"><img src="Images/Bus.png" alt="" width="300" xheight="200" style="transform: rotate(90deg)"></a> |
+| BusConnector | Connects two bus/backplanes | <img src="Images/BusConnector.png" alt="" width="300" xheight="300"> |
+| SignalBus | Not really a bus but rather a way of having the control signals for the boards not being hooked up by flywires directly between the boards. | <img src="Images/SignalBus.png" alt="" width="300" xheight="200" style="transform: rotate(90deg)"> |
+| Disp247 | Display board that takes a 24 bit binary bus and displays it as HEX values on six 7-segment displays. The PCB is panelized with five copies on a 0.8 mm PCB for easy cutting. | <img src="Images/Disp247.png" alt="" width="300" xheight="300"> |
 
-
-
-Bus.png
-BusConnector.png
-ControlPanel.png
-Disp247.png
-MAR.png
-Memory.png
-MopProto.png
-PORTS.png
-ProgramCounter.png
-Proto.png
-SignalBus.png
-Subtractor.png
-UART.png
 
 
 ```
