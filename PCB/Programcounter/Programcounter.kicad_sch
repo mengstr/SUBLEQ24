@@ -1791,6 +1791,10 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 1c10fe47-1463-4153-b001-a1f00dbc9f97)
   )
+  (label "~{PE}" (at 236.22 182.88 90) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 1d73701b-cba1-410c-b37b-90ebc82ba109)
+  )
   (label "D4" (at 369.57 201.93 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 1e46cfd8-17e0-46e9-b9b3-58516320c394)
@@ -1926,6 +1930,10 @@
   (label "D22" (at 316.23 63.5 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 3b48d96b-7b09-4f3a-88e0-c6b0cfced97e)
+  )
+  (label "BootAddr" (at 223.52 182.88 90) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 3bdadd5a-0d21-43a2-b3f3-3f87aa98cc96)
   )
   (label "SEL" (at 316.23 86.36 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
@@ -2099,6 +2107,10 @@
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 6e349642-cc46-4664-a64f-8cff696c8fdf)
   )
+  (label "CP" (at 229.87 182.88 90) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 702f72b2-a908-4033-9772-f35f0e7aad94)
+  )
   (label "New4" (at 149.86 53.34 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 7068cc5a-f0f3-453b-9ec1-b4404e61a58b)
@@ -2162,6 +2174,10 @@
   (label "PC4" (at 281.94 199.39 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 82b89d4a-d174-4de7-9c15-4dc0c5a6185b)
+  )
+  (label "SEL" (at 217.17 182.88 90) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 82e50e51-76ab-4004-9895-d39a6ce7999a)
   )
   (label "New2" (at 79.375 116.84 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
@@ -2350,6 +2366,10 @@
   (label "D20" (at 369.57 222.25 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid add5e545-edc8-4c5c-a77c-1f2704adf220)
+  )
+  (label "~{OE}" (at 242.57 182.88 90) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid ade83575-9e53-4a07-970e-2e1ff132d128)
   )
   (label "A16" (at 193.675 168.91 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -2680,10 +2700,35 @@
     (uuid ffa1a4b7-2448-46aa-b78b-a7be6d2edc28)
   )
 
+  (symbol (lib_id "power:GNDD") (at 217.17 198.12 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid 0205e56a-3022-4b40-8cbf-2afa58303110)
+    (property "Reference" "#PWR01" (at 217.17 204.47 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GNDD" (at 231.14 199.39 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 217.17 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 217.17 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 8ee2d560-a0ca-4011-b584-f1dcb72c76f1))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "#PWR01") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "power:GNDD") (at 124.46 71.12 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 02280455-2394-4f5d-8a91-e85ef1dfefb4)
-    (property "Reference" "#PWR071" (at 124.46 77.47 0)
+    (property "Reference" "#PWR086" (at 124.46 77.47 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 124.46 74.93 0)
@@ -2698,13 +2743,34 @@
     (pin "1" (uuid addb9f52-37bb-442c-919a-2320386d2d5c))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR071") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR086") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:R") (at 242.57 186.69 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 0295dae1-8bd0-4f79-95ef-4aa309e57526)
+    (property "Reference" "R5" (at 245.11 185.42 0)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+    (property "Value" "R" (at 245.11 187.96 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" (at 240.792 186.69 90)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 242.57 186.69 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 1992a2c1-99f3-4d80-9419-982d2135c471))
+    (pin "2" (uuid 8615a62b-7f98-4d10-9d65-b26879639c18))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "R5") (unit 1)
         )
       )
     )
@@ -2713,7 +2779,7 @@
   (symbol (lib_id "74xx:74LS157") (at 226.06 69.85 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 02bdeb04-dae4-4744-a392-d23e80238789)
-    (property "Reference" "U13" (at 228.2541 46.99 0)
+    (property "Reference" "U4" (at 228.2541 46.99 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS157" (at 228.2541 49.53 0)
@@ -2743,11 +2809,6 @@
     (pin "9" (uuid 4f1a4948-1c22-4bc3-99c5-018eaa76ece1))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U13") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U4") (unit 1)
         )
@@ -2758,7 +2819,7 @@
   (symbol (lib_id "power:GNDD") (at 259.08 81.28 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 04b30a8b-fdc0-412c-8dd1-8d94ae13cdda)
-    (property "Reference" "#PWR066" (at 259.08 87.63 0)
+    (property "Reference" "#PWR092" (at 259.08 87.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 259.08 85.09 0)
@@ -2773,11 +2834,6 @@
     (pin "1" (uuid d08f611d-32be-4a5e-9af9-79b12baa94ce))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR066") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR092") (unit 1)
         )
@@ -2788,7 +2844,7 @@
   (symbol (lib_id "power:GNDD") (at 92.71 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 06cf62d2-c600-475f-8b90-6f6e39e44907)
-    (property "Reference" "#PWR041" (at 92.71 100.33 0)
+    (property "Reference" "#PWR074" (at 92.71 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 92.71 97.79 0)
@@ -2802,11 +2858,6 @@
     )
     (pin "1" (uuid 6a9f6480-9696-4511-9063-b2a9e331075f))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR041") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR074") (unit 1)
@@ -2972,7 +3023,7 @@
   (symbol (lib_id "power:GNDD") (at 80.01 63.5 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0d83d31f-b100-4369-ad9d-87c5987734eb)
-    (property "Reference" "#PWR076" (at 80.01 69.85 0)
+    (property "Reference" "#PWR056" (at 80.01 69.85 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 80.01 67.31 0)
@@ -2987,13 +3038,34 @@
     (pin "1" (uuid f3a2b1e3-2421-424c-870c-e63a19efe611))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR076") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR056") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:R") (at 217.17 186.69 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 118e1cc0-49a0-4b30-9630-9a22ecbd4c63)
+    (property "Reference" "R1" (at 219.71 185.42 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "R" (at 219.71 187.96 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" (at 215.392 186.69 90)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 217.17 186.69 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 87171ec2-dbb1-48d2-a88b-62c6be6e6d10))
+    (pin "2" (uuid e22debae-3a8c-467e-a7f7-f440c233614a))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "R1") (unit 1)
         )
       )
     )
@@ -3002,7 +3074,7 @@
   (symbol (lib_id "power:GNDD") (at 213.36 64.77 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 13e02853-9f8a-41fd-9681-fc17207b5178)
-    (property "Reference" "#PWR079" (at 213.36 71.12 0)
+    (property "Reference" "#PWR057" (at 213.36 71.12 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 213.36 68.58 0)
@@ -3017,11 +3089,6 @@
     (pin "1" (uuid d396832a-d998-47bb-99ff-954f497772aa))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR079") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR057") (unit 1)
         )
@@ -3032,7 +3099,7 @@
   (symbol (lib_id "power:GNDD") (at 92.075 202.565 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 15faf6e1-c48e-437a-9134-79fb2ff6d3de)
-    (property "Reference" "#PWR08" (at 92.075 208.915 0)
+    (property "Reference" "#PWR058" (at 92.075 208.915 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 92.075 206.375 0)
@@ -3046,11 +3113,6 @@
     )
     (pin "1" (uuid 79e5249d-e3da-45eb-b1ac-44b832e9f1b0))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR08") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR058") (unit 1)
@@ -3093,7 +3155,7 @@
   (symbol (lib_id "power:VCC") (at 92.71 45.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 16afc54c-e217-463e-8e08-f3df7ea9955b)
-    (property "Reference" "#PWR043" (at 92.71 49.53 0)
+    (property "Reference" "#PWR049" (at 92.71 49.53 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 92.71 40.64 0)
@@ -3108,11 +3170,6 @@
     (pin "1" (uuid d015ab3c-b928-47b3-91e4-4cc2b4b87fb7))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR043") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR049") (unit 1)
         )
@@ -3123,7 +3180,7 @@
   (symbol (lib_id "74xx:74LS163") (at 269.875 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 179542c1-90c2-46a4-acdf-93b7e2987a93)
-    (property "Reference" "U8" (at 272.0691 104.14 0)
+    (property "Reference" "U11" (at 272.0691 104.14 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS163" (at 272.0691 106.68 0)
@@ -3153,11 +3210,6 @@
     (pin "9" (uuid 261df396-4eae-4f3c-912b-a637325ff31d))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U8") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U11") (unit 1)
         )
@@ -3168,7 +3220,7 @@
   (symbol (lib_id "74xx:74LS163") (at 225.425 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 19779260-0588-4db9-8ae3-e9971f6f2845)
-    (property "Reference" "U7" (at 227.6191 104.14 0)
+    (property "Reference" "U10" (at 227.6191 104.14 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS163" (at 227.6191 106.68 0)
@@ -3197,11 +3249,6 @@
     (pin "8" (uuid 83f3950e-a119-46e0-a476-6aa7dc1d1af9))
     (pin "9" (uuid 2f045f9f-02eb-4e86-ab48-de8110eb6e27))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U7") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U10") (unit 1)
@@ -3252,11 +3299,6 @@
         )
       )
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U1") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U15") (unit 1)
         )
@@ -3298,7 +3340,7 @@
   (symbol (lib_id "power:GNDD") (at 213.36 72.39 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 239021cd-42da-442f-9936-3db6e38dc84e)
-    (property "Reference" "#PWR080" (at 213.36 78.74 0)
+    (property "Reference" "#PWR062" (at 213.36 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 213.36 76.2 0)
@@ -3312,11 +3354,6 @@
     )
     (pin "1" (uuid 23672102-6892-43bf-8fb9-d8bd081b0e60))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR080") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR062") (unit 1)
@@ -3389,7 +3426,7 @@
   (symbol (lib_id "power:GNDD") (at 180.975 201.93 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 29cacaf7-8570-4e59-b2c9-366fe5036917)
-    (property "Reference" "#PWR02" (at 180.975 208.28 0)
+    (property "Reference" "#PWR0117" (at 180.975 208.28 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 180.975 205.74 0)
@@ -3404,11 +3441,6 @@
     (pin "1" (uuid 10af9c14-64aa-4b2b-a8d8-f13920a947eb))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR02") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0117") (unit 1)
         )
@@ -3419,7 +3451,7 @@
   (symbol (lib_id "power:GNDD") (at 124.46 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2a0b19c9-a65d-451e-a29e-044610a83aec)
-    (property "Reference" "#PWR070" (at 124.46 85.09 0)
+    (property "Reference" "#PWR091" (at 124.46 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 124.46 82.55 0)
@@ -3434,11 +3466,6 @@
     (pin "1" (uuid de02de34-f1c8-435f-9155-76789b47bb51))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR070") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR091") (unit 1)
         )
@@ -3449,7 +3476,7 @@
   (symbol (lib_id "power:GNDD") (at 80.01 71.12 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2d70d664-ce82-4d15-b1af-9dbf2ce4c990)
-    (property "Reference" "#PWR075" (at 80.01 77.47 0)
+    (property "Reference" "#PWR061" (at 80.01 77.47 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 80.01 74.93 0)
@@ -3463,11 +3490,6 @@
     )
     (pin "1" (uuid 144a8f30-8d6b-4e46-b228-e630fc019fab))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR075") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR061") (unit 1)
@@ -3511,7 +3533,7 @@
   (symbol (lib_id "power:VCC") (at 79.375 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 33ad30c2-8535-4f9c-a0da-0ca03d98f35e)
-    (property "Reference" "#PWR024" (at 83.185 137.16 0)
+    (property "Reference" "#PWR066" (at 83.185 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 74.295 137.16 0)
@@ -3526,11 +3548,6 @@
     (pin "1" (uuid 0a997f8a-e0c2-436d-881a-395dd7a552de))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR024") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR066") (unit 1)
         )
@@ -3541,7 +3558,7 @@
   (symbol (lib_id "power:GNDD") (at 271.78 96.52 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 367017e4-d2cf-4298-9c5c-31c775b75760)
-    (property "Reference" "#PWR055" (at 271.78 102.87 0)
+    (property "Reference" "#PWR0100" (at 271.78 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 271.78 100.33 0)
@@ -3556,11 +3573,6 @@
     (pin "1" (uuid f10ab4b3-4b43-48e2-9104-3061d3c47642))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR055") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0100") (unit 1)
         )
@@ -3571,7 +3583,7 @@
   (symbol (lib_id "74xx:74LS157") (at 271.78 71.12 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 383cc19b-8cec-4e2a-aa37-4a3ec8f0f1af)
-    (property "Reference" "U14" (at 273.9741 48.26 0)
+    (property "Reference" "U5" (at 273.9741 48.26 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS157" (at 273.9741 50.8 0)
@@ -3601,11 +3613,6 @@
     (pin "9" (uuid c8cfdcb4-4459-47bc-b168-86c2f7b6dd6e))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U14") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U5") (unit 1)
         )
@@ -3616,7 +3623,7 @@
   (symbol (lib_id "power:GNDD") (at 316.23 88.9 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3a8aa224-6a8f-4ac8-877a-17cbebdab4e0)
-    (property "Reference" "#PWR057" (at 316.23 95.25 0)
+    (property "Reference" "#PWR0119" (at 316.23 95.25 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 316.23 92.71 0)
@@ -3631,11 +3638,6 @@
     (pin "1" (uuid 7d3e32c6-ec75-419c-8e7a-cb518b31095c))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR057") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0119") (unit 1)
         )
@@ -3646,7 +3648,7 @@
   (symbol (lib_id "power:GNDD") (at 124.46 63.5 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3ad4bac9-0126-46e3-b464-b70ef0f7adbd)
-    (property "Reference" "#PWR072" (at 124.46 69.85 0)
+    (property "Reference" "#PWR084" (at 124.46 69.85 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 124.46 67.31 0)
@@ -3661,13 +3663,33 @@
     (pin "1" (uuid f5c20408-973e-410a-8243-eb4dc282d14b))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR072") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR084") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:VCC") (at 236.22 198.12 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 3d7b7ccb-42e6-4126-ae4a-323c69488f8e)
+    (property "Reference" "#PWR06" (at 236.22 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "VCC" (at 236.22 203.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 236.22 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 236.22 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 1c1d303c-84fb-4cfe-a921-fe36afd30b68))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "#PWR06") (unit 1)
         )
       )
     )
@@ -3676,7 +3698,7 @@
   (symbol (lib_id "power:VCC") (at 224.79 103.505 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 402dc5b2-3d93-4b1c-bad0-66d6c29b7691)
-    (property "Reference" "#PWR028" (at 224.79 107.315 0)
+    (property "Reference" "#PWR053" (at 224.79 107.315 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 224.79 98.425 0)
@@ -3691,13 +3713,33 @@
     (pin "1" (uuid 38bab854-8aa2-46d7-baa6-26c738c437da))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR028") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR053") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:GNDD") (at 229.87 198.12 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid 419242c2-bcc0-4588-9ca2-cbdebb3eef07)
+    (property "Reference" "#PWR04" (at 229.87 204.47 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GNDD" (at 243.84 199.39 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 229.87 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 229.87 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid ed7aa527-f2c5-4571-bcbf-8d93e06e05b1))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "#PWR04") (unit 1)
         )
       )
     )
@@ -3766,10 +3808,35 @@
     )
   )
 
+  (symbol (lib_id "power:GNDD") (at 223.52 198.12 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid 481e4c39-d71d-42e4-96b5-0d9878c65ee4)
+    (property "Reference" "#PWR03" (at 223.52 204.47 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GNDD" (at 237.49 199.39 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 223.52 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 223.52 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 55306dfb-4e43-43b6-a01b-b8b2d353151e))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "#PWR03") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "power:VCC") (at 168.275 127 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 494f328c-99cd-4de9-b83e-3cb7575a3671)
-    (property "Reference" "#PWR027" (at 172.085 127 0)
+    (property "Reference" "#PWR0105" (at 172.085 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 163.195 127 0)
@@ -3784,11 +3851,6 @@
     (pin "1" (uuid 3b3e071c-70fe-470d-9401-9004b0b89af4))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR027") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0105") (unit 1)
         )
@@ -3799,7 +3861,7 @@
   (symbol (lib_id "power:GNDD") (at 328.93 96.52 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 498b2449-d3ed-4752-a8ce-e05bb48372c5)
-    (property "Reference" "#PWR058" (at 328.93 102.87 0)
+    (property "Reference" "#PWR0123" (at 328.93 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 328.93 100.33 0)
@@ -3813,11 +3875,6 @@
     )
     (pin "1" (uuid e3733654-d11e-49ce-af4b-16da7fb4aa0a))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR058") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0123") (unit 1)
@@ -3859,7 +3916,7 @@
   (symbol (lib_id "power:GNDD") (at 136.525 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4e853e2a-4e57-4e57-898f-ec0586452077)
-    (property "Reference" "#PWR019" (at 136.525 151.13 0)
+    (property "Reference" "#PWR093" (at 136.525 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 136.525 148.59 0)
@@ -3874,11 +3931,6 @@
     (pin "1" (uuid eb747a80-efe3-48ac-b7f2-7a1309c8dcda))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR019") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR093") (unit 1)
         )
@@ -3889,7 +3941,7 @@
   (symbol (lib_id "power:VCC") (at 168.275 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5233d1df-ea69-4c1d-83f4-2a8ef8a02e9a)
-    (property "Reference" "#PWR022" (at 172.085 137.16 0)
+    (property "Reference" "#PWR0109" (at 172.085 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 163.195 137.16 0)
@@ -3903,11 +3955,6 @@
     )
     (pin "1" (uuid 16fe33a1-ba3a-44c5-983f-c0c74204ca0d))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR022") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0109") (unit 1)
@@ -3950,7 +3997,7 @@
   (symbol (lib_id "power:VCC") (at 314.325 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 546ba6af-9d3f-4dbc-8b25-e208af19a9fd)
-    (property "Reference" "#PWR038" (at 318.135 137.16 0)
+    (property "Reference" "#PWR0110" (at 318.135 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 309.245 137.16 0)
@@ -3965,11 +4012,6 @@
     (pin "1" (uuid 04f0095c-067c-4077-9221-131496736c9d))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR038") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0110") (unit 1)
         )
@@ -3980,7 +4022,7 @@
   (symbol (lib_id "power:VCC") (at 92.075 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5695f7b9-6717-4621-9351-b8c0f124f3f4)
-    (property "Reference" "#PWR01" (at 92.075 107.95 0)
+    (property "Reference" "#PWR052" (at 92.075 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 92.075 99.06 0)
@@ -3995,11 +4037,6 @@
     (pin "1" (uuid 46c90578-54e2-41d3-ba41-567a3fdd37d5))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR01") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR052") (unit 1)
         )
@@ -4010,7 +4047,7 @@
   (symbol (lib_id "power:VCC") (at 137.16 45.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 57ed2d78-efca-4c77-b32a-a38bf3702245)
-    (property "Reference" "#PWR044" (at 137.16 49.53 0)
+    (property "Reference" "#PWR078" (at 137.16 49.53 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 137.16 40.64 0)
@@ -4025,11 +4062,6 @@
     (pin "1" (uuid 684e3992-235c-4dba-b7f1-646dd0dab045))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR044") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR078") (unit 1)
         )
@@ -4040,7 +4072,7 @@
   (symbol (lib_id "power:GNDD") (at 327.025 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5aa340d7-5655-43ca-924b-385f2cf985ae)
-    (property "Reference" "#PWR039" (at 327.025 151.13 0)
+    (property "Reference" "#PWR0113" (at 327.025 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 327.025 148.59 0)
@@ -4055,11 +4087,6 @@
     (pin "1" (uuid 708e33a1-a01a-4d46-a25d-ab4b16848f99))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR039") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0113") (unit 1)
         )
@@ -4070,7 +4097,7 @@
   (symbol (lib_id "power:GNDD") (at 316.23 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5c1de808-f7ff-4236-a92d-7abcbde27287)
-    (property "Reference" "#PWR065" (at 316.23 80.01 0)
+    (property "Reference" "#PWR02" (at 316.23 80.01 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 316.23 77.47 0)
@@ -4085,11 +4112,6 @@
     (pin "1" (uuid b3a08552-a432-4242-98f2-b8df0c4fd2c3))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR065") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR02") (unit 1)
         )
@@ -4100,7 +4122,7 @@
   (symbol (lib_id "power:VCC") (at 314.325 127 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5f10302f-419a-40a7-990f-0092f6e42078)
-    (property "Reference" "#PWR037" (at 318.135 127 0)
+    (property "Reference" "#PWR0106" (at 318.135 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 309.245 127 0)
@@ -4115,11 +4137,6 @@
     (pin "1" (uuid 37d0782d-15d3-4870-a4c6-b4a5c8a3d7f8))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR037") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0106") (unit 1)
         )
@@ -4130,7 +4147,7 @@
   (symbol (lib_id "74xx:74LS157") (at 137.16 68.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 60ac1cb6-4d55-4ff2-af3f-c2f26e193b34)
-    (property "Reference" "U11" (at 139.3541 45.72 0)
+    (property "Reference" "U2" (at 139.3541 45.72 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS157" (at 139.3541 48.26 0)
@@ -4160,11 +4177,6 @@
     (pin "9" (uuid 638a643e-f601-4b01-ad43-406c86956f10))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U11") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U2") (unit 1)
         )
@@ -4175,7 +4187,7 @@
   (symbol (lib_id "power:GNDD") (at 124.46 55.88 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 60b38d0b-9b35-4c25-891c-0a075a57eba6)
-    (property "Reference" "#PWR073" (at 124.46 62.23 0)
+    (property "Reference" "#PWR080" (at 124.46 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 124.46 59.69 0)
@@ -4190,11 +4202,6 @@
     (pin "1" (uuid f433b6a8-02b0-4392-8cc9-0057cb458b5a))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR073") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR080") (unit 1)
         )
@@ -4205,7 +4212,7 @@
   (symbol (lib_id "74xx:74LS157") (at 181.61 69.85 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 62ae9579-f6a4-4e9e-a122-f6425b4fa9fb)
-    (property "Reference" "U12" (at 183.8041 46.99 0)
+    (property "Reference" "U3" (at 183.8041 46.99 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS157" (at 183.8041 49.53 0)
@@ -4235,11 +4242,6 @@
     (pin "9" (uuid 27e60d63-41ff-4b3c-9e33-b43206497a5e))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U12") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U3") (unit 1)
         )
@@ -4264,11 +4266,6 @@
     )
     (pin "1" (uuid 7b3b0318-3278-4f97-8c3d-505d4d56b6f2))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR050") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR050") (unit 1)
@@ -4311,7 +4308,7 @@
   (symbol (lib_id "power:GNDD") (at 168.91 87.63 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 67347a17-ff15-458b-948b-37dde93ad73f)
-    (property "Reference" "#PWR048" (at 168.91 93.98 0)
+    (property "Reference" "#PWR0118" (at 168.91 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 168.91 91.44 0)
@@ -4326,11 +4323,6 @@
     (pin "1" (uuid 339b4140-346d-46bb-8f68-7efbfd22fff8))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR048") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0118") (unit 1)
         )
@@ -4341,7 +4333,7 @@
   (symbol (lib_id "power:GNDD") (at 316.23 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 69037175-6299-4cab-ad3c-6e4bc03ccedd)
-    (property "Reference" "#PWR065" (at 316.23 64.77 0)
+    (property "Reference" "#PWR0108" (at 316.23 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 316.23 62.23 0)
@@ -4355,11 +4347,6 @@
     )
     (pin "1" (uuid a5bc2f6e-a371-4601-9ec9-837fa23379ea))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR065") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0108") (unit 1)
@@ -4377,7 +4364,7 @@
     (property "Value" "C" (at 382.27 252.73 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" (at 379.4252 255.27 0)
+    (property "Footprint" "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" (at 379.4252 255.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 378.46 251.46 0)
@@ -4402,7 +4389,7 @@
   (symbol (lib_id "power:VCC") (at 79.375 127 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 75671ba1-7611-476f-bd6d-853091dc60f0)
-    (property "Reference" "#PWR025" (at 83.185 127 0)
+    (property "Reference" "#PWR059" (at 83.185 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 74.295 127 0)
@@ -4417,11 +4404,6 @@
     (pin "1" (uuid 9fbdd99b-e7c9-4c97-9e13-0f5da5ecda95))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR025") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR059") (unit 1)
         )
@@ -4432,7 +4414,7 @@
   (symbol (lib_id "74xx:74LS157") (at 92.71 68.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7af9936a-cb58-4c2b-b9db-cbe628a4b227)
-    (property "Reference" "U10" (at 94.9041 45.72 0)
+    (property "Reference" "U1" (at 94.9041 45.72 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS157" (at 94.9041 48.26 0)
@@ -4461,11 +4443,6 @@
     (pin "8" (uuid b6f1ae6e-af0e-401d-b91f-aa1cc88eb332))
     (pin "9" (uuid 00bf2f42-133d-4bdd-8146-e04f46448151))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U10") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U1") (unit 1)
@@ -4508,7 +4485,7 @@
   (symbol (lib_id "power:VCC") (at 180.975 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8000f17c-641d-440f-aeef-c6a5853b4b17)
-    (property "Reference" "#PWR013" (at 180.975 165.1 0)
+    (property "Reference" "#PWR0102" (at 180.975 165.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 180.975 156.21 0)
@@ -4523,11 +4500,6 @@
     (pin "1" (uuid 0f9942ee-5dff-453b-8b11-2cb820101448))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR013") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0102") (unit 1)
         )
@@ -4538,7 +4510,7 @@
   (symbol (lib_id "power:VCC") (at 327.025 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8246048f-fae2-4915-896e-92539cfa8660)
-    (property "Reference" "#PWR036" (at 327.025 107.95 0)
+    (property "Reference" "#PWR098" (at 327.025 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 327.025 99.06 0)
@@ -4553,11 +4525,6 @@
     (pin "1" (uuid d95f84bf-64dd-48d7-a00f-856421b6858d))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR036") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR098") (unit 1)
         )
@@ -4568,7 +4535,7 @@
   (symbol (lib_id "power:GNDD") (at 269.875 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 834f90ac-9dfd-4176-a529-2101a1c8a3d9)
-    (property "Reference" "#PWR035" (at 269.875 151.13 0)
+    (property "Reference" "#PWR094" (at 269.875 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 269.875 148.59 0)
@@ -4583,11 +4550,6 @@
     (pin "1" (uuid c1428b8d-361f-4aee-a785-9ecdde64ad27))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR035") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR094") (unit 1)
         )
@@ -4598,7 +4560,7 @@
   (symbol (lib_id "power:GNDD") (at 259.08 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 85a68867-95ad-4547-b28f-ddf9d6aa3c05)
-    (property "Reference" "#PWR068" (at 259.08 72.39 0)
+    (property "Reference" "#PWR085" (at 259.08 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 259.08 69.85 0)
@@ -4613,11 +4575,6 @@
     (pin "1" (uuid 00ff8546-0570-4f8c-bd22-8fdef4347846))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR068") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR085") (unit 1)
         )
@@ -4628,7 +4585,7 @@
   (symbol (lib_id "power:VCC") (at 257.175 127 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 86d217f4-1c14-4bf2-b0b1-490ddd81bfab)
-    (property "Reference" "#PWR033" (at 260.985 127 0)
+    (property "Reference" "#PWR083" (at 260.985 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 252.095 127 0)
@@ -4643,11 +4600,6 @@
     (pin "1" (uuid 95abb23a-4652-494d-bcab-836b207520d8))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR033") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR083") (unit 1)
         )
@@ -4658,7 +4610,7 @@
   (symbol (lib_id "power:GNDD") (at 80.01 55.88 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 87d5bbc9-1f1e-43c9-b0e8-0eacb5237954)
-    (property "Reference" "#PWR077" (at 80.01 62.23 0)
+    (property "Reference" "#PWR054" (at 80.01 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 80.01 59.69 0)
@@ -4673,13 +4625,34 @@
     (pin "1" (uuid bd2e4d98-f41e-4adf-aab8-d95300268d58))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR077") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR054") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:LED") (at 236.22 194.31 270) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 8ca34c5f-8553-421c-9886-19fe43bd8b3e)
+    (property "Reference" "D4" (at 238.76 191.4525 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "LED" (at 238.76 193.9925 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" (at 236.22 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 236.22 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 0cb3f7a3-66ac-4044-bfc7-5d97dce1ae6b))
+    (pin "2" (uuid 98a4315e-4a67-4e24-a774-34cb64342b60))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "D4") (unit 1)
         )
       )
     )
@@ -4688,7 +4661,7 @@
   (symbol (lib_id "power:VCC") (at 180.34 103.505 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8fb315ba-882f-4a3f-899e-90bff4bbf143)
-    (property "Reference" "#PWR020" (at 180.34 107.315 0)
+    (property "Reference" "#PWR097" (at 180.34 107.315 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 180.34 98.425 0)
@@ -4703,11 +4676,6 @@
     (pin "1" (uuid d8bfe534-800b-47f1-8734-62c0354c534b))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR020") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR097") (unit 1)
         )
@@ -4718,7 +4686,7 @@
   (symbol (lib_id "power:GNDD") (at 226.06 95.25 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 92679945-9552-42be-a024-961dc301d338)
-    (property "Reference" "#PWR052" (at 226.06 101.6 0)
+    (property "Reference" "#PWR075" (at 226.06 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 226.06 99.06 0)
@@ -4733,11 +4701,6 @@
     (pin "1" (uuid cb9c30c8-eb9a-4e8c-aa89-c9db9e2cb38b))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR052") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR075") (unit 1)
         )
@@ -4748,7 +4711,7 @@
   (symbol (lib_id "power:GNDD") (at 80.01 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 93b50541-d5df-4c11-8507-27785008b5a8)
-    (property "Reference" "#PWR074" (at 80.01 85.09 0)
+    (property "Reference" "#PWR064" (at 80.01 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 80.01 82.55 0)
@@ -4763,13 +4726,34 @@
     (pin "1" (uuid 78e5b31b-a3f4-464a-928b-62b2c33cd849))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR074") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR064") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:LED") (at 217.17 194.31 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 979293c2-7714-41e0-a9d2-96e76bcad324)
+    (property "Reference" "D1" (at 220.98 194.6275 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Value" "LED" (at 220.98 197.1675 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Footprint" "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" (at 217.17 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 217.17 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 06a6ef1e-d930-4a44-8d7c-441862efbee3))
+    (pin "2" (uuid aa0c999a-4968-4346-8bd9-e13f3707d713))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "D1") (unit 1)
         )
       )
     )
@@ -4807,7 +4791,7 @@
   (symbol (lib_id "power:GNDD") (at 136.525 201.93 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 99b6144a-9925-4214-9ae7-cef311711970)
-    (property "Reference" "#PWR07" (at 136.525 208.28 0)
+    (property "Reference" "#PWR090" (at 136.525 208.28 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 136.525 205.74 0)
@@ -4822,11 +4806,6 @@
     (pin "1" (uuid 66681359-d1ef-4bed-ab81-4c940eeab3d3))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR07") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR090") (unit 1)
         )
@@ -4837,7 +4816,7 @@
   (symbol (lib_id "74xx:74LS157") (at 328.93 71.12 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9a0730b1-0b22-4093-a881-2901963bfa18)
-    (property "Reference" "U15" (at 331.1241 48.26 0)
+    (property "Reference" "U6" (at 331.1241 48.26 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS157" (at 331.1241 50.8 0)
@@ -4866,11 +4845,6 @@
     (pin "8" (uuid 44646d9f-0ee7-40e3-bd81-ec9c544d33d0))
     (pin "9" (uuid d92bcf5c-064a-4690-961c-cffb3fee6e3d))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U15") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U6") (unit 1)
@@ -4961,7 +4935,7 @@
   (symbol (lib_id "74xx:74LS163") (at 92.075 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a4f5ae64-11de-4a57-b92a-298c02adf498)
-    (property "Reference" "U4" (at 94.2691 104.14 0)
+    (property "Reference" "U7" (at 94.2691 104.14 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS163" (at 94.2691 106.68 0)
@@ -4991,11 +4965,6 @@
     (pin "9" (uuid d872bb87-59fa-48b0-9de6-7007c9ce0285))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U4") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U7") (unit 1)
         )
@@ -5006,7 +4975,7 @@
   (symbol (lib_id "power:GNDD") (at 213.36 57.15 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a6b5b6fa-10c8-49bd-b695-8c767432a59f)
-    (property "Reference" "#PWR078" (at 213.36 63.5 0)
+    (property "Reference" "#PWR055" (at 213.36 63.5 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 213.36 60.96 0)
@@ -5021,11 +4990,6 @@
     (pin "1" (uuid c83f0d75-3829-46de-8308-d2551ee426ba))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR078") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR055") (unit 1)
         )
@@ -5036,7 +5000,7 @@
   (symbol (lib_id "power:VCC") (at 257.175 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a8ac962e-bfe8-46fd-8a03-bc6b299d7689)
-    (property "Reference" "#PWR034" (at 260.985 137.16 0)
+    (property "Reference" "#PWR089" (at 260.985 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 252.095 137.16 0)
@@ -5051,11 +5015,6 @@
     (pin "1" (uuid 51d729cb-0e02-4d19-a2d2-03bf753a6c73))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR034") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR089") (unit 1)
         )
@@ -5066,7 +5025,7 @@
   (symbol (lib_id "74xx:74LS163") (at 327.025 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a9f97748-88ca-4577-b37b-998011fe09d8)
-    (property "Reference" "U9" (at 329.2191 104.14 0)
+    (property "Reference" "U12" (at 329.2191 104.14 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS163" (at 329.2191 106.68 0)
@@ -5096,11 +5055,6 @@
     (pin "9" (uuid 391b8af5-00a2-4400-8c89-3e99ba5061be))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U9") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U12") (unit 1)
         )
@@ -5111,7 +5065,7 @@
   (symbol (lib_id "power:GNDD") (at 168.91 80.01 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid aa141269-a6bf-4ac2-9aee-1cc8cc8580bb)
-    (property "Reference" "#PWR059" (at 168.91 86.36 0)
+    (property "Reference" "#PWR0115" (at 168.91 86.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 168.91 83.82 0)
@@ -5125,11 +5079,6 @@
     )
     (pin "1" (uuid 74dec6fc-4927-42d0-9996-1e8e26512fa9))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR059") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0115") (unit 1)
@@ -5180,11 +5129,6 @@
         )
       )
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U3") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U14") (unit 1)
         )
@@ -5217,6 +5161,31 @@
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR038") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:VCC") (at 242.57 198.12 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid ab10ec5b-aacd-419a-b301-55a89067f4c7)
+    (property "Reference" "#PWR07" (at 242.57 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "VCC" (at 242.57 203.2 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 242.57 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 242.57 198.12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid e822c5fc-3031-4b75-8bab-43a694741b00))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "#PWR07") (unit 1)
         )
       )
     )
@@ -5286,7 +5255,7 @@
   (symbol (lib_id "power:GNDD") (at 213.36 87.63 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid afc7366d-6329-4a2b-bd12-5d186d964571)
-    (property "Reference" "#PWR051" (at 213.36 93.98 0)
+    (property "Reference" "#PWR069" (at 213.36 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 213.36 91.44 0)
@@ -5300,11 +5269,6 @@
     )
     (pin "1" (uuid 2509b4e5-4a46-4479-bd33-e351697951cf))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR051") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR069") (unit 1)
@@ -5346,7 +5310,7 @@
   (symbol (lib_id "power:GNDD") (at 168.91 72.39 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b4506f3e-781a-497a-a7f7-550580c80f13)
-    (property "Reference" "#PWR060" (at 168.91 78.74 0)
+    (property "Reference" "#PWR0114" (at 168.91 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 168.91 76.2 0)
@@ -5360,11 +5324,6 @@
     )
     (pin "1" (uuid db1dcecc-a1f3-4584-bd25-34561da35d17))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR060") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0114") (unit 1)
@@ -5408,7 +5367,7 @@
   (symbol (lib_id "power:GNDD") (at 168.91 57.15 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b7ca8752-4f78-47f7-b8e8-582916a529c3)
-    (property "Reference" "#PWR082" (at 168.91 63.5 0)
+    (property "Reference" "#PWR0107" (at 168.91 63.5 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 168.91 60.96 0)
@@ -5422,11 +5381,6 @@
     )
     (pin "1" (uuid 5b59c0de-0d80-47da-96f2-7eafa38b95bc))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR082") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0107") (unit 1)
@@ -5470,7 +5424,7 @@
   (symbol (lib_id "power:GNDD") (at 80.01 86.36 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bb84af9b-74b8-421e-bdcf-638080839a18)
-    (property "Reference" "#PWR042" (at 80.01 92.71 0)
+    (property "Reference" "#PWR068" (at 80.01 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 80.01 90.17 0)
@@ -5485,11 +5439,6 @@
     (pin "1" (uuid 956faa79-f970-4735-bd60-3c7bd7fbf96a))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR042") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR068") (unit 1)
         )
@@ -5500,7 +5449,7 @@
   (symbol (lib_id "power:GNDD") (at 259.08 88.9 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bbaf778b-4651-45ef-8398-c3600495a32d)
-    (property "Reference" "#PWR054" (at 259.08 95.25 0)
+    (property "Reference" "#PWR096" (at 259.08 95.25 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 259.08 92.71 0)
@@ -5515,11 +5464,6 @@
     (pin "1" (uuid b8942c59-970c-446a-b0a5-27686ceee42b))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR054") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR096") (unit 1)
         )
@@ -5530,7 +5474,7 @@
   (symbol (lib_id "power:VCC") (at 181.61 46.99 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bc5ea49e-810f-4985-8541-e0cbfb08f0e2)
-    (property "Reference" "#PWR047" (at 181.61 50.8 0)
+    (property "Reference" "#PWR0103" (at 181.61 50.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 181.61 41.91 0)
@@ -5544,11 +5488,6 @@
     )
     (pin "1" (uuid 5fb92b29-cc19-4e20-8a71-9667901b6f62))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR047") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0103") (unit 1)
@@ -5599,11 +5538,6 @@
         )
       )
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U2") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U13") (unit 1)
         )
@@ -5645,7 +5579,7 @@
   (symbol (lib_id "power:VCC") (at 92.075 161.925 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bd2b491f-62d5-45cd-8813-fe9d3929aabb)
-    (property "Reference" "#PWR03" (at 92.075 165.735 0)
+    (property "Reference" "#PWR043" (at 92.075 165.735 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 92.075 156.845 0)
@@ -5660,11 +5594,6 @@
     (pin "1" (uuid 48569af7-c966-4abe-9b5f-43d11881d6d6))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR03") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR043") (unit 1)
         )
@@ -5675,7 +5604,7 @@
   (symbol (lib_id "power:VCC") (at 123.825 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bdfb8776-0f2b-4cc2-b044-0d30c7547e7b)
-    (property "Reference" "#PWR023" (at 127.635 137.16 0)
+    (property "Reference" "#PWR088" (at 127.635 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 118.745 137.16 0)
@@ -5690,13 +5619,34 @@
     (pin "1" (uuid 194b0db6-849c-4f1b-98c6-b010b76356c4))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR023") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR088") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:R") (at 229.87 186.69 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid be6a0be7-3bc6-4e01-8be5-9339aa07b6c0)
+    (property "Reference" "R3" (at 232.41 185.42 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "R" (at 232.41 187.96 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" (at 228.092 186.69 90)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 229.87 186.69 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid ddc4c207-2288-4bdd-999c-be14cc482f59))
+    (pin "2" (uuid 3013de2e-65e2-4da8-9da2-d261aa68f729))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "R3") (unit 1)
         )
       )
     )
@@ -5705,7 +5655,7 @@
   (symbol (lib_id "power:VCC") (at 79.375 129.54 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bfafbc07-3715-410e-aec6-7d0786a3fe5c)
-    (property "Reference" "#PWR040" (at 83.185 129.54 0)
+    (property "Reference" "#PWR063" (at 83.185 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 74.295 129.54 0)
@@ -5720,11 +5670,6 @@
     (pin "1" (uuid 2ee48129-9ccf-428f-8bfd-1393355e3311))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR040") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR063") (unit 1)
         )
@@ -5735,7 +5680,7 @@
   (symbol (lib_id "power:GNDD") (at 259.08 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c163c86f-6b21-413f-8ede-7bdddb685b6b)
-    (property "Reference" "#PWR069" (at 259.08 64.77 0)
+    (property "Reference" "#PWR081" (at 259.08 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 259.08 62.23 0)
@@ -5750,11 +5695,6 @@
     (pin "1" (uuid 1f4611ee-c9e9-4d26-a285-53b5e08e8d21))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR069") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR081") (unit 1)
         )
@@ -5765,7 +5705,7 @@
   (symbol (lib_id "power:GNDD") (at 181.61 95.25 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c1a2d1a6-29e6-4886-9f51-cb1a76fe0f0e)
-    (property "Reference" "#PWR049" (at 181.61 101.6 0)
+    (property "Reference" "#PWR0122" (at 181.61 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 181.61 99.06 0)
@@ -5780,11 +5720,6 @@
     (pin "1" (uuid c8d9ef72-2fef-43e8-bd78-608723407d67))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR049") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0122") (unit 1)
         )
@@ -5795,7 +5730,7 @@
   (symbol (lib_id "power:GNDD") (at 213.36 80.01 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c39c6140-baf8-4f07-8980-1de107cbf174)
-    (property "Reference" "#PWR081" (at 213.36 86.36 0)
+    (property "Reference" "#PWR065" (at 213.36 86.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 213.36 83.82 0)
@@ -5810,13 +5745,34 @@
     (pin "1" (uuid 0cce88ee-31a3-4591-ae9b-6165a15b8e83))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR081") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR065") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:LED") (at 229.87 194.31 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid c5cf912d-1ae9-4202-8429-25847fde90ed)
+    (property "Reference" "D3" (at 233.68 194.6275 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Value" "LED" (at 233.68 197.1675 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Footprint" "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" (at 229.87 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 229.87 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid ff723ff3-26b3-4400-b4b3-ab4ff21e7545))
+    (pin "2" (uuid 2e9b60fa-f2e2-43dc-9759-e9adf1971714))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "D3") (unit 1)
         )
       )
     )
@@ -5825,7 +5781,7 @@
   (symbol (lib_id "power:VCC") (at 212.725 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c6767831-9565-4121-b4bf-27c7455d17ac)
-    (property "Reference" "#PWR030" (at 216.535 137.16 0)
+    (property "Reference" "#PWR067" (at 216.535 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 207.645 137.16 0)
@@ -5840,11 +5796,6 @@
     (pin "1" (uuid 9e099f56-adf5-45db-84fd-2b0acb7e1955))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR030") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR067") (unit 1)
         )
@@ -5855,7 +5806,7 @@
   (symbol (lib_id "74xx:74LS163") (at 180.975 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid caa36c7c-815a-4913-94c1-dde3134d6dd9)
-    (property "Reference" "U6" (at 183.1691 104.14 0)
+    (property "Reference" "U9" (at 183.1691 104.14 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS163" (at 183.1691 106.68 0)
@@ -5885,11 +5836,6 @@
     (pin "9" (uuid 408ce864-853a-429c-8d5b-8c4accdd31e1))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U6") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U9") (unit 1)
         )
@@ -5900,7 +5846,7 @@
   (symbol (lib_id "power:VCC") (at 136.525 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d4e9ece3-20fd-4dc1-96cb-ff9102833bf6)
-    (property "Reference" "#PWR018" (at 136.525 107.95 0)
+    (property "Reference" "#PWR076" (at 136.525 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 136.525 99.06 0)
@@ -5915,11 +5861,6 @@
     (pin "1" (uuid 53fded84-8fe8-4bea-91b1-0a7e4e743056))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR018") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR076") (unit 1)
         )
@@ -5930,7 +5871,7 @@
   (symbol (lib_id "power:VCC") (at 136.525 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d631bb60-293d-4874-b0f9-25c37f80cd90)
-    (property "Reference" "#PWR012" (at 136.525 165.1 0)
+    (property "Reference" "#PWR073" (at 136.525 165.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 136.525 156.21 0)
@@ -5945,11 +5886,6 @@
     (pin "1" (uuid 7041b9b6-50e4-43e8-9916-207c04973e68))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR012") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR073") (unit 1)
         )
@@ -5960,7 +5896,7 @@
   (symbol (lib_id "power:VCC") (at 328.93 48.26 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d6a4aace-fd38-43ff-8222-d24d9b255e83)
-    (property "Reference" "#PWR056" (at 328.93 52.07 0)
+    (property "Reference" "#PWR0104" (at 328.93 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 328.93 43.18 0)
@@ -5975,11 +5911,6 @@
     (pin "1" (uuid 10e842bc-aa85-479f-bbfe-31549e626b52))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR056") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0104") (unit 1)
         )
@@ -5990,7 +5921,7 @@
   (symbol (lib_id "power:GNDD") (at 259.08 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d77050ea-b0a4-48ea-b485-362e0abf150f)
-    (property "Reference" "#PWR067" (at 259.08 80.01 0)
+    (property "Reference" "#PWR087" (at 259.08 80.01 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 259.08 77.47 0)
@@ -6005,11 +5936,6 @@
     (pin "1" (uuid 694ae3fe-4c5a-4a47-84e4-2e63669f3658))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR067") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR087") (unit 1)
         )
@@ -6020,7 +5946,7 @@
   (symbol (lib_id "power:GNDD") (at 180.975 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d7a904c3-7458-4ba1-906d-f0c410f7723d)
-    (property "Reference" "#PWR021" (at 180.975 151.13 0)
+    (property "Reference" "#PWR0112" (at 180.975 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 180.975 148.59 0)
@@ -6035,11 +5961,6 @@
     (pin "1" (uuid b41ecc85-fbe2-4c12-948a-09018309b833))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR021") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0112") (unit 1)
         )
@@ -6050,7 +5971,7 @@
   (symbol (lib_id "power:GNDD") (at 137.16 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d8ebbe8a-fe40-4a6c-ba7f-60f008ff81e5)
-    (property "Reference" "#PWR046" (at 137.16 100.33 0)
+    (property "Reference" "#PWR099" (at 137.16 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 137.16 97.79 0)
@@ -6065,11 +5986,6 @@
     (pin "1" (uuid dbf5b385-7335-482e-83e3-5a4dbe70bc1d))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR046") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR099") (unit 1)
         )
@@ -6080,7 +5996,7 @@
   (symbol (lib_id "power:VCC") (at 269.875 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid dc33ddb8-3cf5-46b3-b5ec-d946b6e6fd0d)
-    (property "Reference" "#PWR032" (at 269.875 107.95 0)
+    (property "Reference" "#PWR077" (at 269.875 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 269.875 99.06 0)
@@ -6095,13 +6011,34 @@
     (pin "1" (uuid 5a13e9bd-07d7-40a4-a3d8-b714e3c9f705))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR032") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR077") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:R") (at 236.22 186.69 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid ddfb69ce-fa36-4b49-afac-32a78ce2d567)
+    (property "Reference" "R4" (at 238.76 185.42 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "R" (at 238.76 187.96 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" (at 234.442 186.69 90)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 236.22 186.69 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid c795cf7a-37fa-4613-ab45-992e6eba6155))
+    (pin "2" (uuid 83fde763-2e4a-4c46-aae6-30c7b06fdc9e))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "R4") (unit 1)
         )
       )
     )
@@ -6110,7 +6047,7 @@
   (symbol (lib_id "power:GNDD") (at 92.075 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid de38f9e5-7114-4024-8059-7295ee1c322c)
-    (property "Reference" "#PWR05" (at 92.075 151.13 0)
+    (property "Reference" "#PWR070" (at 92.075 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 92.075 148.59 0)
@@ -6125,13 +6062,34 @@
     (pin "1" (uuid 39bc2fff-04ad-4956-acb1-5d53054a4c9e))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR05") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR070") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:LED") (at 223.52 194.31 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid df7f9ac6-a5e5-43f9-bf26-77ce3400e4b3)
+    (property "Reference" "D2" (at 227.33 194.6275 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Value" "LED" (at 227.33 197.1675 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Footprint" "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" (at 223.52 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 223.52 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 3d5cf002-2664-46c3-9c36-b00cdcb91a97))
+    (pin "2" (uuid 678da6f2-34e6-4151-8132-084aab0d98c1))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "D2") (unit 1)
         )
       )
     )
@@ -6140,7 +6098,7 @@
   (symbol (lib_id "power:VCC") (at 212.725 127 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e20857b7-3bc9-4531-a7a7-5fdf926c4781)
-    (property "Reference" "#PWR029" (at 216.535 127 0)
+    (property "Reference" "#PWR060" (at 216.535 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 207.645 127 0)
@@ -6155,11 +6113,6 @@
     (pin "1" (uuid 180f78b8-f12e-4ecb-be71-61dddf30363e))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR029") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR060") (unit 1)
         )
@@ -6170,7 +6123,7 @@
   (symbol (lib_id "power:VCC") (at 271.78 48.26 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e6fed8be-7480-4e72-a4b2-b3f7304b03bc)
-    (property "Reference" "#PWR053" (at 271.78 52.07 0)
+    (property "Reference" "#PWR079" (at 271.78 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 271.78 43.18 0)
@@ -6185,13 +6138,34 @@
     (pin "1" (uuid ed102496-04ad-48bd-a79d-0e483c40e742))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR053") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR079") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Device:R") (at 223.52 186.69 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid e9274134-9941-4b03-b5b6-6b7aab8e2601)
+    (property "Reference" "R2" (at 226.06 185.42 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "R" (at 226.06 187.96 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" (at 221.742 186.69 90)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 223.52 186.69 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 8f33a036-f217-4c2b-baf7-c65c315bf40b))
+    (pin "2" (uuid 8b9a9b4b-71b1-43ca-a6cd-792b163ab1e1))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "R2") (unit 1)
         )
       )
     )
@@ -6200,7 +6174,7 @@
   (symbol (lib_id "power:GNDD") (at 168.91 64.77 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e965c501-abcd-42fa-a1b5-63a48d906dfb)
-    (property "Reference" "#PWR061" (at 168.91 71.12 0)
+    (property "Reference" "#PWR0111" (at 168.91 71.12 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 168.91 68.58 0)
@@ -6214,11 +6188,6 @@
     )
     (pin "1" (uuid 0fd78c72-28e0-485a-9aff-5dd83f3abd2d))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR061") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR0111") (unit 1)
@@ -6258,6 +6227,32 @@
     )
   )
 
+  (symbol (lib_id "Device:LED") (at 242.57 194.31 270) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid ee44e058-4c39-4c3b-b5a3-b0e4e8235ca8)
+    (property "Reference" "D5" (at 245.11 191.4525 90)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+    (property "Value" "LED" (at 245.11 193.9925 90)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+    (property "Footprint" "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" (at 242.57 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 242.57 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 6a724f25-f8fe-4ffa-ba4e-7ccfc4664c29))
+    (pin "2" (uuid 7106c676-6e24-4097-bad7-bfc0857c4e41))
+    (instances
+      (project "Programcounter"
+        (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
+          (reference "D5") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Device:C") (at 280.67 267.97 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid f0c95bd4-0524-4eba-bcfa-8167dabae456)
@@ -6292,7 +6287,7 @@
   (symbol (lib_id "power:GNDD") (at 225.425 144.78 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f11d5b1b-14bd-4993-90ad-9ddd8a2f3641)
-    (property "Reference" "#PWR031" (at 225.425 151.13 0)
+    (property "Reference" "#PWR071" (at 225.425 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 225.425 148.59 0)
@@ -6307,11 +6302,6 @@
     (pin "1" (uuid bbb290af-4dea-4c85-a79f-4ce7173cdcfb))
     (instances
       (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR031") (unit 1)
-        )
-      )
-      (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR071") (unit 1)
         )
@@ -6322,7 +6312,7 @@
   (symbol (lib_id "power:VCC") (at 123.825 127 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f27c1c18-ada3-437c-99df-04281470b98b)
-    (property "Reference" "#PWR026" (at 127.635 127 0)
+    (property "Reference" "#PWR082" (at 127.635 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 118.745 127 0)
@@ -6336,11 +6326,6 @@
     )
     (pin "1" (uuid f5d802a4-5b58-41c4-a4bf-14f443502934))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR026") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR082") (unit 1)
@@ -6383,7 +6368,7 @@
   (symbol (lib_id "power:GNDD") (at 124.46 86.36 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f36cf2a5-741a-4523-a635-c91b421b2afb)
-    (property "Reference" "#PWR045" (at 124.46 92.71 0)
+    (property "Reference" "#PWR095" (at 124.46 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 124.46 90.17 0)
@@ -6397,11 +6382,6 @@
     )
     (pin "1" (uuid 38620a27-8ba7-4498-887c-66752f27266f))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "#PWR045") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "#PWR095") (unit 1)
@@ -6504,7 +6484,7 @@
   (symbol (lib_id "74xx:74LS163") (at 136.525 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid fa202dcd-e627-4bf1-a20c-43c236f3e872)
-    (property "Reference" "U5" (at 138.7191 104.14 0)
+    (property "Reference" "U8" (at 138.7191 104.14 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "74LS163" (at 138.7191 106.68 0)
@@ -6533,11 +6513,6 @@
     (pin "8" (uuid 1b749c50-8650-4142-bf26-bbb17faacf1b))
     (pin "9" (uuid 0cd4ef69-2e38-4e73-a90d-e7d8f2f411e8))
     (instances
-      (project "Programcounter"
-        (path "/a7073aae-8731-46e7-9891-8a0fc0e9cc05"
-          (reference "U5") (unit 1)
-        )
-      )
       (project "Programcounter"
         (path "/aed6eade-53fd-4193-8c3b-efdb5650d6ce"
           (reference "U8") (unit 1)
