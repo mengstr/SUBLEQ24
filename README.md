@@ -1,20 +1,6 @@
 # SUBLEQ24
 
-http://eigenratios.blogspot.com/2006/08/self-written-self-modifying-self.html
-
-https://github.com/lawrencewoodman/sblasm
-
-https://hasith.vidanamadura.net/projects/subleq/
-
-https://www.sccs.swarthmore.edu/users/07/mustpaks/oiscdoc/compileOISC.html
-
-https://github.com/mustpax/OISC?tab=readme-ov-file
-
-https://kh-labs.org/subleq/
-
-https://web.archive.org/web/20160304174314/http://mazonka.com/subleq/hsq.html
-
-
+## PCBs
 
 | .  | .  | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
 |---|---|---|
@@ -108,107 +94,46 @@ E00000-FFFFFF    IO     (2M)
 
 
 
-## PCB PLACEMENT
+## PCB PLACEMENT ON BUS
 ```
-                    ADDR  MISC  DATA
-        PC          | |  -----  | |      A-ADDR/VALU
-+---------------+   | |   | |   | |   +---------------+
-|           OUT ====* |   | *========== OUTVALUE      |
-|               |   | |   | |   | |   |               |
-|              .|   | *================ OUTADDR       |
-|               |   | |   | |   | |   |               |
-|            IN ================* *==== IN            |
-+---------------+   | |   | |   | |   +---------------+
-                    | |   | |   | |                           
-     SERIAL         | |   | |   | |       SUBTRACT
-+---------------+   | |   | |   | |   +---------------+
-|          DATA ================* *==== OUT           |
-|               |   | |   | |   | |   |               |
-|              .|   | |   | *========== IN2           |
-|               |   | |  -----  | |   |               |
-|              .|   | |   | *========== IN1           |
-+---------------+   | |   | |   | |   +---------------+
-                    | |   | |   | |                            
-      MEMORY        | |   | |   | |      B-ADDR/VALUE
-+---------------+   | |   | |   | |   +---------------+
-|              .|   | |   | *========== OUTVALUE      |
-|               |   | |   | |   | |   |               |
-|       ADDRESS ====* *================ OUTADDR       |
-|               |   | |   | |   | |   |               |
-|          DATA ================* *==== IN            |
-+---------------+   | |   | |   | |   +---------------+
-                    | |  -----  | |                            
-  INTERRUPT-PC      | |   | |   | |    PROTO-MICROCODE 
-+---------------+   | |   | |   | |   +---------------+
-|           OUT ====* |   | |   | |   |.              |
-|               |   | |   | |   | |   |               |
-|              .|   | |   | *========== TIMESTEP IN   |
-|               |   | |   | |   | |   |               |
-|            IN ================* |   |.              |
-+---------------+   | |   | |   | |   +---------------+
-                    | |   | |   | |                            
-                    | |   | |   | |     PROTO-SEQENCER
-+---------------+   | |   | |   | |   +---------------+
-|              .|   | |   | |   | |   |.              |
-|               |   | |   | |   | |   |               |
-|              .|   | |   | *========== TIMESTEP OUT  |
-|               |   | |   | |   | |   |               |
-|              .|   | |   | |   | |   |.              |
-+---------------+   | |   | |   | |   +---------------+
-                    | |  -----  | |
-```
-
-......
+                       BUS                                                  BUS
+                     +------+                                             +------+
+                     |      |                                             |      |                     
+                   +----------------------------------------------------------------+
+                   +  ......               BUS CONNECTOR                   ......   +
+                   +----------------------------------------------------------------+ 
++----------------+   |      |   +----------------+   +----------------+   |      |   +----------------+  
+|                |===|      |===|                |   |                |===|      |===|                |
+|     PROTO      |===|      |===|   SUBTRACTOR   |   |     MEMORY     |===|      |===| UART & LOADER  |
+|                |===|      |===|                |   |                |===|      |===|                |
+|                |===|      |===|                |   |                |===|      |===|                |
++----------------+   |      |   +----------------+   +----------------+   |      |   +----------------+  
+                     |      |                                             |      |                     
++----------------+   |      |   +----------------+   +----------------+   |      |   +----------------+  
+|                |===|      |===|                |   |                |===|      |===|                |
+|     PROTO      |===|      |===|      MAR       |   | PROGRAMCOUNTER |===|      |===|      GPIO      |
+|                |===|      |===|                |   |                |===|      |===|                |
+|                |===|      |===|                |   |                |===|      |===|                |
++----------------+   |      |   +----------------+   +----------------+   |      |   +----------------+  
+                     |      |                                             |      |                     
++----------------+   |      |   +----------------+   +----------------+   |      |   +----------------+  
+|                |===|      |===|                |   |                |===|      |===|                |
+|     PROTO      |===|      |===|                |   |   MICROCODE    |===|      |===|  CONTROLPANEL  |
+|                |===|      |===|                |   |                |===|      |===|                |
+|                |===|      |===|                |   |                |===|      |===|                |
++----------------+   |      |   +----------------+   +----------------+   |      |   +----------------+  
+                     |      |                                             |      |                     
+                  +-----------------------------------------------------------------+ 
+                   +  ......               BUS CONNECTOR                   ......   +
+                  +-----------------------------------------------------------------+ 
+                     |      |                                             |      |                     
+                     +------+                                             +------+
 
 ```
 
-                157 163 541 540 283 27  30  00  245 574 21  RAM FLSH
-MEMORY                                          6           3   3
-REGISTER1               6                           6   4
-REGISTER2               6                           6   4
-SUBTRACT                    3   6   3   1   1   3
-PROGRAMCOUNTER  6   6   3
-=====================================================================
-                6   6   15  3   6   3   1   1   9   12  8   3   3
+.
 
-
-                74  00  14  163 238 555 4075
-PROTO-SEQ/CNTRL 4   1   2   1   2   2   1
 ```
-
-BOARD           SUBMITTED       SHIPPED         RECEIVED
------------------------------------------------------------------------
-Tikk            Sep-20 21:09    Sep-23 11:18    Oct-04 19:09    14 days
-TraceTest       Sep-27 04:10    Sep-28 14:09    Oct-09 19:02    12 days
-PCIe            Oct-01 03:56    Oct-09 12:47    Oct-17 18:35    16 days
-Ruler           Oct-01 17:43    Oct-06 13:12    Oct-13 19:43    12 days
-HEX7SEG         Oct-09 17:06    Oct-11 11:06    Oct-18 17:46    9 days
-BGA             Oct-14 18:01    Oct-18 09:51    Oct-25 15:58    11 days
-Bus             Oct-18 09:12    Oct-20 10:00    Oct-31 17:26    18 days                
-Proto           Oct-20 23:29    Oct-24 12:25    Oct-31 17:26    16 days
-RAM             Oct-25 17:59    Oct-27 13:22    Nov-03 15:15    9 days            
-Register        Oct-26 21:40    Oct-29 14:02    Nov-08 16:37    13 days            
-Subtractor      Oct-29 17:35    Nov-02 12:58    Nov-09 16:44    11 days
-ProgramCounter  Oct-30 15:45    Nov-02 12:31    Nov-09 16:44    10 days
-
-
-
-0:  12 12 3 
-3:  36 37 6 
-6:  37 12 9 
-9:  37 37 12 
-12: 0 -1 15 
-15: 38 36 18 
-18: 12 12 21 
-21: 52 37 24 
-24: 37 12 27 
-27: 37 37 30 
-30: 36 12 -1 
-33: 37 37 0 
-36: 39 0 -1 
-39: 72 101 108 108 111 44 32 87 111 114 108 100 33 52
-
-
 # output *p; 
 a; 
 p Z; 
@@ -227,6 +152,25 @@ p a (-1)
 Z Z 0
 . p:H Z:0 m1:-1
 . H: "Hello, World!" E:E
+```
+
+## LINKS
+
+http://eigenratios.blogspot.com/2006/08/self-written-self-modifying-self.html
+
+https://github.com/lawrencewoodman/sblasm
+
+https://hasith.vidanamadura.net/projects/subleq/
+
+https://www.sccs.swarthmore.edu/users/07/mustpaks/oiscdoc/compileOISC.html
+
+https://github.com/mustpax/OISC?tab=readme-ov-file
+
+https://kh-labs.org/subleq/
+
+https://web.archive.org/web/20160304174314/http://mazonka.com/subleq/hsq.html
+
+
 
 
 
