@@ -662,7 +662,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
         </entry>
         <entry>
           <string>RectHeight</string>
-          <int>46</int>
+          <int>53</int>
         </entry>
         <entry>
           <string>Label</string>
@@ -673,7 +673,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <int>94</int>
         </entry>
       </elementAttributes>
-      <pos x="-2940" y="-2380"/>
+      <pos x="-2940" y="-2520"/>
     </visualElement>
     <visualElement>
       <elementName>Or</elementName>
@@ -698,7 +698,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>PC_FLASH</string>
         </entry>
       </elementAttributes>
-      <pos x="-2680" y="-2260"/>
+      <pos x="-2680" y="-2380"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
@@ -744,43 +744,14 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <pos x="-2280" y="-1740"/>
     </visualElement>
     <visualElement>
-      <elementName>Const</elementName>
-      <elementAttributes/>
-      <pos x="-2080" y="-1580"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Tunnel</elementName>
-      <elementAttributes>
-        <entry>
-          <string>rotation</string>
-          <rotation rotation="2"/>
-        </entry>
-        <entry>
-          <string>NetName</string>
-          <string>CK</string>
-        </entry>
-      </elementAttributes>
-      <pos x="-2080" y="-1600"/>
-    </visualElement>
-    <visualElement>
       <elementName>Not</elementName>
       <elementAttributes/>
-      <pos x="-2100" y="-1720"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Const</elementName>
-      <elementAttributes>
-        <entry>
-          <string>Value</string>
-          <long>0</long>
-        </entry>
-      </elementAttributes>
-      <pos x="-1980" y="-1660"/>
+      <pos x="-2120" y="-1720"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-1700" y="-2100"/>
+      <pos x="-1700" y="-2200"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -794,7 +765,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-1700" y="-2060"/>
+      <pos x="-1700" y="-2160"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
@@ -818,31 +789,31 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-1960" y="-1940"/>
+      <pos x="-1980" y="-1980"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
+      <pos x="-2500" y="-1920"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>CK</string>
+        </entry>
+      </elementAttributes>
       <pos x="-2500" y="-1880"/>
     </visualElement>
     <visualElement>
-      <elementName>Tunnel</elementName>
-      <elementAttributes>
-        <entry>
-          <string>rotation</string>
-          <rotation rotation="2"/>
-        </entry>
-        <entry>
-          <string>NetName</string>
-          <string>CK</string>
-        </entry>
-      </elementAttributes>
-      <pos x="-2500" y="-1840"/>
-    </visualElement>
-    <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-1880"/>
+      <pos x="-2360" y="-1920"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -856,12 +827,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2360" y="-1840"/>
+      <pos x="-2360" y="-1880"/>
     </visualElement>
     <visualElement>
       <elementName>And</elementName>
       <elementAttributes/>
-      <pos x="-2280" y="-1900"/>
+      <pos x="-2280" y="-1940"/>
     </visualElement>
     <visualElement>
       <elementName>Or</elementName>
@@ -890,7 +861,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-2500" y="-1820"/>
+      <pos x="-2500" y="-1860"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -904,7 +875,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-2360" y="-1820"/>
+      <pos x="-2360" y="-1860"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -946,7 +917,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-1960" y="-1880"/>
+      <pos x="-1980" y="-1920"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -960,7 +931,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-1700" y="-2040"/>
+      <pos x="-1700" y="-2140"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -977,43 +948,9 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <pos x="-1700" y="-1780"/>
     </visualElement>
     <visualElement>
-      <elementName>Tunnel</elementName>
-      <elementAttributes>
-        <entry>
-          <string>rotation</string>
-          <rotation rotation="2"/>
-        </entry>
-        <entry>
-          <string>NetName</string>
-          <string>~ResetP</string>
-        </entry>
-      </elementAttributes>
-      <pos x="-2080" y="-1640"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Const</elementName>
-      <elementAttributes>
-        <entry>
-          <string>Value</string>
-          <long>0</long>
-        </entry>
-      </elementAttributes>
-      <pos x="-1980" y="-1640"/>
-    </visualElement>
-    <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
       <pos x="-2500" y="-1720"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Half7474.dig</elementName>
-      <elementAttributes/>
-      <pos x="-2080" y="-1640"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Half7474.dig</elementName>
-      <elementAttributes/>
-      <pos x="-1980" y="-1680"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
@@ -1023,22 +960,22 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-2500" y="-1880"/>
+      <pos x="-2500" y="-1920"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-1880"/>
+      <pos x="-2360" y="-1920"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-1960" y="-1940"/>
+      <pos x="-1980" y="-1980"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-1700" y="-2100"/>
+      <pos x="-1700" y="-2200"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
@@ -1048,7 +985,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <visualElement>
       <elementName>Or</elementName>
       <elementAttributes/>
-      <pos x="-2080" y="-1920"/>
+      <pos x="-2140" y="-1960"/>
     </visualElement>
     <visualElement>
       <elementName>Or</elementName>
@@ -1058,26 +995,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <int>3</int>
         </entry>
       </elementAttributes>
-      <pos x="-2680" y="-2220"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Tunnel</elementName>
-      <elementAttributes>
-        <entry>
-          <string>rotation</string>
-          <rotation rotation="2"/>
-        </entry>
-        <entry>
-          <string>NetName</string>
-          <string>MopEnd</string>
-        </entry>
-      </elementAttributes>
-      <pos x="-2080" y="-1620"/>
+      <pos x="-2680" y="-2340"/>
     </visualElement>
     <visualElement>
       <elementName>Not</elementName>
       <elementAttributes/>
-      <pos x="-2160" y="-2280"/>
+      <pos x="-2160" y="-2420"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1087,7 +1010,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-2080" y="-2280"/>
+      <pos x="-2080" y="-2420"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1101,7 +1024,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>POR</string>
         </entry>
       </elementAttributes>
-      <pos x="-2740" y="-2200"/>
+      <pos x="-2740" y="-2320"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1111,12 +1034,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2460" y="-1500"/>
+      <pos x="-2340" y="-1480"/>
     </visualElement>
     <visualElement>
       <elementName>Not</elementName>
       <elementAttributes/>
-      <pos x="-2520" y="-1520"/>
+      <pos x="-2400" y="-1500"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1126,7 +1049,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2460" y="-1520"/>
+      <pos x="-2340" y="-1500"/>
     </visualElement>
     <visualElement>
       <elementName>Clock</elementName>
@@ -1141,10 +1064,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
         </entry>
         <entry>
           <string>Frequency</string>
-          <int>50000</int>
+          <int>2000</int>
         </entry>
       </elementAttributes>
-      <pos x="-2560" y="-1520"/>
+      <pos x="-2440" y="-1500"/>
     </visualElement>
     <visualElement>
       <elementName>Clock</elementName>
@@ -1168,7 +1091,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>POR</string>
         </entry>
       </elementAttributes>
-      <pos x="-2760" y="-1500"/>
+      <pos x="-2840" y="-1500"/>
     </visualElement>
     <visualElement>
       <elementName>In</elementName>
@@ -1188,12 +1111,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>HALT</string>
         </entry>
       </elementAttributes>
-      <pos x="-2780" y="-2000"/>
+      <pos x="-2780" y="-2080"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2500" y="-2020"/>
+      <pos x="-2500" y="-2100"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1207,12 +1130,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2500" y="-1980"/>
+      <pos x="-2500" y="-2060"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-2020"/>
+      <pos x="-2360" y="-2100"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1226,12 +1149,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2360" y="-1980"/>
+      <pos x="-2360" y="-2060"/>
     </visualElement>
     <visualElement>
       <elementName>And</elementName>
       <elementAttributes/>
-      <pos x="-2280" y="-2040"/>
+      <pos x="-2280" y="-2120"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1245,7 +1168,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-2500" y="-1960"/>
+      <pos x="-2500" y="-2040"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1259,22 +1182,22 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~ResetP</string>
         </entry>
       </elementAttributes>
-      <pos x="-2360" y="-1960"/>
+      <pos x="-2360" y="-2040"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-2500" y="-2020"/>
+      <pos x="-2500" y="-2100"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-2020"/>
+      <pos x="-2360" y="-2100"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2500" y="-2220"/>
+      <pos x="-2500" y="-2340"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1288,12 +1211,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2500" y="-2180"/>
+      <pos x="-2500" y="-2300"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-2220"/>
+      <pos x="-2360" y="-2340"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1307,32 +1230,32 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-2360" y="-2180"/>
+      <pos x="-2360" y="-2300"/>
     </visualElement>
     <visualElement>
       <elementName>And</elementName>
       <elementAttributes/>
-      <pos x="-2280" y="-2240"/>
+      <pos x="-2280" y="-2360"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-2500" y="-2220"/>
+      <pos x="-2500" y="-2340"/>
     </visualElement>
     <visualElement>
       <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-2220"/>
+      <pos x="-2360" y="-2340"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2500" y="-2160"/>
+      <pos x="-2500" y="-2280"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="-2360" y="-2160"/>
+      <pos x="-2360" y="-2280"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
@@ -1402,7 +1325,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <visualElement>
       <elementName>Not</elementName>
       <elementAttributes/>
-      <pos x="-2540" y="-2300"/>
+      <pos x="-2540" y="-2420"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -1412,7 +1335,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~Reset</string>
         </entry>
       </elementAttributes>
-      <pos x="-2460" y="-2300"/>
+      <pos x="-2460" y="-2420"/>
     </visualElement>
     <visualElement>
       <elementName>Const</elementName>
@@ -1441,7 +1364,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>Z</string>
         </entry>
       </elementAttributes>
-      <pos x="-2780" y="-2140"/>
+      <pos x="-2780" y="-2260"/>
     </visualElement>
     <visualElement>
       <elementName>Button</elementName>
@@ -1455,7 +1378,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>F</string>
         </entry>
       </elementAttributes>
-      <pos x="-2780" y="-2260"/>
+      <pos x="-2780" y="-2380"/>
     </visualElement>
     <visualElement>
       <elementName>Text</elementName>
@@ -1469,7 +1392,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <boolean>false</boolean>
         </entry>
       </elementAttributes>
-      <pos x="-2926" y="-2155"/>
+      <pos x="-2923" y="-2273"/>
     </visualElement>
     <visualElement>
       <elementName>Text</elementName>
@@ -1483,7 +1406,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <boolean>false</boolean>
         </entry>
       </elementAttributes>
-      <pos x="-2926" y="-2276"/>
+      <pos x="-2921" y="-2394"/>
     </visualElement>
     <visualElement>
       <elementName>Button</elementName>
@@ -1511,7 +1434,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>M</string>
         </entry>
       </elementAttributes>
-      <pos x="-2780" y="-2080"/>
+      <pos x="-2780" y="-2180"/>
     </visualElement>
     <visualElement>
       <elementName>Button</elementName>
@@ -1525,7 +1448,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>R</string>
         </entry>
       </elementAttributes>
-      <pos x="-2780" y="-1860"/>
+      <pos x="-2780" y="-1900"/>
     </visualElement>
     <visualElement>
       <elementName>Text</elementName>
@@ -1567,7 +1490,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <boolean>false</boolean>
         </entry>
       </elementAttributes>
-      <pos x="-2959" y="-2092"/>
+      <pos x="-2949" y="-2199"/>
     </visualElement>
     <visualElement>
       <elementName>Splitter</elementName>
@@ -4465,34 +4388,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
         </entry>
       </elementAttributes>
       <pos x="1240" y="-40"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Probe</elementName>
-      <elementAttributes>
-        <entry>
-          <string>probeMode</string>
-          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
-        </entry>
-        <entry>
-          <string>intFormat</string>
-          <intFormat>dec</intFormat>
-        </entry>
-      </elementAttributes>
-      <pos x="-1860" y="-1680"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Probe</elementName>
-      <elementAttributes>
-        <entry>
-          <string>probeMode</string>
-          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
-        </entry>
-        <entry>
-          <string>intFormat</string>
-          <intFormat>dec</intFormat>
-        </entry>
-      </elementAttributes>
-      <pos x="-1860" y="-1880"/>
     </visualElement>
     <visualElement>
       <elementName>Probe</elementName>
@@ -7527,6 +7422,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <int>24</int>
         </entry>
         <entry>
+          <string>isProgramMemory</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
           <string>Bits</string>
           <int>24</int>
         </entry>
@@ -7536,10 +7435,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
             <string>we</string>
           </inverterConfig>
         </entry>
-        <entry>
-          <string>isProgramMemory</string>
-          <boolean>true</boolean>
-        </entry>
       </elementAttributes>
       <pos x="-2260" y="-1040"/>
     </visualElement>
@@ -7547,12 +7442,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <elementName>DriverInvSel</elementName>
       <elementAttributes>
         <entry>
-          <string>flipSelPos</string>
-          <boolean>true</boolean>
-        </entry>
-        <entry>
           <string>Bits</string>
           <int>24</int>
+        </entry>
+        <entry>
+          <string>flipSelPos</string>
+          <boolean>true</boolean>
         </entry>
       </elementAttributes>
       <pos x="-2160" y="-1020"/>
@@ -10071,12 +9966,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <value v="1" z="false"/>
         </entry>
       </elementAttributes>
-      <pos x="-2780" y="-1500"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Or</elementName>
-      <elementAttributes/>
-      <pos x="-1580" y="-1800"/>
+      <pos x="-2860" y="-1500"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -10090,12 +9980,183 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
           <string>~CK</string>
         </entry>
       </elementAttributes>
-      <pos x="-1580" y="-1760"/>
+      <pos x="-1540" y="-1760"/>
     </visualElement>
     <visualElement>
-      <elementName>Not</elementName>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>U9</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2460" y="-2400"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>U10</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2460" y="-2160"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>U14</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2460" y="-1980"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>U16</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2460" y="-1780"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>TS6</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-1380" y="-2280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Half7474.dig</elementName>
       <elementAttributes/>
-      <pos x="-1480" y="-1780"/>
+      <pos x="-2000" y="-1720"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>TS6</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2000" y="-1680"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes/>
+      <pos x="-2000" y="-1660"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="-2000" y="-1700"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>32</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>diode
+steering</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2700" y="-1560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>NOr</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="-2320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>NOr</elementName>
+      <elementAttributes/>
+      <pos x="-1520" y="-1800"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>U20</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-2020" y="-1840"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>U21</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-1720" y="-2020"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>28</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>1 x Triple OR
+1 x Quad AND
+1 x Quad NOR
+1 x Hex NOT
+6 x 7474 FF
+1 x 74163 COUNTER</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-1400" y="-1680"/>
     </visualElement>
   </visualElements>
   <wires>
@@ -10240,7 +10301,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="3060" y="-1800"/>
     </wire>
     <wire>
-      <p1 x="-1880" y="-1800"/>
+      <p1 x="-1860" y="-1800"/>
       <p2 x="-1840" y="-1800"/>
     </wire>
     <wire>
@@ -10253,7 +10314,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     </wire>
     <wire>
       <p1 x="-1620" y="-1800"/>
-      <p2 x="-1580" y="-1800"/>
+      <p2 x="-1520" y="-1800"/>
     </wire>
     <wire>
       <p1 x="740" y="-1800"/>
@@ -10332,6 +10393,30 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1960" y="780"/>
     </wire>
     <wire>
+      <p1 x="-1380" y="-2320"/>
+      <p2 x="-1340" y="-2320"/>
+    </wire>
+    <wire>
+      <p1 x="-2300" y="-2320"/>
+      <p2 x="-2280" y="-2320"/>
+    </wire>
+    <wire>
+      <p1 x="-2400" y="-2320"/>
+      <p2 x="-2360" y="-2320"/>
+    </wire>
+    <wire>
+      <p1 x="-2620" y="-2320"/>
+      <p2 x="-2560" y="-2320"/>
+    </wire>
+    <wire>
+      <p1 x="-2740" y="-2320"/>
+      <p2 x="-2680" y="-2320"/>
+    </wire>
+    <wire>
+      <p1 x="-2560" y="-2320"/>
+      <p2 x="-2500" y="-2320"/>
+    </wire>
+    <wire>
       <p1 x="2700" y="-1040"/>
       <p2 x="2920" y="-1040"/>
     </wire>
@@ -10342,10 +10427,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-2380" y="-1040"/>
       <p2 x="-2260" y="-1040"/>
-    </wire>
-    <wire>
-      <p1 x="-2480" y="-2320"/>
-      <p2 x="-1240" y="-2320"/>
     </wire>
     <wire>
       <p1 x="2800" y="1040"/>
@@ -10564,12 +10645,20 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-300" y="-2080"/>
     </wire>
     <wire>
-      <p1 x="-2780" y="-2080"/>
-      <p2 x="-1700" y="-2080"/>
-    </wire>
-    <wire>
       <p1 x="720" y="-2080"/>
       <p2 x="740" y="-2080"/>
+    </wire>
+    <wire>
+      <p1 x="-2300" y="-2080"/>
+      <p2 x="-2280" y="-2080"/>
+    </wire>
+    <wire>
+      <p1 x="-2400" y="-2080"/>
+      <p2 x="-2360" y="-2080"/>
+    </wire>
+    <wire>
+      <p1 x="-2780" y="-2080"/>
+      <p2 x="-2500" y="-2080"/>
     </wire>
     <wire>
       <p1 x="-300" y="-2080"/>
@@ -10582,6 +10671,22 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="3320" y="-2080"/>
       <p2 x="3360" y="-2080"/>
+    </wire>
+    <wire>
+      <p1 x="-2220" y="-2340"/>
+      <p2 x="-2180" y="-2340"/>
+    </wire>
+    <wire>
+      <p1 x="-2440" y="-2340"/>
+      <p2 x="-2400" y="-2340"/>
+    </wire>
+    <wire>
+      <p1 x="-2700" y="-2340"/>
+      <p2 x="-2680" y="-2340"/>
+    </wire>
+    <wire>
+      <p1 x="-2180" y="-2340"/>
+      <p2 x="-1600" y="-2340"/>
     </wire>
     <wire>
       <p1 x="3020" y="-1060"/>
@@ -10708,16 +10813,16 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1180" y="300"/>
     </wire>
     <wire>
+      <p1 x="-1860" y="-1840"/>
+      <p2 x="-1840" y="-1840"/>
+    </wire>
+    <wire>
       <p1 x="3020" y="-1840"/>
       <p2 x="3060" y="-1840"/>
     </wire>
     <wire>
       <p1 x="-1640" y="-1840"/>
       <p2 x="-1600" y="-1840"/>
-    </wire>
-    <wire>
-      <p1 x="-1880" y="-1840"/>
-      <p2 x="-1840" y="-1840"/>
     </wire>
     <wire>
       <p1 x="540" y="-1840"/>
@@ -10752,6 +10857,14 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2280" y="560"/>
     </wire>
     <wire>
+      <p1 x="-2220" y="-2100"/>
+      <p2 x="-2160" y="-2100"/>
+    </wire>
+    <wire>
+      <p1 x="-2440" y="-2100"/>
+      <p2 x="-2400" y="-2100"/>
+    </wire>
+    <wire>
       <p1 x="3480" y="-2100"/>
       <p2 x="3560" y="-2100"/>
     </wire>
@@ -10770,10 +10883,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-740" y="-2100"/>
       <p2 x="-720" y="-2100"/>
-    </wire>
-    <wire>
-      <p1 x="-1640" y="-2100"/>
-      <p2 x="-1520" y="-2100"/>
     </wire>
     <wire>
       <p1 x="-320" y="-2100"/>
@@ -10806,6 +10915,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-1380" y="-1080"/>
       <p2 x="-1300" y="-1080"/>
+    </wire>
+    <wire>
+      <p1 x="-2400" y="-2360"/>
+      <p2 x="-2280" y="-2360"/>
     </wire>
     <wire>
       <p1 x="2800" y="-1340"/>
@@ -10904,18 +11017,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="3040" y="-1860"/>
     </wire>
     <wire>
-      <p1 x="-2300" y="-1860"/>
-      <p2 x="-2280" y="-1860"/>
-    </wire>
-    <wire>
-      <p1 x="-2400" y="-1860"/>
-      <p2 x="-2360" y="-1860"/>
-    </wire>
-    <wire>
-      <p1 x="-2780" y="-1860"/>
-      <p2 x="-2640" y="-1860"/>
-    </wire>
-    <wire>
       <p1 x="360" y="-1860"/>
       <p2 x="480" y="-1860"/>
     </wire>
@@ -10926,10 +11027,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="480" y="-1860"/>
       <p2 x="520" y="-1860"/>
-    </wire>
-    <wire>
-      <p1 x="-2640" y="-1860"/>
-      <p2 x="-2500" y="-1860"/>
     </wire>
     <wire>
       <p1 x="-2560" y="-580"/>
@@ -10944,16 +11041,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1820" y="580"/>
     </wire>
     <wire>
-      <p1 x="3660" y="-840"/>
-      <p2 x="3680" y="-840"/>
-    </wire>
-    <wire>
-      <p1 x="2900" y="-840"/>
-      <p2 x="2920" y="-840"/>
-    </wire>
-    <wire>
-      <p1 x="3020" y="-840"/>
-      <p2 x="3060" y="-840"/>
+      <p1 x="-2400" y="-2120"/>
+      <p2 x="-2280" y="-2120"/>
     </wire>
     <wire>
       <p1 x="2220" y="-2120"/>
@@ -10988,12 +11077,32 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-280" y="-2120"/>
     </wire>
     <wire>
+      <p1 x="3660" y="-840"/>
+      <p2 x="3680" y="-840"/>
+    </wire>
+    <wire>
+      <p1 x="2900" y="-840"/>
+      <p2 x="2920" y="-840"/>
+    </wire>
+    <wire>
+      <p1 x="3020" y="-840"/>
+      <p2 x="3060" y="-840"/>
+    </wire>
+    <wire>
       <p1 x="2800" y="-1100"/>
       <p2 x="2920" y="-1100"/>
     </wire>
     <wire>
       <p1 x="3020" y="-1100"/>
       <p2 x="3060" y="-1100"/>
+    </wire>
+    <wire>
+      <p1 x="-2780" y="-2380"/>
+      <p2 x="-2700" y="-2380"/>
+    </wire>
+    <wire>
+      <p1 x="-2700" y="-2380"/>
+      <p2 x="-2680" y="-2380"/>
     </wire>
     <wire>
       <p1 x="2080" y="1100"/>
@@ -11072,10 +11181,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-2720" y="-1620"/>
     </wire>
     <wire>
-      <p1 x="-2020" y="-1620"/>
-      <p2 x="-1980" y="-1620"/>
-    </wire>
-    <wire>
       <p1 x="660" y="340"/>
       <p2 x="1000" y="340"/>
     </wire>
@@ -11086,18 +11191,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="3480" y="-1880"/>
       <p2 x="3560" y="-1880"/>
-    </wire>
-    <wire>
-      <p1 x="-2440" y="-1880"/>
-      <p2 x="-2400" y="-1880"/>
-    </wire>
-    <wire>
-      <p1 x="-2220" y="-1880"/>
-      <p2 x="-2080" y="-1880"/>
-    </wire>
-    <wire>
-      <p1 x="-1880" y="-1880"/>
-      <p2 x="-1860" y="-1880"/>
     </wire>
     <wire>
       <p1 x="720" y="-1880"/>
@@ -11140,28 +11233,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2140" y="600"/>
     </wire>
     <wire>
-      <p1 x="2800" y="-860"/>
-      <p2 x="2920" y="-860"/>
-    </wire>
-    <wire>
-      <p1 x="3020" y="-860"/>
-      <p2 x="3060" y="-860"/>
-    </wire>
-    <wire>
-      <p1 x="60" y="-860"/>
-      <p2 x="80" y="-860"/>
-    </wire>
-    <wire>
       <p1 x="2460" y="-2140"/>
       <p2 x="2820" y="-2140"/>
     </wire>
     <wire>
       <p1 x="-460" y="-2140"/>
       <p2 x="-360" y="-2140"/>
-    </wire>
-    <wire>
-      <p1 x="-2780" y="-2140"/>
-      <p2 x="-2700" y="-2140"/>
     </wire>
     <wire>
       <p1 x="-840" y="-2140"/>
@@ -11182,6 +11259,18 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-360" y="-2140"/>
       <p2 x="-280" y="-2140"/>
+    </wire>
+    <wire>
+      <p1 x="2800" y="-860"/>
+      <p2 x="2920" y="-860"/>
+    </wire>
+    <wire>
+      <p1 x="3020" y="-860"/>
+      <p2 x="3060" y="-860"/>
+    </wire>
+    <wire>
+      <p1 x="60" y="-860"/>
+      <p2 x="80" y="-860"/>
     </wire>
     <wire>
       <p1 x="1780" y="860"/>
@@ -11296,6 +11385,18 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2500" y="360"/>
     </wire>
     <wire>
+      <p1 x="-2300" y="-1900"/>
+      <p2 x="-2280" y="-1900"/>
+    </wire>
+    <wire>
+      <p1 x="-2400" y="-1900"/>
+      <p2 x="-2360" y="-1900"/>
+    </wire>
+    <wire>
+      <p1 x="-2780" y="-1900"/>
+      <p2 x="-2640" y="-1900"/>
+    </wire>
+    <wire>
       <p1 x="2020" y="-1900"/>
       <p2 x="2540" y="-1900"/>
     </wire>
@@ -11308,12 +11409,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="3040" y="-1900"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-1900"/>
-      <p2 x="-2280" y="-1900"/>
-    </wire>
-    <wire>
-      <p1 x="-2020" y="-1900"/>
-      <p2 x="-1960" y="-1900"/>
+      <p1 x="-2640" y="-1900"/>
+      <p2 x="-2500" y="-1900"/>
     </wire>
     <wire>
       <p1 x="1920" y="620"/>
@@ -11382,6 +11479,22 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="2480" y="880"/>
       <p2 x="2520" y="880"/>
+    </wire>
+    <wire>
+      <p1 x="-2120" y="-2420"/>
+      <p2 x="-2080" y="-2420"/>
+    </wire>
+    <wire>
+      <p1 x="-2180" y="-2420"/>
+      <p2 x="-2160" y="-2420"/>
+    </wire>
+    <wire>
+      <p1 x="-2500" y="-2420"/>
+      <p2 x="-2460" y="-2420"/>
+    </wire>
+    <wire>
+      <p1 x="-2560" y="-2420"/>
+      <p2 x="-2540" y="-2420"/>
     </wire>
     <wire>
       <p1 x="2820" y="-1140"/>
@@ -11516,16 +11629,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="740" y="380"/>
     </wire>
     <wire>
-      <p1 x="-1900" y="-1920"/>
-      <p2 x="-1840" y="-1920"/>
+      <p1 x="-2220" y="-1920"/>
+      <p2 x="-2140" y="-1920"/>
     </wire>
     <wire>
-      <p1 x="-1980" y="-1920"/>
-      <p2 x="-1960" y="-1920"/>
-    </wire>
-    <wire>
-      <p1 x="-2100" y="-1920"/>
-      <p2 x="-2080" y="-1920"/>
+      <p1 x="-2440" y="-1920"/>
+      <p2 x="-2400" y="-1920"/>
     </wire>
     <wire>
       <p1 x="540" y="-1920"/>
@@ -11560,12 +11669,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2140" y="640"/>
     </wire>
     <wire>
-      <p1 x="2820" y="-900"/>
-      <p2 x="2920" y="-900"/>
-    </wire>
-    <wire>
-      <p1 x="3020" y="-900"/>
-      <p2 x="3040" y="-900"/>
+      <p1 x="-2780" y="-2180"/>
+      <p2 x="-1700" y="-2180"/>
     </wire>
     <wire>
       <p1 x="-1100" y="-2180"/>
@@ -11574,10 +11679,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-460" y="-2180"/>
       <p2 x="-400" y="-2180"/>
-    </wire>
-    <wire>
-      <p1 x="-2700" y="-2180"/>
-      <p2 x="-2680" y="-2180"/>
     </wire>
     <wire>
       <p1 x="-1420" y="-2180"/>
@@ -11590,6 +11691,14 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-1040" y="-2180"/>
       <p2 x="-1020" y="-2180"/>
+    </wire>
+    <wire>
+      <p1 x="2820" y="-900"/>
+      <p2 x="2920" y="-900"/>
+    </wire>
+    <wire>
+      <p1 x="3020" y="-900"/>
+      <p2 x="3040" y="-900"/>
     </wire>
     <wire>
       <p1 x="1480" y="900"/>
@@ -11704,20 +11813,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-2300" y="140"/>
     </wire>
     <wire>
-      <p1 x="-2000" y="-1680"/>
-      <p2 x="-1980" y="-1680"/>
-    </wire>
-    <wire>
-      <p1 x="-1920" y="-1680"/>
-      <p2 x="-1880" y="-1680"/>
-    </wire>
-    <wire>
       <p1 x="-2640" y="-1680"/>
       <p2 x="-2620" y="-1680"/>
-    </wire>
-    <wire>
-      <p1 x="-1880" y="-1680"/>
-      <p2 x="-1860" y="-1680"/>
     </wire>
     <wire>
       <p1 x="-1940" y="-400"/>
@@ -11744,12 +11841,16 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="660" y="400"/>
     </wire>
     <wire>
-      <p1 x="2700" y="-1940"/>
-      <p2 x="2920" y="-1940"/>
+      <p1 x="-2080" y="-1940"/>
+      <p2 x="-1980" y="-1940"/>
     </wire>
     <wire>
-      <p1 x="-1900" y="-1940"/>
-      <p2 x="-1880" y="-1940"/>
+      <p1 x="-2400" y="-1940"/>
+      <p2 x="-2280" y="-1940"/>
+    </wire>
+    <wire>
+      <p1 x="2700" y="-1940"/>
+      <p2 x="2920" y="-1940"/>
     </wire>
     <wire>
       <p1 x="360" y="-1940"/>
@@ -11776,8 +11877,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-320" y="660"/>
     </wire>
     <wire>
-      <p1 x="-2380" y="-920"/>
-      <p2 x="-2280" y="-920"/>
+      <p1 x="-1640" y="-2200"/>
+      <p2 x="-1360" y="-2200"/>
     </wire>
     <wire>
       <p1 x="-1300" y="-2200"/>
@@ -11796,26 +11897,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-560" y="-2200"/>
     </wire>
     <wire>
-      <p1 x="-2300" y="-2200"/>
-      <p2 x="-2280" y="-2200"/>
-    </wire>
-    <wire>
-      <p1 x="-2400" y="-2200"/>
-      <p2 x="-2360" y="-2200"/>
-    </wire>
-    <wire>
-      <p1 x="-2620" y="-2200"/>
-      <p2 x="-2560" y="-2200"/>
-    </wire>
-    <wire>
-      <p1 x="-1520" y="-2200"/>
-      <p2 x="-1360" y="-2200"/>
-    </wire>
-    <wire>
-      <p1 x="-2740" y="-2200"/>
-      <p2 x="-2680" y="-2200"/>
-    </wire>
-    <wire>
       <p1 x="720" y="-2200"/>
       <p2 x="740" y="-2200"/>
     </wire>
@@ -11824,16 +11905,16 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="920" y="-2200"/>
     </wire>
     <wire>
-      <p1 x="-2560" y="-2200"/>
-      <p2 x="-2500" y="-2200"/>
-    </wire>
-    <wire>
       <p1 x="-1240" y="-2200"/>
       <p2 x="-1200" y="-2200"/>
     </wire>
     <wire>
       <p1 x="-420" y="-2200"/>
       <p2 x="-280" y="-2200"/>
+    </wire>
+    <wire>
+      <p1 x="-2380" y="-920"/>
+      <p2 x="-2280" y="-920"/>
     </wire>
     <wire>
       <p1 x="2000" y="920"/>
@@ -11862,6 +11943,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="340" y="-1180"/>
       <p2 x="360" y="-1180"/>
+    </wire>
+    <wire>
+      <p1 x="-2560" y="-2460"/>
+      <p2 x="-1380" y="-2460"/>
     </wire>
     <wire>
       <p1 x="400" y="1180"/>
@@ -12004,6 +12089,18 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1180" y="420"/>
     </wire>
     <wire>
+      <p1 x="-1920" y="-1960"/>
+      <p2 x="-1900" y="-1960"/>
+    </wire>
+    <wire>
+      <p1 x="-2160" y="-1960"/>
+      <p2 x="-2140" y="-1960"/>
+    </wire>
+    <wire>
+      <p1 x="-2000" y="-1960"/>
+      <p2 x="-1980" y="-1960"/>
+    </wire>
+    <wire>
       <p1 x="60" y="-1960"/>
       <p2 x="80" y="-1960"/>
     </wire>
@@ -12068,19 +12165,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-560" y="-2220"/>
     </wire>
     <wire>
-      <p1 x="-2440" y="-2220"/>
-      <p2 x="-2400" y="-2220"/>
-    </wire>
-    <wire>
-      <p1 x="-2220" y="-2220"/>
-      <p2 x="-2180" y="-2220"/>
-    </wire>
-    <wire>
-      <p1 x="-2700" y="-2220"/>
-      <p2 x="-2680" y="-2220"/>
-    </wire>
-    <wire>
-      <p1 x="-2180" y="-2220"/>
+      <p1 x="-1600" y="-2220"/>
       <p2 x="-1360" y="-2220"/>
     </wire>
     <wire>
@@ -12176,6 +12261,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-2300" y="180"/>
     </wire>
     <wire>
+      <p1 x="-2080" y="-1720"/>
+      <p2 x="-2000" y="-1720"/>
+    </wire>
+    <wire>
       <p1 x="2700" y="-1720"/>
       <p2 x="2920" y="-1720"/>
     </wire>
@@ -12185,15 +12274,15 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     </wire>
     <wire>
       <p1 x="-2220" y="-1720"/>
-      <p2 x="-2100" y="-1720"/>
+      <p2 x="-2120" y="-1720"/>
     </wire>
     <wire>
       <p1 x="-2640" y="-1720"/>
       <p2 x="-2620" y="-1720"/>
     </wire>
     <wire>
-      <p1 x="-2060" y="-1720"/>
-      <p2 x="-2000" y="-1720"/>
+      <p1 x="-1940" y="-1720"/>
+      <p2 x="-1860" y="-1720"/>
     </wire>
     <wire>
       <p1 x="-1680" y="-440"/>
@@ -12232,16 +12321,16 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1180" y="440"/>
     </wire>
     <wire>
+      <p1 x="-1920" y="-1980"/>
+      <p2 x="-1860" y="-1980"/>
+    </wire>
+    <wire>
       <p1 x="2700" y="-1980"/>
       <p2 x="2920" y="-1980"/>
     </wire>
     <wire>
       <p1 x="2020" y="-1980"/>
       <p2 x="2220" y="-1980"/>
-    </wire>
-    <wire>
-      <p1 x="-1980" y="-1980"/>
-      <p2 x="-1840" y="-1980"/>
     </wire>
     <wire>
       <p1 x="-1240" y="-1980"/>
@@ -12284,14 +12373,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-880" y="-2240"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-2240"/>
-      <p2 x="-2280" y="-2240"/>
-    </wire>
-    <wire>
-      <p1 x="-1240" y="-2240"/>
-      <p2 x="-1200" y="-2240"/>
-    </wire>
-    <wire>
       <p1 x="-780" y="-2240"/>
       <p2 x="-760" y="-2240"/>
     </wire>
@@ -12306,6 +12387,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="720" y="-2240"/>
       <p2 x="740" y="-2240"/>
+    </wire>
+    <wire>
+      <p1 x="-1220" y="-2240"/>
+      <p2 x="-1200" y="-2240"/>
     </wire>
     <wire>
       <p1 x="740" y="-2240"/>
@@ -12342,6 +12427,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-840" y="-1480"/>
       <p2 x="-820" y="-1480"/>
+    </wire>
+    <wire>
+      <p1 x="-2420" y="-1480"/>
+      <p2 x="-2340" y="-1480"/>
     </wire>
     <wire>
       <p1 x="-1860" y="-200"/>
@@ -12432,18 +12521,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2600" y="-2000"/>
     </wire>
     <wire>
-      <p1 x="-2300" y="-2000"/>
-      <p2 x="-2280" y="-2000"/>
-    </wire>
-    <wire>
-      <p1 x="-2400" y="-2000"/>
-      <p2 x="-2360" y="-2000"/>
-    </wire>
-    <wire>
-      <p1 x="-2780" y="-2000"/>
-      <p2 x="-2500" y="-2000"/>
-    </wire>
-    <wire>
       <p1 x="900" y="-2000"/>
       <p2 x="920" y="-2000"/>
     </wire>
@@ -12488,6 +12565,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-1800" y="720"/>
     </wire>
     <wire>
+      <p1 x="-2780" y="-2260"/>
+      <p2 x="-2700" y="-2260"/>
+    </wire>
+    <wire>
       <p1 x="60" y="-2260"/>
       <p2 x="80" y="-2260"/>
     </wire>
@@ -12496,20 +12577,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="480" y="-2260"/>
     </wire>
     <wire>
-      <p1 x="-2780" y="-2260"/>
-      <p2 x="-2700" y="-2260"/>
-    </wire>
-    <wire>
       <p1 x="-680" y="-2260"/>
       <p2 x="-660" y="-2260"/>
     </wire>
     <wire>
       <p1 x="480" y="-2260"/>
       <p2 x="520" y="-2260"/>
-    </wire>
-    <wire>
-      <p1 x="-2700" y="-2260"/>
-      <p2 x="-2680" y="-2260"/>
     </wire>
     <wire>
       <p1 x="-2360" y="-980"/>
@@ -12540,16 +12613,24 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-540" y="-1240"/>
     </wire>
     <wire>
-      <p1 x="-2540" y="-1500"/>
-      <p2 x="-2460" y="-1500"/>
-    </wire>
-    <wire>
-      <p1 x="-2780" y="-1500"/>
-      <p2 x="-2760" y="-1500"/>
+      <p1 x="-2860" y="-1500"/>
+      <p2 x="-2840" y="-1500"/>
     </wire>
     <wire>
       <p1 x="2700" y="-1500"/>
       <p2 x="2920" y="-1500"/>
+    </wire>
+    <wire>
+      <p1 x="-2360" y="-1500"/>
+      <p2 x="-2340" y="-1500"/>
+    </wire>
+    <wire>
+      <p1 x="-2440" y="-1500"/>
+      <p2 x="-2420" y="-1500"/>
+    </wire>
+    <wire>
+      <p1 x="-2420" y="-1500"/>
+      <p2 x="-2400" y="-1500"/>
     </wire>
     <wire>
       <p1 x="-1680" y="-220"/>
@@ -12596,6 +12677,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="740" y="-1760"/>
     </wire>
     <wire>
+      <p1 x="-1540" y="-1760"/>
+      <p2 x="-1520" y="-1760"/>
+    </wire>
+    <wire>
       <p1 x="460" y="-1760"/>
       <p2 x="500" y="-1760"/>
     </wire>
@@ -12624,6 +12709,14 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1140" y="480"/>
     </wire>
     <wire>
+      <p1 x="-2000" y="-2020"/>
+      <p2 x="-1900" y="-2020"/>
+    </wire>
+    <wire>
+      <p1 x="3020" y="-2020"/>
+      <p2 x="3060" y="-2020"/>
+    </wire>
+    <wire>
       <p1 x="2700" y="-740"/>
       <p2 x="2920" y="-740"/>
     </wire>
@@ -12632,32 +12725,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2600" y="-740"/>
     </wire>
     <wire>
-      <p1 x="-2440" y="-2020"/>
-      <p2 x="-2400" y="-2020"/>
-    </wire>
-    <wire>
-      <p1 x="-2220" y="-2020"/>
-      <p2 x="-2100" y="-2020"/>
-    </wire>
-    <wire>
-      <p1 x="3020" y="-2020"/>
-      <p2 x="3060" y="-2020"/>
-    </wire>
-    <wire>
       <p1 x="-1940" y="740"/>
       <p2 x="-1860" y="740"/>
     </wire>
     <wire>
       <p1 x="-1860" y="740"/>
       <p2 x="-1800" y="740"/>
-    </wire>
-    <wire>
-      <p1 x="-2120" y="-2280"/>
-      <p2 x="-2080" y="-2280"/>
-    </wire>
-    <wire>
-      <p1 x="-2180" y="-2280"/>
-      <p2 x="-2160" y="-2280"/>
     </wire>
     <wire>
       <p1 x="-900" y="-2280"/>
@@ -12670,6 +12743,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-840" y="-2280"/>
       <p2 x="-820" y="-2280"/>
+    </wire>
+    <wire>
+      <p1 x="-1380" y="-2280"/>
+      <p2 x="-1340" y="-2280"/>
     </wire>
     <wire>
       <p1 x="-1480" y="-1000"/>
@@ -12720,24 +12797,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2920" y="-1260"/>
     </wire>
     <wire>
-      <p1 x="-2480" y="-1520"/>
-      <p2 x="-2460" y="-1520"/>
-    </wire>
-    <wire>
-      <p1 x="-2560" y="-1520"/>
-      <p2 x="-2540" y="-1520"/>
-    </wire>
-    <wire>
       <p1 x="2700" y="-1520"/>
       <p2 x="2920" y="-1520"/>
     </wire>
     <wire>
       <p1 x="2500" y="-1520"/>
       <p2 x="2600" y="-1520"/>
-    </wire>
-    <wire>
-      <p1 x="-2540" y="-1520"/>
-      <p2 x="-2520" y="-1520"/>
     </wire>
     <wire>
       <p1 x="1780" y="-240"/>
@@ -12792,10 +12857,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-1420" y="-1780"/>
     </wire>
     <wire>
-      <p1 x="-1520" y="-1780"/>
-      <p2 x="-1480" y="-1780"/>
-    </wire>
-    <wire>
       <p1 x="3120" y="-1780"/>
       <p2 x="3260" y="-1780"/>
     </wire>
@@ -12848,22 +12909,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-120" y="500"/>
     </wire>
     <wire>
-      <p1 x="2020" y="-760"/>
-      <p2 x="2580" y="-760"/>
-    </wire>
-    <wire>
-      <p1 x="2700" y="-760"/>
-      <p2 x="2920" y="-760"/>
-    </wire>
-    <wire>
-      <p1 x="60" y="-760"/>
-      <p2 x="80" y="-760"/>
-    </wire>
-    <wire>
-      <p1 x="2580" y="-760"/>
-      <p2 x="2600" y="-760"/>
-    </wire>
-    <wire>
       <p1 x="900" y="-2040"/>
       <p2 x="920" y="-2040"/>
     </wire>
@@ -12874,10 +12919,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="540" y="-2040"/>
       <p2 x="560" y="-2040"/>
-    </wire>
-    <wire>
-      <p1 x="-2400" y="-2040"/>
-      <p2 x="-2280" y="-2040"/>
     </wire>
     <wire>
       <p1 x="3020" y="-2040"/>
@@ -12904,6 +12945,22 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="860" y="-2040"/>
     </wire>
     <wire>
+      <p1 x="2020" y="-760"/>
+      <p2 x="2580" y="-760"/>
+    </wire>
+    <wire>
+      <p1 x="2700" y="-760"/>
+      <p2 x="2920" y="-760"/>
+    </wire>
+    <wire>
+      <p1 x="60" y="-760"/>
+      <p2 x="80" y="-760"/>
+    </wire>
+    <wire>
+      <p1 x="2580" y="-760"/>
+      <p2 x="2600" y="-760"/>
+    </wire>
+    <wire>
       <p1 x="940" y="760"/>
       <p2 x="960" y="760"/>
     </wire>
@@ -12916,16 +12973,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1000" y="760"/>
     </wire>
     <wire>
-      <p1 x="-2500" y="-2300"/>
-      <p2 x="-2480" y="-2300"/>
+      <p1 x="-2700" y="-2300"/>
+      <p2 x="-2680" y="-2300"/>
     </wire>
     <wire>
-      <p1 x="-2560" y="-2300"/>
-      <p2 x="-2540" y="-2300"/>
-    </wire>
-    <wire>
-      <p1 x="-2480" y="-2300"/>
-      <p2 x="-2460" y="-2300"/>
+      <p1 x="-1260" y="-2300"/>
+      <p2 x="-1220" y="-2300"/>
     </wire>
     <wire>
       <p1 x="380" y="-1020"/>
@@ -13148,10 +13201,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-560" y="260"/>
     </wire>
     <wire>
-      <p1 x="-1840" y="-1980"/>
-      <p2 x="-1840" y="-1920"/>
-    </wire>
-    <wire>
       <p1 x="560" y="-140"/>
       <p2 x="560" y="-120"/>
     </wire>
@@ -13166,10 +13215,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-820" y="300"/>
       <p2 x="-820" y="340"/>
-    </wire>
-    <wire>
-      <p1 x="-2100" y="-2020"/>
-      <p2 x="-2100" y="-1920"/>
     </wire>
     <wire>
       <p1 x="2100" y="200"/>
@@ -13216,6 +13261,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-1600" y="-420"/>
     </wire>
     <wire>
+      <p1 x="-1600" y="-2340"/>
+      <p2 x="-1600" y="-2220"/>
+    </wire>
+    <wire>
       <p1 x="-320" y="-2100"/>
       <p2 x="-320" y="-2060"/>
     </wire>
@@ -13224,12 +13273,20 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-320" y="-140"/>
     </wire>
     <wire>
+      <p1 x="-1860" y="-1980"/>
+      <p2 x="-1860" y="-1840"/>
+    </wire>
+    <wire>
       <p1 x="-1860" y="-420"/>
       <p2 x="-1860" y="-200"/>
     </wire>
     <wire>
       <p1 x="-1860" y="300"/>
       <p2 x="-1860" y="520"/>
+    </wire>
+    <wire>
+      <p1 x="-1860" y="-1800"/>
+      <p2 x="-1860" y="-1720"/>
     </wire>
     <wire>
       <p1 x="-1860" y="-200"/>
@@ -13352,7 +13409,7 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-2640" y="-1600"/>
     </wire>
     <wire>
-      <p1 x="-2640" y="-1860"/>
+      <p1 x="-2640" y="-1900"/>
       <p2 x="-2640" y="-1720"/>
     </wire>
     <wire>
@@ -13404,20 +13461,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-1880" y="500"/>
     </wire>
     <wire>
-      <p1 x="-1880" y="-1800"/>
-      <p2 x="-1880" y="-1680"/>
-    </wire>
-    <wire>
-      <p1 x="-1880" y="-1940"/>
-      <p2 x="-1880" y="-1880"/>
-    </wire>
-    <wire>
       <p1 x="-1880" y="500"/>
       <p2 x="-1880" y="720"/>
-    </wire>
-    <wire>
-      <p1 x="-1880" y="-1880"/>
-      <p2 x="-1880" y="-1840"/>
     </wire>
     <wire>
       <p1 x="-1880" y="-220"/>
@@ -13464,16 +13509,16 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-2400" y="-380"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-2240"/>
-      <p2 x="-2400" y="-2220"/>
+      <p1 x="-2400" y="-2360"/>
+      <p2 x="-2400" y="-2340"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-2040"/>
-      <p2 x="-2400" y="-2020"/>
+      <p1 x="-2400" y="-2120"/>
+      <p2 x="-2400" y="-2100"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-1900"/>
-      <p2 x="-2400" y="-1880"/>
+      <p1 x="-2400" y="-1940"/>
+      <p2 x="-2400" y="-1920"/>
     </wire>
     <wire>
       <p1 x="-2400" y="-1740"/>
@@ -13484,16 +13529,16 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-2400" y="-1700"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-1880"/>
-      <p2 x="-2400" y="-1860"/>
+      <p1 x="-2400" y="-1920"/>
+      <p2 x="-2400" y="-1900"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-2020"/>
-      <p2 x="-2400" y="-2000"/>
+      <p1 x="-2400" y="-2100"/>
+      <p2 x="-2400" y="-2080"/>
     </wire>
     <wire>
-      <p1 x="-2400" y="-2220"/>
-      <p2 x="-2400" y="-2200"/>
+      <p1 x="-2400" y="-2340"/>
+      <p2 x="-2400" y="-2320"/>
     </wire>
     <wire>
       <p1 x="-2400" y="-380"/>
@@ -13502,6 +13547,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="1120" y="420"/>
       <p2 x="1120" y="480"/>
+    </wire>
+    <wire>
+      <p1 x="-1380" y="-2460"/>
+      <p2 x="-1380" y="-2320"/>
     </wire>
     <wire>
       <p1 x="-1380" y="-500"/>
@@ -13528,6 +13577,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-360" y="500"/>
     </wire>
     <wire>
+      <p1 x="-1900" y="-2020"/>
+      <p2 x="-1900" y="-1960"/>
+    </wire>
+    <wire>
       <p1 x="-1900" y="-400"/>
       <p2 x="-1900" y="320"/>
     </wire>
@@ -13540,6 +13593,14 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="620" y="400"/>
     </wire>
     <wire>
+      <p1 x="-2160" y="-2100"/>
+      <p2 x="-2160" y="-1960"/>
+    </wire>
+    <wire>
+      <p1 x="-2160" y="-1000"/>
+      <p2 x="-2160" y="-940"/>
+    </wire>
+    <wire>
       <p1 x="-880" y="300"/>
       <p2 x="-880" y="340"/>
     </wire>
@@ -13548,12 +13609,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-880" y="520"/>
     </wire>
     <wire>
-      <p1 x="-2160" y="-1000"/>
-      <p2 x="-2160" y="-940"/>
-    </wire>
-    <wire>
       <p1 x="-2420" y="-580"/>
       <p2 x="-2420" y="-360"/>
+    </wire>
+    <wire>
+      <p1 x="-2420" y="-1500"/>
+      <p2 x="-2420" y="-1480"/>
     </wire>
     <wire>
       <p1 x="-2420" y="-360"/>
@@ -13600,8 +13661,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-380" y="-2060"/>
     </wire>
     <wire>
-      <p1 x="-2180" y="-2280"/>
-      <p2 x="-2180" y="-2220"/>
+      <p1 x="-2180" y="-2420"/>
+      <p2 x="-2180" y="-2340"/>
     </wire>
     <wire>
       <p1 x="-900" y="300"/>
@@ -13644,12 +13705,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="-1420" y="-1780"/>
     </wire>
     <wire>
-      <p1 x="-2700" y="-2260"/>
-      <p2 x="-2700" y="-2220"/>
+      <p1 x="-2700" y="-2380"/>
+      <p2 x="-2700" y="-2340"/>
     </wire>
     <wire>
-      <p1 x="-2700" y="-2180"/>
-      <p2 x="-2700" y="-2140"/>
+      <p1 x="-2700" y="-2300"/>
+      <p2 x="-2700" y="-2260"/>
     </wire>
     <wire>
       <p1 x="2700" y="60"/>
@@ -13760,10 +13821,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2220" y="-1980"/>
     </wire>
     <wire>
-      <p1 x="-2480" y="-2320"/>
-      <p2 x="-2480" y="-2300"/>
-    </wire>
-    <wire>
       <p1 x="2480" y="260"/>
       <p2 x="2480" y="360"/>
     </wire>
@@ -13798,10 +13855,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-700" y="-320"/>
       <p2 x="-700" y="-220"/>
-    </wire>
-    <wire>
-      <p1 x="-1980" y="-1980"/>
-      <p2 x="-1980" y="-1920"/>
     </wire>
     <wire>
       <p1 x="3260" y="-1780"/>
@@ -13864,6 +13917,10 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2240" y="660"/>
     </wire>
     <wire>
+      <p1 x="-1220" y="-2300"/>
+      <p2 x="-1220" y="-2240"/>
+    </wire>
+    <wire>
       <p1 x="2500" y="-2000"/>
       <p2 x="2500" y="-1980"/>
     </wire>
@@ -13924,8 +13981,8 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="1740" y="1040"/>
     </wire>
     <wire>
-      <p1 x="-2000" y="-1720"/>
-      <p2 x="-2000" y="-1680"/>
+      <p1 x="-2000" y="-2020"/>
+      <p2 x="-2000" y="-1960"/>
     </wire>
     <wire>
       <p1 x="-720" y="300"/>
@@ -13974,10 +14031,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
     <wire>
       <p1 x="-1240" y="-2200"/>
       <p2 x="-1240" y="-2000"/>
-    </wire>
-    <wire>
-      <p1 x="-1240" y="-2320"/>
-      <p2 x="-1240" y="-2240"/>
     </wire>
     <wire>
       <p1 x="-1240" y="-2000"/>
@@ -14164,14 +14217,6 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2280" y="-80"/>
     </wire>
     <wire>
-      <p1 x="-2540" y="-1520"/>
-      <p2 x="-2540" y="-1500"/>
-    </wire>
-    <wire>
-      <p1 x="-1520" y="-2200"/>
-      <p2 x="-1520" y="-2100"/>
-    </wire>
-    <wire>
       <p1 x="2800" y="-2060"/>
       <p2 x="2800" y="-1820"/>
     </wire>
@@ -14268,8 +14313,12 @@ stty -icanon -echo &amp;&amp; nc localhost 23</string>
       <p2 x="2300" y="240"/>
     </wire>
     <wire>
-      <p1 x="-2560" y="-2300"/>
-      <p2 x="-2560" y="-2200"/>
+      <p1 x="-2560" y="-2460"/>
+      <p2 x="-2560" y="-2420"/>
+    </wire>
+    <wire>
+      <p1 x="-2560" y="-2420"/>
+      <p2 x="-2560" y="-2320"/>
     </wire>
   </wires>
   <measurementOrdering/>
