@@ -1,0 +1,10 @@
+int printf(int a);
+
+int main()
+{
+  int a;
+  a=32766;
+  a=a + 15;
+  printf( "%d\r\n", a );
+}
+

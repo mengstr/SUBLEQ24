@@ -53,12 +53,12 @@ puts_loop:
 #31c:0 0 32b 
         Z puts_arg_s_:0 puts_return # return if *s <= 0
 
-wfUARTdone:
-        c;       # clear c
-        (-8) c   # input to c
-        inc c
-        Z c wfUARTdone # loop if c <= 0  
-
+wfUARTdone1:
+        c c
+        Z Z
+        (-3) c                  # input to c
+        Z c wfUARTdone1         # loop if c <= 0  
+        Z Z
 
 #31f:0 ffffffff 322 
         puts_arg_s:0 (-1) # output *s

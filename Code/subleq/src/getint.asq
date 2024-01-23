@@ -44,8 +44,10 @@
 getint:
     r # r = 0
     getint_loop:
+        c;(-2) c                # input to c
+        Z c getint_loop           # loop if c <= 0  
         c; (-1) c # input to c
-        Z c getint_loop # goto loop if c <= 0
+#        Z c getint_loop # goto loop if c <= 0
         char_slash c getint_return; dec c # return if c < '0', c -= '0'
         tmp; add_10 tmp; c tmp getint_return # return if c >= 10
         a; b; r a; add_10 b # a = -r, b = 10

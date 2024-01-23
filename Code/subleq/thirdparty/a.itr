@@ -1,0 +1,726 @@
+Root (a.hsq:14)
+   Function:0 [printf] (a.hsq:1)
+      Keyword [int] (a.hsq:1)
+      Param-type-list (a.hsq:1)
+         Stackvar:-2 [a] (a.hsq:1)
+   Function:0 [fact] (a.hsq:3)
+      Keyword [int] (a.hsq:3)
+      Param-type-list (a.hsq:3)
+         Stackvar:-2 [a] (a.hsq:3)
+      Block (a.hsq:4)
+         Keyword-statement [if] (a.hsq:5)
+            Relational [<] (a.hsq:5)
+               Unary [*] (a.hsq:5) a:3
+                  Additive [+] (a.hsq:5) a:3
+                     Variable [@bp] (a.hsq:5) a:3
+                     Const [-2] (a.hsq:5) a:3
+               Const [2] (a.hsq:5)
+            Keyword-statement [return] (a.hsq:5)
+               Const [1] (a.hsq:5)
+         Keyword-statement [return] (a.hsq:6)
+            Postfix [(] (a.hsq:6)
+               Label [_mul] (a.hsq:6)
+               Expression-list (a.hsq:6)
+                  Unary [*] (a.hsq:6) a:3
+                     Additive [+] (a.hsq:6) a:3
+                        Variable [@bp] (a.hsq:6) a:3
+                        Const [-2] (a.hsq:6) a:3
+                  Postfix [(] (a.hsq:6)
+                     Label [fact] (a.hsq:6) fact:3
+                     Expression-list (a.hsq:6)
+                        Additive [-] (a.hsq:6)
+                           Unary [*] (a.hsq:6) a:3
+                              Additive [+] (a.hsq:6) a:3
+                                 Variable [@bp] (a.hsq:6) a:3
+                                 Const [-2] (a.hsq:6) a:3
+                           Const [1] (a.hsq:6)
+   Function:0 [main] (a.hsq:9)
+      Keyword [int] (a.hsq:9)
+      Param-type-list (a.hsq:9)
+      Block (a.hsq:10)
+         Postfix [(] (a.hsq:11)
+            Label [printf] (a.hsq:11)
+            Expression-list (a.hsq:11)
+               String [12!=%d] (a.hsq:11)
+               Postfix [(] (a.hsq:11)
+                  Label [fact] (a.hsq:11) fact:3
+                  Expression-list (a.hsq:11)
+                     Const [12] (a.hsq:11)
+   Function:0 [_multr] (::_mul:1)
+      Keyword [int] (::_mul:1)
+      Param-type-list (::_mul:1)
+         Stackvar:-2 [a] (::_mul:1)
+         Stackvar:-3 [b] (::_mul:1)
+   Function:3 [_mul] (::_mul:2)
+      Keyword [int] (::_mul:2)
+      Param-type-list (::_mul:2)
+         Stackvar:-2 [a] (::_mul:2)
+         Stackvar:-3 [b] (::_mul:2)
+      Block (::_mul:3)
+         Declaration (::_mul:4)
+            Keyword [int] (::_mul:4)
+            Declarator [=] (::_mul:4)
+               Stackvar:1 [s] (::_mul:4)
+               Const [1] (::_mul:4)
+         Keyword-statement [if] (::_mul:5)
+            Relational [<] (::_mul:5)
+               Unary [*] (::_mul:5) a:2
+                  Additive [+] (::_mul:5) a:2
+                     Variable [@bp] (::_mul:5) a:2
+                     Const [-2] (::_mul:5) a:2
+               Const [0] (::_mul:5)
+            Block (::_mul:5)
+               Assignment [=] (::_mul:5)
+                  Unary [*] (::_mul:5) a:2
+                     Additive [+] (::_mul:5) a:2
+                        Variable [@bp] (::_mul:5) a:2
+                        Const [-2] (::_mul:5) a:2
+                  Unary [-] (::_mul:5)
+                     Unary [*] (::_mul:5) a:2
+                        Additive [+] (::_mul:5) a:2
+                           Variable [@bp] (::_mul:5) a:2
+                           Const [-2] (::_mul:5) a:2
+               Assignment [=] (::_mul:5)
+                  Unary [*] (::_mul:5) s:4
+                     Additive [+] (::_mul:5) s:4
+                        Variable [@bp] (::_mul:5) s:4
+                        Const [1] (::_mul:5) s:4
+                  Unary [-] (::_mul:5)
+                     Unary [*] (::_mul:5) s:4
+                        Additive [+] (::_mul:5) s:4
+                           Variable [@bp] (::_mul:5) s:4
+                           Const [1] (::_mul:5) s:4
+         Keyword-statement [if] (::_mul:6)
+            Relational [<] (::_mul:6)
+               Unary [*] (::_mul:6) b:2
+                  Additive [+] (::_mul:6) b:2
+                     Variable [@bp] (::_mul:6) b:2
+                     Const [-3] (::_mul:6) b:2
+               Const [0] (::_mul:6)
+            Block (::_mul:6)
+               Assignment [=] (::_mul:6)
+                  Unary [*] (::_mul:6) b:2
+                     Additive [+] (::_mul:6) b:2
+                        Variable [@bp] (::_mul:6) b:2
+                        Const [-3] (::_mul:6) b:2
+                  Unary [-] (::_mul:6)
+                     Unary [*] (::_mul:6) b:2
+                        Additive [+] (::_mul:6) b:2
+                           Variable [@bp] (::_mul:6) b:2
+                           Const [-3] (::_mul:6) b:2
+               Assignment [=] (::_mul:6)
+                  Unary [*] (::_mul:6) s:4
+                     Additive [+] (::_mul:6) s:4
+                        Variable [@bp] (::_mul:6) s:4
+                        Const [1] (::_mul:6) s:4
+                  Unary [-] (::_mul:6)
+                     Unary [*] (::_mul:6) s:4
+                        Additive [+] (::_mul:6) s:4
+                           Variable [@bp] (::_mul:6) s:4
+                           Const [1] (::_mul:6) s:4
+         Keyword-statement [if] (::_mul:7)
+            Relational [<] (::_mul:7)
+               Unary [*] (::_mul:7) a:2
+                  Additive [+] (::_mul:7) a:2
+                     Variable [@bp] (::_mul:7) a:2
+                     Const [-2] (::_mul:7) a:2
+               Unary [*] (::_mul:7) b:2
+                  Additive [+] (::_mul:7) b:2
+                     Variable [@bp] (::_mul:7) b:2
+                     Const [-3] (::_mul:7) b:2
+            Block (::_mul:7)
+               Declaration (::_mul:7)
+                  Keyword [int] (::_mul:7)
+                  Declarator [=] (::_mul:7)
+                     Stackvar:2 [t] (::_mul:7)
+                     Unary [*] (::_mul:7) a:2
+                        Additive [+] (::_mul:7) a:2
+                           Variable [@bp] (::_mul:7) a:2
+                           Const [-2] (::_mul:7) a:2
+               Assignment [=] (::_mul:7)
+                  Unary [*] (::_mul:7) a:2
+                     Additive [+] (::_mul:7) a:2
+                        Variable [@bp] (::_mul:7) a:2
+                        Const [-2] (::_mul:7) a:2
+                  Unary [*] (::_mul:7) b:2
+                     Additive [+] (::_mul:7) b:2
+                        Variable [@bp] (::_mul:7) b:2
+                        Const [-3] (::_mul:7) b:2
+               Assignment [=] (::_mul:7)
+                  Unary [*] (::_mul:7) b:2
+                     Additive [+] (::_mul:7) b:2
+                        Variable [@bp] (::_mul:7) b:2
+                        Const [-3] (::_mul:7) b:2
+                  Unary [*] (::_mul:7) t:7
+                     Additive [+] (::_mul:7) t:7
+                        Variable [@bp] (::_mul:7) t:7
+                        Const [2] (::_mul:7) t:7
+         Declaration (::_mul:8)
+            Keyword [int] (::_mul:8)
+            Declarator [=] (::_mul:8)
+               Stackvar:3 [k] (::_mul:8)
+               Postfix [(] (::_mul:8)
+                  Label [_multr] (::_mul:8)
+                  Expression-list (::_mul:8)
+                     Unary [*] (::_mul:8) a:2
+                        Additive [+] (::_mul:8) a:2
+                           Variable [@bp] (::_mul:8) a:2
+                           Const [-2] (::_mul:8) a:2
+                     Unary [*] (::_mul:8) b:2
+                        Additive [+] (::_mul:8) b:2
+                           Variable [@bp] (::_mul:8) b:2
+                           Const [-3] (::_mul:8) b:2
+         Keyword-statement [if] (::_mul:9)
+            Relational [>] (::_mul:9)
+               Unary [*] (::_mul:9) s:4
+                  Additive [+] (::_mul:9) s:4
+                     Variable [@bp] (::_mul:9) s:4
+                     Const [1] (::_mul:9) s:4
+               Const [0] (::_mul:9)
+            Keyword-statement [return] (::_mul:9)
+               Unary [*] (::_mul:9) k:8
+                  Additive [+] (::_mul:9) k:8
+                     Variable [@bp] (::_mul:9) k:8
+                     Const [3] (::_mul:9) k:8
+         Keyword-statement [return] (::_mul:10)
+            Unary [-] (::_mul:10)
+               Unary [*] (::_mul:10) k:8
+                  Additive [+] (::_mul:10) k:8
+                     Variable [@bp] (::_mul:10) k:8
+                     Const [3] (::_mul:10) k:8
+   Function:0 [puts] (::printf:1)
+      Keyword [int] (::printf:1)
+      Param-type-list (::printf:1)
+         Stackvar:-2 [s] (::printf:1)
+   Function:0 [_putint] (::printf:2)
+      Keyword [int] (::printf:2)
+      Param-type-list (::printf:2)
+         Stackvar:-2 [i] (::printf:2)
+   Function:2 [printf] (::printf:3)
+      Keyword [int] (::printf:3)
+      Param-type-list (::printf:3)
+         Stackvar:-2 [s] (::printf:3)
+      Block (::printf:4)
+         Declaration (::printf:5)
+            Keyword [int] (::printf:5)
+            Declarator [=] (::printf:5)
+               Stackvar:1 [k] (::printf:5)
+               Const [0] (::printf:5)
+         Keyword-statement [for] (::printf:6)
+            Declaration (::printf:6)
+               Keyword [int] (::printf:6)
+               Declarator [=] (::printf:6)
+                  Stackvar:2 [i] (::printf:6)
+                  Const [0] (::printf:6)
+            Equality [!=] (::printf:6)
+               Expression [,] (::printf:6)
+                  Unary [++] (::printf:6)
+                     Unary [*] (::printf:6) k:5
+                        Additive [+] (::printf:6) k:5
+                           Variable [@bp] (::printf:6) k:5
+                           Const [1] (::printf:6) k:5
+                  Unary [*] (::printf:6)
+                     Unary [*] (::printf:6) s:3
+                        Additive [+] (::printf:6) s:3
+                           Variable [@bp] (::printf:6) s:3
+                           Const [-2] (::printf:6) s:3
+               Const [0] (::printf:6)
+            Postfix [++] (::printf:6)
+               Unary [*] (::printf:6) s:3
+                  Additive [+] (::printf:6) s:3
+                     Variable [@bp] (::printf:6) s:3
+                     Const [-2] (::printf:6) s:3
+            Block (::printf:7)
+               Keyword-statement [if] (::printf:8)
+                  Equality [!=] (::printf:8)
+                     Unary [*] (::printf:8)
+                        Unary [*] (::printf:8) s:3
+                           Additive [+] (::printf:8) s:3
+                              Variable [@bp] (::printf:8) s:3
+                              Const [-2] (::printf:8) s:3
+                     Const ['%'] (::printf:8)
+                  Block (::printf:8)
+                     OperatorIO [__out] (::printf:8)
+                        Unary [*] (::printf:8)
+                           Unary [*] (::printf:8) s:3
+                              Additive [+] (::printf:8) s:3
+                                 Variable [@bp] (::printf:8) s:3
+                                 Const [-2] (::printf:8) s:3
+                     Keyword-statement [continue] (::printf:8)
+               Unary [++] (::printf:9)
+                  Unary [*] (::printf:9) s:3
+                     Additive [+] (::printf:9) s:3
+                        Variable [@bp] (::printf:9) s:3
+                        Const [-2] (::printf:9) s:3
+               Keyword-statement [if] (::printf:10)
+                  Equality [==] (::printf:10)
+                     Unary [*] (::printf:10)
+                        Unary [*] (::printf:10) s:3
+                           Additive [+] (::printf:10) s:3
+                              Variable [@bp] (::printf:10) s:3
+                              Const [-2] (::printf:10) s:3
+                     Const ['%'] (::printf:10)
+                  OperatorIO [__out] (::printf:10)
+                     Const ['%'] (::printf:10)
+                  Keyword-statement [if] (::printf:11)
+                     Equality [==] (::printf:11)
+                        Unary [*] (::printf:11)
+                           Unary [*] (::printf:11) s:3
+                              Additive [+] (::printf:11) s:3
+                                 Variable [@bp] (::printf:11) s:3
+                                 Const [-2] (::printf:11) s:3
+                        Const ['c'] (::printf:11)
+                     OperatorIO [__out] (::printf:11)
+                        Unary [*] (::printf:11)
+                           Additive [-] (::printf:11)
+                              Additive [+] (::printf:11) s:3
+                                 Variable [@bp] (::printf:11) s:3
+                                 Const [-2] (::printf:11) s:3
+                              Unary [++] (::printf:11)
+                                 Unary [*] (::printf:11) i:6
+                                    Additive [+] (::printf:11) i:6
+                                       Variable [@bp] (::printf:11) i:6
+                                       Const [2] (::printf:11) i:6
+                     Keyword-statement [if] (::printf:12)
+                        Equality [==] (::printf:12)
+                           Unary [*] (::printf:12)
+                              Unary [*] (::printf:12) s:3
+                                 Additive [+] (::printf:12) s:3
+                                    Variable [@bp] (::printf:12) s:3
+                                    Const [-2] (::printf:12) s:3
+                           Const ['s'] (::printf:12)
+                        Assignment [+=] (::printf:12)
+                           Unary [--] (::printf:12)
+                              Unary [*] (::printf:12) k:5
+                                 Additive [+] (::printf:12) k:5
+                                    Variable [@bp] (::printf:12) k:5
+                                    Const [1] (::printf:12) k:5
+                           Postfix [(] (::printf:12)
+                              Label [puts] (::printf:12)
+                              Expression-list (::printf:12)
+                                 Unary [*] (::printf:12)
+                                    Additive [-] (::printf:12)
+                                       Additive [+] (::printf:12) s:3
+                                          Variable [@bp] (::printf:12) s:3
+                                          Const [-2] (::printf:12) s:3
+                                       Unary [++] (::printf:12)
+                                          Unary [*] (::printf:12) i:6
+                                             Additive [+] (::printf:12) i:6
+                                                Variable [@bp] (::printf:12) i:6
+                                                Const [2] (::printf:12) i:6
+                        Keyword-statement [if] (::printf:13)
+                           Equality [==] (::printf:13)
+                              Unary [*] (::printf:13)
+                                 Unary [*] (::printf:13) s:3
+                                    Additive [+] (::printf:13) s:3
+                                       Variable [@bp] (::printf:13) s:3
+                                       Const [-2] (::printf:13) s:3
+                              Const ['d'] (::printf:13)
+                           Assignment [+=] (::printf:13)
+                              Unary [--] (::printf:13)
+                                 Unary [*] (::printf:13) k:5
+                                    Additive [+] (::printf:13) k:5
+                                       Variable [@bp] (::printf:13) k:5
+                                       Const [1] (::printf:13) k:5
+                              Postfix [(] (::printf:13)
+                                 Label [_putint] (::printf:13)
+                                 Expression-list (::printf:13)
+                                    Unary [*] (::printf:13)
+                                       Additive [-] (::printf:13)
+                                          Additive [+] (::printf:13) s:3
+                                             Variable [@bp] (::printf:13) s:3
+                                             Const [-2] (::printf:13) s:3
+                                          Unary [++] (::printf:13)
+                                             Unary [*] (::printf:13) i:6
+                                                Additive [+] (::printf:13) i:6
+                                                   Variable [@bp] (::printf:13) i:6
+                                                   Const [2] (::printf:13) i:6
+         Keyword-statement [return] (::printf:15)
+            Unary [--] (::printf:15)
+               Unary [*] (::printf:15) k:5
+                  Additive [+] (::printf:15) k:5
+                     Variable [@bp] (::printf:15) k:5
+                     Const [1] (::printf:15) k:5
+   Function:0 [_divMod] (::_multr:1)
+      Keyword [int] (::_multr:1)
+      Param-type-list (::_multr:1)
+         Stackvar:-2 [a] (::_multr:1)
+         Stackvar:-3 [b] (::_multr:1)
+         Stackvar:-4 [m] (::_multr:1)
+   Function:3 [_multr] (::_multr:2)
+      Keyword [int] (::_multr:2)
+      Param-type-list (::_multr:2)
+         Stackvar:-2 [a] (::_multr:2)
+         Stackvar:-3 [b] (::_multr:2)
+      Block (::_multr:3)
+         Keyword-statement [if] (::_multr:4)
+            Relational [<] (::_multr:4)
+               Unary [*] (::_multr:4) b:2
+                  Additive [+] (::_multr:4) b:2
+                     Variable [@bp] (::_multr:4) b:2
+                     Const [-3] (::_multr:4) b:2
+               Const [1] (::_multr:4)
+            Keyword-statement [return] (::_multr:4)
+               Const [0] (::_multr:4)
+         Keyword-statement [if] (::_multr:5)
+            Relational [<] (::_multr:5)
+               Unary [*] (::_multr:5) b:2
+                  Additive [+] (::_multr:5) b:2
+                     Variable [@bp] (::_multr:5) b:2
+                     Const [-3] (::_multr:5) b:2
+               Const [2] (::_multr:5)
+            Keyword-statement [return] (::_multr:5)
+               Unary [*] (::_multr:5) a:2
+                  Additive [+] (::_multr:5) a:2
+                     Variable [@bp] (::_multr:5) a:2
+                     Const [-2] (::_multr:5) a:2
+         Declaration (::_multr:6)
+            Keyword [int] (::_multr:6)
+            Declarator [0] (::_multr:6)
+               Stackvar:1 [i] (::_multr:6)
+            Declarator [0] (::_multr:6)
+               Stackvar:2 [j] (::_multr:6)
+            Declarator [=] (::_multr:6)
+               Stackvar:3 [k] (::_multr:6)
+               Const [0] (::_multr:6)
+         Assignment [=] (::_multr:7)
+            Unary [*] (::_multr:7) i:6
+               Additive [+] (::_multr:7) i:6
+                  Variable [@bp] (::_multr:7) i:6
+                  Const [1] (::_multr:7) i:6
+            Postfix [(] (::_multr:7)
+               Label [_divMod] (::_multr:7)
+               Expression-list (::_multr:7)
+                  Unary [*] (::_multr:7) b:2
+                     Additive [+] (::_multr:7) b:2
+                        Variable [@bp] (::_multr:7) b:2
+                        Const [-3] (::_multr:7) b:2
+                  Const [2] (::_multr:7)
+                  Additive [+] (::_multr:7) j:6
+                     Variable [@bp] (::_multr:7) j:6
+                     Const [2] (::_multr:7) j:6
+         Keyword-statement [if] (::_multr:9)
+            Relational [<] (::_multr:9)
+               Unary [*] (::_multr:9) j:6
+                  Additive [+] (::_multr:9) j:6
+                     Variable [@bp] (::_multr:9) j:6
+                     Const [2] (::_multr:9) j:6
+               Const [1] (::_multr:9)
+            Statement [;] (::_multr:9)
+            Assignment [=] (::_multr:9)
+               Unary [*] (::_multr:9) k:6
+                  Additive [+] (::_multr:9) k:6
+                     Variable [@bp] (::_multr:9) k:6
+                     Const [3] (::_multr:9) k:6
+               Unary [*] (::_multr:9) a:2
+                  Additive [+] (::_multr:9) a:2
+                     Variable [@bp] (::_multr:9) a:2
+                     Const [-2] (::_multr:9) a:2
+         Keyword-statement [return] (::_multr:10)
+            Additive [+] (::_multr:10)
+               Postfix [(] (::_multr:10)
+                  Label [_multr] (::_multr:10) _multr:2
+                  Expression-list (::_multr:10)
+                     Additive [+] (::_multr:10)
+                        Unary [*] (::_multr:10) a:2
+                           Additive [+] (::_multr:10) a:2
+                              Variable [@bp] (::_multr:10) a:2
+                              Const [-2] (::_multr:10) a:2
+                        Unary [*] (::_multr:10) a:2
+                           Additive [+] (::_multr:10) a:2
+                              Variable [@bp] (::_multr:10) a:2
+                              Const [-2] (::_multr:10) a:2
+                     Unary [*] (::_multr:10) i:6
+                        Additive [+] (::_multr:10) i:6
+                           Variable [@bp] (::_multr:10) i:6
+                           Const [1] (::_multr:10) i:6
+               Unary [*] (::_multr:10) k:6
+                  Additive [+] (::_multr:10) k:6
+                     Variable [@bp] (::_multr:10) k:6
+                     Const [3] (::_multr:10) k:6
+   Function:1 [puts] (::puts:1)
+      Keyword [int] (::puts:1)
+      Param-type-list (::puts:1)
+         Stackvar:-2 [s] (::puts:1)
+      Block (::puts:2)
+         Declaration (::puts:3)
+            Keyword [int] (::puts:3)
+            Declarator [=] (::puts:3)
+               Stackvar:1 [p] (::puts:3)
+               Unary [*] (::puts:3) s:1
+                  Additive [+] (::puts:3) s:1
+                     Variable [@bp] (::puts:3) s:1
+                     Const [-2] (::puts:3) s:1
+         Keyword-statement [while] (::puts:4)
+            Equality [!=] (::puts:4)
+               Unary [*] (::puts:4)
+                  Unary [*] (::puts:4) s:1
+                     Additive [+] (::puts:4) s:1
+                        Variable [@bp] (::puts:4) s:1
+                        Const [-2] (::puts:4) s:1
+               Const [0] (::puts:4)
+            OperatorIO [__out] (::puts:4)
+               Unary [*] (::puts:4)
+                  Postfix [++] (::puts:4)
+                     Unary [*] (::puts:4) s:1
+                        Additive [+] (::puts:4) s:1
+                           Variable [@bp] (::puts:4) s:1
+                           Const [-2] (::puts:4) s:1
+         Keyword-statement [return] (::puts:5)
+            Additive [-] (::puts:5)
+               Unary [*] (::puts:5) s:1
+                  Additive [+] (::puts:5) s:1
+                     Variable [@bp] (::puts:5) s:1
+                     Const [-2] (::puts:5) s:1
+               Unary [*] (::puts:5) p:3
+                  Additive [+] (::puts:5) p:3
+                     Variable [@bp] (::puts:5) p:3
+                     Const [1] (::puts:5) p:3
+   Function:0 [_putintr] (::_putint:1)
+      Keyword [int] (::_putint:1)
+      Param-type-list (::_putint:1)
+         Stackvar:-2 [x] (::_putint:1)
+   Function:0 [_putint] (::_putint:2)
+      Keyword [int] (::_putint:2)
+      Param-type-list (::_putint:2)
+         Stackvar:-2 [x] (::_putint:2)
+      Block (::_putint:3)
+         Keyword-statement [if] (::_putint:4)
+            Relational [<] (::_putint:4)
+               Unary [*] (::_putint:4) x:2
+                  Additive [+] (::_putint:4) x:2
+                     Variable [@bp] (::_putint:4) x:2
+                     Const [-2] (::_putint:4) x:2
+               Const [0] (::_putint:4)
+            Block (::_putint:5)
+               OperatorIO [__out] (::_putint:6)
+                  Const [45] (::_putint:6)
+               Keyword-statement [return] (::_putint:7)
+                  Additive [+] (::_putint:7)
+                     Const [1] (::_putint:7)
+                     Postfix [(] (::_putint:7)
+                        Label [_putintr] (::_putint:7)
+                        Expression-list (::_putint:7)
+                           Unary [-] (::_putint:7)
+                              Unary [*] (::_putint:7) x:2
+                                 Additive [+] (::_putint:7) x:2
+                                    Variable [@bp] (::_putint:7) x:2
+                                    Const [-2] (::_putint:7) x:2
+         Keyword-statement [if] (::_putint:9)
+            Relational [>] (::_putint:9)
+               Unary [*] (::_putint:9) x:2
+                  Additive [+] (::_putint:9) x:2
+                     Variable [@bp] (::_putint:9) x:2
+                     Const [-2] (::_putint:9) x:2
+               Const [0] (::_putint:9)
+            Keyword-statement [return] (::_putint:10)
+               Postfix [(] (::_putint:10)
+                  Label [_putintr] (::_putint:10) _putintr:2
+                  Expression-list (::_putint:10)
+                     Unary [*] (::_putint:10) x:2
+                        Additive [+] (::_putint:10) x:2
+                           Variable [@bp] (::_putint:10) x:2
+                           Const [-2] (::_putint:10) x:2
+         OperatorIO [__out] (::_putint:12)
+            Const [48] (::_putint:12)
+         Keyword-statement [return] (::_putint:13)
+            Const [1] (::_putint:13)
+   Function:4 [_divMod] (::_divMod:1)
+      Keyword [int] (::_divMod:1)
+      Param-type-list (::_divMod:1)
+         Stackvar:-2 [a] (::_divMod:1)
+         Stackvar:-3 [b] (::_divMod:1)
+         Stackvar:-4 [j] (::_divMod:1)
+      Block (::_divMod:2)
+         Keyword-statement [if] (::_divMod:3)
+            Relational [<] (::_divMod:3)
+               Unary [*] (::_divMod:3) a:1
+                  Additive [+] (::_divMod:3) a:1
+                     Variable [@bp] (::_divMod:3) a:1
+                     Const [-2] (::_divMod:3) a:1
+               Unary [*] (::_divMod:3) b:1
+                  Additive [+] (::_divMod:3) b:1
+                     Variable [@bp] (::_divMod:3) b:1
+                     Const [-3] (::_divMod:3) b:1
+            Block (::_divMod:3)
+               Assignment [=] (::_divMod:3)
+                  Unary [*] (::_divMod:3)
+                     Unary [*] (::_divMod:3) j:1
+                        Additive [+] (::_divMod:3) j:1
+                           Variable [@bp] (::_divMod:3) j:1
+                           Const [-4] (::_divMod:3) j:1
+                  Unary [*] (::_divMod:3) a:1
+                     Additive [+] (::_divMod:3) a:1
+                        Variable [@bp] (::_divMod:3) a:1
+                        Const [-2] (::_divMod:3) a:1
+               Keyword-statement [return] (::_divMod:3)
+                  Const [0] (::_divMod:3)
+         Declaration (::_divMod:5)
+            Keyword [int] (::_divMod:5)
+            Declarator [=] (::_divMod:5)
+               Stackvar:1 [b1] (::_divMod:5)
+               Unary [*] (::_divMod:5) b:1
+                  Additive [+] (::_divMod:5) b:1
+                     Variable [@bp] (::_divMod:5) b:1
+                     Const [-3] (::_divMod:5) b:1
+            Declarator [=] (::_divMod:5)
+               Stackvar:2 [i] (::_divMod:5)
+               Const [1] (::_divMod:5)
+            Declarator [0] (::_divMod:5)
+               Stackvar:3 [bp] (::_divMod:5)
+            Declarator [0] (::_divMod:5)
+               Stackvar:4 [ip] (::_divMod:5)
+         Label-statement [next] (::_divMod:7)
+            Assignment [=] (::_divMod:8)
+               Unary [*] (::_divMod:8) bp:5
+                  Additive [+] (::_divMod:8) bp:5
+                     Variable [@bp] (::_divMod:8) bp:5
+                     Const [3] (::_divMod:8) bp:5
+               Unary [*] (::_divMod:8) b1:5
+                  Additive [+] (::_divMod:8) b1:5
+                     Variable [@bp] (::_divMod:8) b1:5
+                     Const [1] (::_divMod:8) b1:5
+         Assignment [=] (::_divMod:8)
+            Unary [*] (::_divMod:8) ip:5
+               Additive [+] (::_divMod:8) ip:5
+                  Variable [@bp] (::_divMod:8) ip:5
+                  Const [4] (::_divMod:8) ip:5
+            Unary [*] (::_divMod:8) i:5
+               Additive [+] (::_divMod:8) i:5
+                  Variable [@bp] (::_divMod:8) i:5
+                  Const [2] (::_divMod:8) i:5
+         Assignment [=] (::_divMod:9)
+            Unary [*] (::_divMod:9) b1:5
+               Additive [+] (::_divMod:9) b1:5
+                  Variable [@bp] (::_divMod:9) b1:5
+                  Const [1] (::_divMod:9) b1:5
+            Additive [+] (::_divMod:9)
+               Unary [*] (::_divMod:9) b1:5
+                  Additive [+] (::_divMod:9) b1:5
+                     Variable [@bp] (::_divMod:9) b1:5
+                     Const [1] (::_divMod:9) b1:5
+               Unary [*] (::_divMod:9) b1:5
+                  Additive [+] (::_divMod:9) b1:5
+                     Variable [@bp] (::_divMod:9) b1:5
+                     Const [1] (::_divMod:9) b1:5
+         Assignment [=] (::_divMod:9)
+            Unary [*] (::_divMod:9) i:5
+               Additive [+] (::_divMod:9) i:5
+                  Variable [@bp] (::_divMod:9) i:5
+                  Const [2] (::_divMod:9) i:5
+            Additive [+] (::_divMod:9)
+               Unary [*] (::_divMod:9) i:5
+                  Additive [+] (::_divMod:9) i:5
+                     Variable [@bp] (::_divMod:9) i:5
+                     Const [2] (::_divMod:9) i:5
+               Unary [*] (::_divMod:9) i:5
+                  Additive [+] (::_divMod:9) i:5
+                     Variable [@bp] (::_divMod:9) i:5
+                     Const [2] (::_divMod:9) i:5
+         Keyword-statement [if] (::_divMod:11)
+            Relational [<] (::_divMod:11)
+               Unary [*] (::_divMod:11) a:1
+                  Additive [+] (::_divMod:11) a:1
+                     Variable [@bp] (::_divMod:11) a:1
+                     Const [-2] (::_divMod:11) a:1
+               Unary [*] (::_divMod:11) b1:5
+                  Additive [+] (::_divMod:11) b1:5
+                     Variable [@bp] (::_divMod:11) b1:5
+                     Const [1] (::_divMod:11) b1:5
+            Keyword-statement [return] (::_divMod:12)
+               Additive [+] (::_divMod:12)
+                  Unary [*] (::_divMod:12) ip:5
+                     Additive [+] (::_divMod:12) ip:5
+                        Variable [@bp] (::_divMod:12) ip:5
+                        Const [4] (::_divMod:12) ip:5
+                  Postfix [(] (::_divMod:12)
+                     Label [_divMod] (::_divMod:12) _divMod:1
+                     Expression-list (::_divMod:12)
+                        Additive [-] (::_divMod:12)
+                           Unary [*] (::_divMod:12) a:1
+                              Additive [+] (::_divMod:12) a:1
+                                 Variable [@bp] (::_divMod:12) a:1
+                                 Const [-2] (::_divMod:12) a:1
+                           Unary [*] (::_divMod:12) bp:5
+                              Additive [+] (::_divMod:12) bp:5
+                                 Variable [@bp] (::_divMod:12) bp:5
+                                 Const [3] (::_divMod:12) bp:5
+                        Unary [*] (::_divMod:12) b:1
+                           Additive [+] (::_divMod:12) b:1
+                              Variable [@bp] (::_divMod:12) b:1
+                              Const [-3] (::_divMod:12) b:1
+                        Unary [*] (::_divMod:12) j:1
+                           Additive [+] (::_divMod:12) j:1
+                              Variable [@bp] (::_divMod:12) j:1
+                              Const [-4] (::_divMod:12) j:1
+         Keyword-statement [goto] (::_divMod:14)
+            Label [next] (::_divMod:14) next:7
+   Function:0 [_divMod] (::_putintr:1)
+      Keyword [int] (::_putintr:1)
+      Param-type-list (::_putintr:1)
+         Stackvar:-2 [a] (::_putintr:1)
+         Stackvar:-3 [b] (::_putintr:1)
+         Stackvar:-4 [m] (::_putintr:1)
+   Function:2 [_putintr] (::_putintr:2)
+      Keyword [int] (::_putintr:2)
+      Param-type-list (::_putintr:2)
+         Stackvar:-2 [x] (::_putintr:2)
+      Block (::_putintr:3)
+         Keyword-statement [if] (::_putintr:4)
+            Relational [>] (::_putintr:4)
+               Unary [*] (::_putintr:4) x:2
+                  Additive [+] (::_putintr:4) x:2
+                     Variable [@bp] (::_putintr:4) x:2
+                     Const [-2] (::_putintr:4) x:2
+               Const [0] (::_putintr:4)
+            Block (::_putintr:5)
+               Declaration (::_putintr:6)
+                  Keyword [int] (::_putintr:6)
+                  Declarator [0] (::_putintr:6)
+                     Stackvar:1 [i] (::_putintr:6)
+                  Declarator [0] (::_putintr:6)
+                     Stackvar:2 [j] (::_putintr:6)
+               Assignment [=] (::_putintr:7)
+                  Unary [*] (::_putintr:7) i:6
+                     Additive [+] (::_putintr:7) i:6
+                        Variable [@bp] (::_putintr:7) i:6
+                        Const [1] (::_putintr:7) i:6
+                  Postfix [(] (::_putintr:7)
+                     Label [_divMod] (::_putintr:7) _divMod:1
+                     Expression-list (::_putintr:7)
+                        Unary [*] (::_putintr:7) x:2
+                           Additive [+] (::_putintr:7) x:2
+                              Variable [@bp] (::_putintr:7) x:2
+                              Const [-2] (::_putintr:7) x:2
+                        Const [10] (::_putintr:7)
+                        Additive [+] (::_putintr:7) j:6
+                           Variable [@bp] (::_putintr:7) j:6
+                           Const [2] (::_putintr:7) j:6
+               Assignment [=] (::_putintr:8)
+                  Unary [*] (::_putintr:8) i:6
+                     Additive [+] (::_putintr:8) i:6
+                        Variable [@bp] (::_putintr:8) i:6
+                        Const [1] (::_putintr:8) i:6
+                  Postfix [(] (::_putintr:8)
+                     Label [_putintr] (::_putintr:8) _putintr:2
+                     Expression-list (::_putintr:8)
+                        Unary [*] (::_putintr:8) i:6
+                           Additive [+] (::_putintr:8) i:6
+                              Variable [@bp] (::_putintr:8) i:6
+                              Const [1] (::_putintr:8) i:6
+               OperatorIO [__out] (::_putintr:9)
+                  Additive [+] (::_putintr:9)
+                     Const [48] (::_putintr:9)
+                     Unary [*] (::_putintr:9) j:6
+                        Additive [+] (::_putintr:9) j:6
+                           Variable [@bp] (::_putintr:9) j:6
+                           Const [2] (::_putintr:9) j:6
+               Keyword-statement [return] (::_putintr:10)
+                  Additive [+] (::_putintr:10)
+                     Unary [*] (::_putintr:10) i:6
+                        Additive [+] (::_putintr:10) i:6
+                           Variable [@bp] (::_putintr:10) i:6
+                           Const [1] (::_putintr:10) i:6
+                     Const [1] (::_putintr:10)
+         Keyword-statement [return] (::_putintr:12)
+            Const [0] (::_putintr:12)

@@ -77,21 +77,6 @@
     <visualElement>
       <elementName>Const</elementName>
       <elementAttributes/>
-      <pos x="480" y="260"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Const</elementName>
-      <elementAttributes>
-        <entry>
-          <string>Value</string>
-          <long>0</long>
-        </entry>
-      </elementAttributes>
-      <pos x="480" y="280"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Const</elementName>
-      <elementAttributes/>
       <pos x="780" y="240"/>
     </visualElement>
     <visualElement>

@@ -27,5 +27,24 @@
 # inc x => x++
 .Z:0 dec:1 inc:-1
 
-# goto main
+#5 (-1) 'A'
+#L1:
+#c c 
+#(-3) c                # input to c
+#Z c L1                 # loop if c <= 0  
+#14 (-1) 'B'
+#L2:
+#c c
+#(-3) c                # input to c
+#Z c L2                 # loop if c <= 0  
+#die:
+#Z Z die
+
+
 Z Z main
+
+# INTERRUPT HANDLER (location 0x00006)
+Z Z interrupt
+
+.icnt:7
+

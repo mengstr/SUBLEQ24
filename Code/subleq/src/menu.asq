@@ -22,7 +22,7 @@
 
 #.gpiovalues:-? "@ABCDEFH" 0
 
-.string_menu:-? "@ABCD\r\n\r\nMenu v1\r\n"
+.string_menu:-? "\r\n\r\nMenu v1\r\n"
 .               "1) Bubblesort\r\n"
 .               "2) Calculator\r\n"
 .               "3) Factorial\r\n"
@@ -30,8 +30,8 @@
 .               "5) Halt\r\n"
 .               "> "
 .            0
-main:
 
+main:
 #        c;       # clear c
 #        (-8) c   # input to c
 #        inc c
@@ -218,3 +218,12 @@ menu_primes:
     char_nl (-1)
 
     Z Z main
+
+
+interrupt:
+#    inc icnt
+#    icnt (-3)
+    Z Z 
+    (-2) icnt
+    icnt (-3)
+    Z Z (-2)

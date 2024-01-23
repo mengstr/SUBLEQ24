@@ -44,8 +44,11 @@ gets:
     # p = buffer
     gets_p; gets_p_; gets_p__; buffer gets_p; buffer gets_p_; buffer gets_p__
     gets_loop:
+        c;(-2) c                # input to c
+        Z c gets_loop           # loop if c <= 0  
         c; (-1) c # input to c
-        Z c gets_loop # goto loop if c <= 0
+#        Z c gets_loop # goto loop if c <= 0
+
         gets_p:0 gets_p_:0 # *p = 0
         k; c Z; Z k; Z # k = c
         char_nl k gets_k_leq_nl # goto k_leq_nl if k <= '\n', k -= '\n'
