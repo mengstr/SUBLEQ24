@@ -25,32 +25,14 @@
 #         putchar(*(s++));
 # }
 
-#31c:0 31d:0 31e:32b 
-#325:2 326:31d 327:328 
-#328:0 329:0 32a:31c 
-#32b:0 32c:0 32d:ffffffff 
-#32e:33b 32f:33b 330:331 
-#331:33d 332:0 333:334 
-#334:0 335:33b 336:337 
-#337:0 338:0 339:33a 
-#33a:0 33b:0 33c:349 
-#33d:0 33e:fffffffe 33f:340 
 
 puts:
-#310:31d 311:31d 312:313 
     puts_arg_s_; 
-
-#313:31f 314:0 315:316 
     puts_arg_s Z; 
-
-#316:0 317:31d 318:319 
     Z puts_arg_s_; 
-
-#319:0 31a:0 31b:31c 
     Z               # duplicate s
 
 puts_loop:
-#31c:0 0 32b 
         Z puts_arg_s_:0 puts_return # return if *s <= 0
 
 wfUARTdone1:
@@ -60,20 +42,12 @@ wfUARTdone1:
         Z c wfUARTdone1         # loop if c <= 0  
         Z Z
 
-#31f:0 ffffffff 322 
         puts_arg_s:0 (-1) # output *s
-
-#322:2 31f 325 
         inc puts_arg_s; 
-
-#325:2 31d 328 
         inc puts_arg_s_ # s++
-
-#328:0 0 31c 
         Z Z puts_loop # goto loop
 
 puts_return: 
-#32b:0 0 ffffffff 
         Z Z puts_return_address:-1
 
 putgpio:

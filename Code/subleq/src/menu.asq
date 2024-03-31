@@ -74,8 +74,16 @@ main:
     dec x menu_calc        # 2
     dec x menu_factorial   # 3
     dec x menu_primes      # 4
-    dec x (-1)             # 5
+    dec x stop             # 5
     Z Z main               # >= 6
+
+    5592405 5592405 5592405               # never reached
+stop:
+    Z Z (-1)
+    Z Z stop
+    5592405 5592405 5592405               # never reached
+
+
 
 .string_bubblesort_a:-? "\nBubblesort\nEnter a string:\n" 0
 .string_bubblesort_b:-? "Sorting according to ASCII codes...\n" 0
@@ -221,9 +229,7 @@ menu_primes:
 
 
 interrupt:
-#    inc icnt
-#    icnt (-3)
-    Z Z 
-    (-2) icnt
-    icnt (-3)
+    inc icnt
+    icnt (-4)
     Z Z (-2)
+

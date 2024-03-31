@@ -1,0 +1,1288 @@
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"printf.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "printf.c"
+  18              		.bss
+  19              		.align	2
+  20              	stdout_putf:
+  21 0000 00000000 		.space	4
+  23              		.align	2
+  24              	stdout_putp:
+  25 0004 00000000 		.space	4
+  27              		.text
+  28              		.align	1
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	ui2a:
+  34              	.LFB0:
+   1:printf.c      **** /*
+   2:printf.c      **** File: printf.c
+   3:printf.c      **** 
+   4:printf.c      **** Copyright (C) 2004  Kustaa Nyholm
+   5:printf.c      **** 
+   6:printf.c      **** This library is free software; you can redistribute it and/or
+   7:printf.c      **** modify it under the terms of the GNU Lesser General Public
+   8:printf.c      **** License as published by the Free Software Foundation; either
+   9:printf.c      **** version 2.1 of the License, or (at your option) any later version.
+  10:printf.c      **** 
+  11:printf.c      **** This library is distributed in the hope that it will be useful,
+  12:printf.c      **** but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:printf.c      **** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  14:printf.c      **** Lesser General Public License for more details.
+  15:printf.c      **** 
+  16:printf.c      **** You should have received a copy of the GNU Lesser General Public
+  17:printf.c      **** License along with this library; if not, write to the Free Software
+  18:printf.c      **** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  19:printf.c      **** 
+  20:printf.c      **** */
+  21:printf.c      **** 
+  22:printf.c      **** #include "printf.h"
+  23:printf.c      **** 
+  24:printf.c      **** typedef void (*putcf) (void*,char);
+  25:printf.c      **** static putcf stdout_putf;
+  26:printf.c      **** static void* stdout_putp;
+  27:printf.c      **** 
+  28:printf.c      **** 
+  29:printf.c      **** #ifdef PRINTF_LONG_SUPPORT
+  30:printf.c      **** 
+  31:printf.c      **** static void uli2a(unsigned long int num, unsigned int base, int uc,char * bf)
+  32:printf.c      ****     {
+  33:printf.c      ****     int n=0;
+  34:printf.c      ****     unsigned int d=1;
+  35:printf.c      ****     while (num/d >= base)
+  36:printf.c      ****         d*=base;         
+  37:printf.c      ****     while (d!=0) {
+  38:printf.c      ****         int dgt = num / d;
+  39:printf.c      ****         num%=d;
+  40:printf.c      ****         d/=base;
+  41:printf.c      ****         if (n || dgt>0|| d==0) {
+  42:printf.c      ****             *bf++ = dgt+(dgt<10 ? '0' : (uc ? 'A' : 'a')-10);
+  43:printf.c      ****             ++n;
+  44:printf.c      ****             }
+  45:printf.c      ****         }
+  46:printf.c      ****     *bf=0;
+  47:printf.c      ****     }
+  48:printf.c      **** 
+  49:printf.c      **** static void li2a (long num, char * bf)
+  50:printf.c      ****     {
+  51:printf.c      ****     if (num<0) {
+  52:printf.c      ****         num=-num;
+  53:printf.c      ****         *bf++ = '-';
+  54:printf.c      ****         }
+  55:printf.c      ****     uli2a(num,10,0,bf);
+  56:printf.c      ****     }
+  57:printf.c      **** 
+  58:printf.c      **** #endif
+  59:printf.c      **** 
+  60:printf.c      **** static void ui2a(unsigned int num, unsigned int base, int uc,char * bf)
+  61:printf.c      ****     {
+  35              		.loc 1 61 5
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 32
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39              		@ link register save eliminated.
+  40 0000 80B4     		push	{r7}
+  41              		.cfi_def_cfa_offset 4
+  42              		.cfi_offset 7, -4
+  43 0002 89B0     		sub	sp, sp, #36
+  44              		.cfi_def_cfa_offset 40
+  45 0004 00AF     		add	r7, sp, #0
+  46              		.cfi_def_cfa_register 7
+  47 0006 F860     		str	r0, [r7, #12]
+  48 0008 B960     		str	r1, [r7, #8]
+  49 000a 7A60     		str	r2, [r7, #4]
+  50 000c 3B60     		str	r3, [r7]
+  62:printf.c      ****     int n=0;
+  51              		.loc 1 62 9
+  52 000e 0023     		movs	r3, #0
+  53 0010 FB61     		str	r3, [r7, #28]
+  63:printf.c      ****     unsigned int d=1;
+  54              		.loc 1 63 18
+  55 0012 0123     		movs	r3, #1
+  56 0014 BB61     		str	r3, [r7, #24]
+  64:printf.c      ****     while (num/d >= base)
+  57              		.loc 1 64 11
+  58 0016 04E0     		b	.L2
+  59              	.L3:
+  65:printf.c      ****         d*=base;        
+  60              		.loc 1 65 10
+  61 0018 BB69     		ldr	r3, [r7, #24]
+  62 001a BA68     		ldr	r2, [r7, #8]
+  63 001c 02FB03F3 		mul	r3, r2, r3
+  64 0020 BB61     		str	r3, [r7, #24]
+  65              	.L2:
+  64:printf.c      ****     while (num/d >= base)
+  66              		.loc 1 64 15
+  67 0022 FA68     		ldr	r2, [r7, #12]
+  68 0024 BB69     		ldr	r3, [r7, #24]
+  69 0026 B2FBF3F3 		udiv	r3, r2, r3
+  64:printf.c      ****     while (num/d >= base)
+  70              		.loc 1 64 18
+  71 002a BA68     		ldr	r2, [r7, #8]
+  72 002c 9A42     		cmp	r2, r3
+  73 002e F3D9     		bls	.L3
+  66:printf.c      ****     while (d!=0) {
+  74              		.loc 1 66 11
+  75 0030 31E0     		b	.L4
+  76              	.L11:
+  77              	.LBB2:
+  67:printf.c      ****         int dgt = num / d;
+  78              		.loc 1 67 23
+  79 0032 FA68     		ldr	r2, [r7, #12]
+  80 0034 BB69     		ldr	r3, [r7, #24]
+  81 0036 B2FBF3F3 		udiv	r3, r2, r3
+  82              		.loc 1 67 13
+  83 003a 7B61     		str	r3, [r7, #20]
+  68:printf.c      ****         num%= d;
+  84              		.loc 1 68 12
+  85 003c FB68     		ldr	r3, [r7, #12]
+  86 003e BA69     		ldr	r2, [r7, #24]
+  87 0040 B3FBF2F2 		udiv	r2, r3, r2
+  88 0044 B969     		ldr	r1, [r7, #24]
+  89 0046 01FB02F2 		mul	r2, r1, r2
+  90 004a 9B1A     		subs	r3, r3, r2
+  91 004c FB60     		str	r3, [r7, #12]
+  69:printf.c      ****         d/=base;
+  92              		.loc 1 69 10
+  93 004e BA69     		ldr	r2, [r7, #24]
+  94 0050 BB68     		ldr	r3, [r7, #8]
+  95 0052 B2FBF3F3 		udiv	r3, r2, r3
+  96 0056 BB61     		str	r3, [r7, #24]
+  70:printf.c      ****         if (n || dgt>0 || d==0) {
+  97              		.loc 1 70 12
+  98 0058 FB69     		ldr	r3, [r7, #28]
+  99 005a 002B     		cmp	r3, #0
+ 100 005c 05D1     		bne	.L5
+ 101              		.loc 1 70 15 discriminator 1
+ 102 005e 7B69     		ldr	r3, [r7, #20]
+ 103 0060 002B     		cmp	r3, #0
+ 104 0062 02DC     		bgt	.L5
+ 105              		.loc 1 70 24 discriminator 2
+ 106 0064 BB69     		ldr	r3, [r7, #24]
+ 107 0066 002B     		cmp	r3, #0
+ 108 0068 15D1     		bne	.L4
+ 109              	.L5:
+  71:printf.c      ****             *bf++ = dgt+(dgt<10 ? '0' : (uc ? 'A' : 'a')-10);
+ 110              		.loc 1 71 24
+ 111 006a 7B69     		ldr	r3, [r7, #20]
+ 112 006c 092B     		cmp	r3, #9
+ 113 006e 06DD     		ble	.L7
+ 114              		.loc 1 71 24 is_stmt 0 discriminator 1
+ 115 0070 7B68     		ldr	r3, [r7, #4]
+ 116 0072 002B     		cmp	r3, #0
+ 117 0074 01D0     		beq	.L8
+ 118              		.loc 1 71 24 discriminator 3
+ 119 0076 3723     		movs	r3, #55
+ 120 0078 02E0     		b	.L10
+ 121              	.L8:
+ 122              		.loc 1 71 24 discriminator 4
+ 123 007a 5723     		movs	r3, #87
+ 124 007c 00E0     		b	.L10
+ 125              	.L7:
+ 126              		.loc 1 71 24 discriminator 2
+ 127 007e 3023     		movs	r3, #48
+ 128              	.L10:
+ 129              		.loc 1 71 24 discriminator 8
+ 130 0080 7A69     		ldr	r2, [r7, #20]
+ 131 0082 D1B2     		uxtb	r1, r2
+ 132              		.loc 1 71 16 is_stmt 1 discriminator 8
+ 133 0084 3A68     		ldr	r2, [r7]
+ 134 0086 501C     		adds	r0, r2, #1
+ 135 0088 3860     		str	r0, [r7]
+ 136              		.loc 1 71 24 discriminator 8
+ 137 008a 0B44     		add	r3, r3, r1
+ 138 008c DBB2     		uxtb	r3, r3
+ 139              		.loc 1 71 19 discriminator 8
+ 140 008e 1370     		strb	r3, [r2]
+  72:printf.c      ****             ++n;
+ 141              		.loc 1 72 13
+ 142 0090 FB69     		ldr	r3, [r7, #28]
+ 143 0092 0133     		adds	r3, r3, #1
+ 144 0094 FB61     		str	r3, [r7, #28]
+ 145              	.L4:
+ 146              	.LBE2:
+  66:printf.c      ****         int dgt = num / d;
+ 147              		.loc 1 66 13
+ 148 0096 BB69     		ldr	r3, [r7, #24]
+ 149 0098 002B     		cmp	r3, #0
+ 150 009a CAD1     		bne	.L11
+  73:printf.c      ****             }
+  74:printf.c      ****         }
+  75:printf.c      ****     *bf=0;
+ 151              		.loc 1 75 8
+ 152 009c 3B68     		ldr	r3, [r7]
+ 153 009e 0022     		movs	r2, #0
+ 154 00a0 1A70     		strb	r2, [r3]
+  76:printf.c      ****     }
+ 155              		.loc 1 76 5
+ 156 00a2 00BF     		nop
+ 157 00a4 2437     		adds	r7, r7, #36
+ 158              		.cfi_def_cfa_offset 4
+ 159 00a6 BD46     		mov	sp, r7
+ 160              		.cfi_def_cfa_register 13
+ 161              		@ sp needed
+ 162 00a8 80BC     		pop	{r7}
+ 163              		.cfi_restore 7
+ 164              		.cfi_def_cfa_offset 0
+ 165 00aa 7047     		bx	lr
+ 166              		.cfi_endproc
+ 167              	.LFE0:
+ 169              		.align	1
+ 170              		.syntax unified
+ 171              		.thumb
+ 172              		.thumb_func
+ 174              	i2a:
+ 175              	.LFB1:
+  77:printf.c      **** 
+  78:printf.c      **** static void i2a (int num, char * bf)
+  79:printf.c      ****     {
+ 176              		.loc 1 79 5
+ 177              		.cfi_startproc
+ 178              		@ args = 0, pretend = 0, frame = 8
+ 179              		@ frame_needed = 1, uses_anonymous_args = 0
+ 180 00ac 80B5     		push	{r7, lr}
+ 181              		.cfi_def_cfa_offset 8
+ 182              		.cfi_offset 7, -8
+ 183              		.cfi_offset 14, -4
+ 184 00ae 82B0     		sub	sp, sp, #8
+ 185              		.cfi_def_cfa_offset 16
+ 186 00b0 00AF     		add	r7, sp, #0
+ 187              		.cfi_def_cfa_register 7
+ 188 00b2 7860     		str	r0, [r7, #4]
+ 189 00b4 3960     		str	r1, [r7]
+  80:printf.c      ****     if (num<0) {
+ 190              		.loc 1 80 8
+ 191 00b6 7B68     		ldr	r3, [r7, #4]
+ 192 00b8 002B     		cmp	r3, #0
+ 193 00ba 07DA     		bge	.L13
+  81:printf.c      ****         num=-num;
+ 194              		.loc 1 81 12
+ 195 00bc 7B68     		ldr	r3, [r7, #4]
+ 196 00be 5B42     		rsbs	r3, r3, #0
+ 197 00c0 7B60     		str	r3, [r7, #4]
+  82:printf.c      ****         *bf++ = '-';
+ 198              		.loc 1 82 12
+ 199 00c2 3B68     		ldr	r3, [r7]
+ 200 00c4 5A1C     		adds	r2, r3, #1
+ 201 00c6 3A60     		str	r2, [r7]
+ 202              		.loc 1 82 15
+ 203 00c8 2D22     		movs	r2, #45
+ 204 00ca 1A70     		strb	r2, [r3]
+ 205              	.L13:
+  83:printf.c      ****         }
+  84:printf.c      ****     ui2a(num,10,0,bf);
+ 206              		.loc 1 84 5
+ 207 00cc 7868     		ldr	r0, [r7, #4]
+ 208 00ce 3B68     		ldr	r3, [r7]
+ 209 00d0 0022     		movs	r2, #0
+ 210 00d2 0A21     		movs	r1, #10
+ 211 00d4 FFF794FF 		bl	ui2a
+  85:printf.c      ****     }
+ 212              		.loc 1 85 5
+ 213 00d8 00BF     		nop
+ 214 00da 0837     		adds	r7, r7, #8
+ 215              		.cfi_def_cfa_offset 8
+ 216 00dc BD46     		mov	sp, r7
+ 217              		.cfi_def_cfa_register 13
+ 218              		@ sp needed
+ 219 00de 80BD     		pop	{r7, pc}
+ 220              		.cfi_endproc
+ 221              	.LFE1:
+ 223              		.align	1
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 228              	a2d:
+ 229              	.LFB2:
+  86:printf.c      **** 
+  87:printf.c      **** static int a2d(char ch)
+  88:printf.c      ****     {
+ 230              		.loc 1 88 5
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 8
+ 233              		@ frame_needed = 1, uses_anonymous_args = 0
+ 234              		@ link register save eliminated.
+ 235 00e0 80B4     		push	{r7}
+ 236              		.cfi_def_cfa_offset 4
+ 237              		.cfi_offset 7, -4
+ 238 00e2 83B0     		sub	sp, sp, #12
+ 239              		.cfi_def_cfa_offset 16
+ 240 00e4 00AF     		add	r7, sp, #0
+ 241              		.cfi_def_cfa_register 7
+ 242 00e6 0346     		mov	r3, r0
+ 243 00e8 FB71     		strb	r3, [r7, #7]
+  89:printf.c      ****     if (ch>='0' && ch<='9') 
+ 244              		.loc 1 89 8
+ 245 00ea FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 246 00ec 2F2B     		cmp	r3, #47
+ 247 00ee 05D9     		bls	.L15
+ 248              		.loc 1 89 17 discriminator 1
+ 249 00f0 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 250 00f2 392B     		cmp	r3, #57
+ 251 00f4 02D8     		bhi	.L15
+  90:printf.c      ****         return ch-'0';
+ 252              		.loc 1 90 18
+ 253 00f6 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 254 00f8 303B     		subs	r3, r3, #48
+ 255 00fa 13E0     		b	.L16
+ 256              	.L15:
+  91:printf.c      ****     else if (ch>='a' && ch<='f')
+ 257              		.loc 1 91 13
+ 258 00fc FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 259 00fe 602B     		cmp	r3, #96
+ 260 0100 05D9     		bls	.L17
+ 261              		.loc 1 91 22 discriminator 1
+ 262 0102 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 263 0104 662B     		cmp	r3, #102
+ 264 0106 02D8     		bhi	.L17
+  92:printf.c      ****         return ch-'a'+10;
+ 265              		.loc 1 92 22
+ 266 0108 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 267 010a 573B     		subs	r3, r3, #87
+ 268 010c 0AE0     		b	.L16
+ 269              	.L17:
+  93:printf.c      ****     else if (ch>='A' && ch<='F')
+ 270              		.loc 1 93 13
+ 271 010e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 272 0110 402B     		cmp	r3, #64
+ 273 0112 05D9     		bls	.L18
+ 274              		.loc 1 93 22 discriminator 1
+ 275 0114 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 276 0116 462B     		cmp	r3, #70
+ 277 0118 02D8     		bhi	.L18
+  94:printf.c      ****         return ch-'A'+10;
+ 278              		.loc 1 94 22
+ 279 011a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 280 011c 373B     		subs	r3, r3, #55
+ 281 011e 01E0     		b	.L16
+ 282              	.L18:
+  95:printf.c      ****     else return -1;
+ 283              		.loc 1 95 17
+ 284 0120 4FF0FF33 		mov	r3, #-1
+ 285              	.L16:
+  96:printf.c      ****     }
+ 286              		.loc 1 96 5
+ 287 0124 1846     		mov	r0, r3
+ 288 0126 0C37     		adds	r7, r7, #12
+ 289              		.cfi_def_cfa_offset 4
+ 290 0128 BD46     		mov	sp, r7
+ 291              		.cfi_def_cfa_register 13
+ 292              		@ sp needed
+ 293 012a 80BC     		pop	{r7}
+ 294              		.cfi_restore 7
+ 295              		.cfi_def_cfa_offset 0
+ 296 012c 7047     		bx	lr
+ 297              		.cfi_endproc
+ 298              	.LFE2:
+ 300              		.align	1
+ 301              		.syntax unified
+ 302              		.thumb
+ 303              		.thumb_func
+ 305              	a2i:
+ 306              	.LFB3:
+  97:printf.c      **** 
+  98:printf.c      **** static char a2i(char ch, char** src,int base,int* nump)
+  99:printf.c      ****     {
+ 307              		.loc 1 99 5
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 32
+ 310              		@ frame_needed = 1, uses_anonymous_args = 0
+ 311 012e 80B5     		push	{r7, lr}
+ 312              		.cfi_def_cfa_offset 8
+ 313              		.cfi_offset 7, -8
+ 314              		.cfi_offset 14, -4
+ 315 0130 88B0     		sub	sp, sp, #32
+ 316              		.cfi_def_cfa_offset 40
+ 317 0132 00AF     		add	r7, sp, #0
+ 318              		.cfi_def_cfa_register 7
+ 319 0134 B960     		str	r1, [r7, #8]
+ 320 0136 7A60     		str	r2, [r7, #4]
+ 321 0138 3B60     		str	r3, [r7]
+ 322 013a 0346     		mov	r3, r0
+ 323 013c FB73     		strb	r3, [r7, #15]
+ 100:printf.c      ****     char* p= *src;
+ 324              		.loc 1 100 11
+ 325 013e BB68     		ldr	r3, [r7, #8]
+ 326 0140 1B68     		ldr	r3, [r3]
+ 327 0142 FB61     		str	r3, [r7, #28]
+ 101:printf.c      ****     int num=0;
+ 328              		.loc 1 101 9
+ 329 0144 0023     		movs	r3, #0
+ 330 0146 BB61     		str	r3, [r7, #24]
+ 102:printf.c      ****     int digit;
+ 103:printf.c      ****     while ((digit=a2d(ch))>=0) {
+ 331              		.loc 1 103 11
+ 332 0148 0FE0     		b	.L20
+ 333              	.L23:
+ 104:printf.c      ****         if (digit>base) break;
+ 334              		.loc 1 104 12
+ 335 014a 7A69     		ldr	r2, [r7, #20]
+ 336 014c 7B68     		ldr	r3, [r7, #4]
+ 337 014e 9A42     		cmp	r2, r3
+ 338 0150 14DC     		bgt	.L25
+ 105:printf.c      ****         num=num*base+digit;
+ 339              		.loc 1 105 16
+ 340 0152 BB69     		ldr	r3, [r7, #24]
+ 341 0154 7A68     		ldr	r2, [r7, #4]
+ 342 0156 02FB03F3 		mul	r3, r2, r3
+ 343              		.loc 1 105 12
+ 344 015a 7A69     		ldr	r2, [r7, #20]
+ 345 015c 1344     		add	r3, r3, r2
+ 346 015e BB61     		str	r3, [r7, #24]
+ 106:printf.c      ****         ch=*p++;
+ 347              		.loc 1 106 14
+ 348 0160 FB69     		ldr	r3, [r7, #28]
+ 349 0162 5A1C     		adds	r2, r3, #1
+ 350 0164 FA61     		str	r2, [r7, #28]
+ 351              		.loc 1 106 11
+ 352 0166 1B78     		ldrb	r3, [r3]
+ 353 0168 FB73     		strb	r3, [r7, #15]
+ 354              	.L20:
+ 103:printf.c      ****         if (digit>base) break;
+ 355              		.loc 1 103 19
+ 356 016a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 357 016c 1846     		mov	r0, r3
+ 358 016e FFF7B7FF 		bl	a2d
+ 359 0172 7861     		str	r0, [r7, #20]
+ 103:printf.c      ****         if (digit>base) break;
+ 360              		.loc 1 103 27 discriminator 1
+ 361 0174 7B69     		ldr	r3, [r7, #20]
+ 362 0176 002B     		cmp	r3, #0
+ 363 0178 E7DA     		bge	.L23
+ 364 017a 00E0     		b	.L22
+ 365              	.L25:
+ 104:printf.c      ****         num=num*base+digit;
+ 366              		.loc 1 104 25
+ 367 017c 00BF     		nop
+ 368              	.L22:
+ 107:printf.c      ****         }
+ 108:printf.c      ****     *src=p;
+ 369              		.loc 1 108 9
+ 370 017e BB68     		ldr	r3, [r7, #8]
+ 371 0180 FA69     		ldr	r2, [r7, #28]
+ 372 0182 1A60     		str	r2, [r3]
+ 109:printf.c      ****     *nump=num;
+ 373              		.loc 1 109 10
+ 374 0184 3B68     		ldr	r3, [r7]
+ 375 0186 BA69     		ldr	r2, [r7, #24]
+ 376 0188 1A60     		str	r2, [r3]
+ 110:printf.c      ****     return ch;
+ 377              		.loc 1 110 12
+ 378 018a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 111:printf.c      ****     }
+ 379              		.loc 1 111 5
+ 380 018c 1846     		mov	r0, r3
+ 381 018e 2037     		adds	r7, r7, #32
+ 382              		.cfi_def_cfa_offset 8
+ 383 0190 BD46     		mov	sp, r7
+ 384              		.cfi_def_cfa_register 13
+ 385              		@ sp needed
+ 386 0192 80BD     		pop	{r7, pc}
+ 387              		.cfi_endproc
+ 388              	.LFE3:
+ 390              		.align	1
+ 391              		.syntax unified
+ 392              		.thumb
+ 393              		.thumb_func
+ 395              	putchw:
+ 396              	.LFB4:
+ 112:printf.c      **** 
+ 113:printf.c      **** static void putchw(void* putp,putcf putf,int n, char z, char* bf)
+ 114:printf.c      ****     {
+ 397              		.loc 1 114 5
+ 398              		.cfi_startproc
+ 399              		@ args = 4, pretend = 0, frame = 24
+ 400              		@ frame_needed = 1, uses_anonymous_args = 0
+ 401 0194 80B5     		push	{r7, lr}
+ 402              		.cfi_def_cfa_offset 8
+ 403              		.cfi_offset 7, -8
+ 404              		.cfi_offset 14, -4
+ 405 0196 86B0     		sub	sp, sp, #24
+ 406              		.cfi_def_cfa_offset 32
+ 407 0198 00AF     		add	r7, sp, #0
+ 408              		.cfi_def_cfa_register 7
+ 409 019a F860     		str	r0, [r7, #12]
+ 410 019c B960     		str	r1, [r7, #8]
+ 411 019e 7A60     		str	r2, [r7, #4]
+ 412 01a0 FB70     		strb	r3, [r7, #3]
+ 115:printf.c      ****     char fc=z? '0' : ' ';
+ 413              		.loc 1 115 10
+ 414 01a2 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 415 01a4 002B     		cmp	r3, #0
+ 416 01a6 01D0     		beq	.L27
+ 417              		.loc 1 115 10 is_stmt 0 discriminator 1
+ 418 01a8 3023     		movs	r3, #48
+ 419 01aa 00E0     		b	.L28
+ 420              	.L27:
+ 421              		.loc 1 115 10 discriminator 2
+ 422 01ac 2023     		movs	r3, #32
+ 423              	.L28:
+ 424              		.loc 1 115 10 discriminator 4
+ 425 01ae FB74     		strb	r3, [r7, #19]
+ 116:printf.c      ****     char ch;
+ 117:printf.c      ****     char* p=bf;
+ 426              		.loc 1 117 11 is_stmt 1
+ 427 01b0 3B6A     		ldr	r3, [r7, #32]
+ 428 01b2 7B61     		str	r3, [r7, #20]
+ 118:printf.c      ****     while (*p++ && n > 0)
+ 429              		.loc 1 118 11
+ 430 01b4 02E0     		b	.L29
+ 431              	.L31:
+ 119:printf.c      ****         n--;
+ 432              		.loc 1 119 10
+ 433 01b6 7B68     		ldr	r3, [r7, #4]
+ 434 01b8 013B     		subs	r3, r3, #1
+ 435 01ba 7B60     		str	r3, [r7, #4]
+ 436              	.L29:
+ 118:printf.c      ****     while (*p++ && n > 0)
+ 437              		.loc 1 118 14
+ 438 01bc 7B69     		ldr	r3, [r7, #20]
+ 439 01be 5A1C     		adds	r2, r3, #1
+ 440 01c0 7A61     		str	r2, [r7, #20]
+ 118:printf.c      ****     while (*p++ && n > 0)
+ 441              		.loc 1 118 12
+ 442 01c2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 118:printf.c      ****     while (*p++ && n > 0)
+ 443              		.loc 1 118 17
+ 444 01c4 002B     		cmp	r3, #0
+ 445 01c6 08D0     		beq	.L32
+ 118:printf.c      ****     while (*p++ && n > 0)
+ 446              		.loc 1 118 17 is_stmt 0 discriminator 1
+ 447 01c8 7B68     		ldr	r3, [r7, #4]
+ 448 01ca 002B     		cmp	r3, #0
+ 449 01cc F3DC     		bgt	.L31
+ 120:printf.c      ****     while (n-- > 0) 
+ 450              		.loc 1 120 11 is_stmt 1
+ 451 01ce 04E0     		b	.L32
+ 452              	.L33:
+ 121:printf.c      ****         putf(putp,fc);
+ 453              		.loc 1 121 9
+ 454 01d0 FA7C     		ldrb	r2, [r7, #19]	@ zero_extendqisi2
+ 455 01d2 BB68     		ldr	r3, [r7, #8]
+ 456 01d4 1146     		mov	r1, r2
+ 457 01d6 F868     		ldr	r0, [r7, #12]
+ 458 01d8 9847     		blx	r3
+ 459              	.LVL0:
+ 460              	.L32:
+ 120:printf.c      ****     while (n-- > 0) 
+ 461              		.loc 1 120 13
+ 462 01da 7B68     		ldr	r3, [r7, #4]
+ 463 01dc 5A1E     		subs	r2, r3, #1
+ 464 01de 7A60     		str	r2, [r7, #4]
+ 120:printf.c      ****     while (n-- > 0) 
+ 465              		.loc 1 120 16
+ 466 01e0 002B     		cmp	r3, #0
+ 467 01e2 F5DC     		bgt	.L33
+ 122:printf.c      ****     while ((ch= *bf++))
+ 468              		.loc 1 122 11
+ 469 01e4 04E0     		b	.L34
+ 470              	.L35:
+ 123:printf.c      ****         putf(putp,ch);
+ 471              		.loc 1 123 9
+ 472 01e6 BA7C     		ldrb	r2, [r7, #18]	@ zero_extendqisi2
+ 473 01e8 BB68     		ldr	r3, [r7, #8]
+ 474 01ea 1146     		mov	r1, r2
+ 475 01ec F868     		ldr	r0, [r7, #12]
+ 476 01ee 9847     		blx	r3
+ 477              	.LVL1:
+ 478              	.L34:
+ 122:printf.c      ****     while ((ch= *bf++))
+ 479              		.loc 1 122 20
+ 480 01f0 3B6A     		ldr	r3, [r7, #32]
+ 481 01f2 5A1C     		adds	r2, r3, #1
+ 482 01f4 3A62     		str	r2, [r7, #32]
+ 122:printf.c      ****     while ((ch= *bf++))
+ 483              		.loc 1 122 15
+ 484 01f6 1B78     		ldrb	r3, [r3]
+ 485 01f8 BB74     		strb	r3, [r7, #18]
+ 122:printf.c      ****     while ((ch= *bf++))
+ 486              		.loc 1 122 12
+ 487 01fa BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 488 01fc 002B     		cmp	r3, #0
+ 489 01fe F2D1     		bne	.L35
+ 124:printf.c      ****     }
+ 490              		.loc 1 124 5
+ 491 0200 00BF     		nop
+ 492 0202 00BF     		nop
+ 493 0204 1837     		adds	r7, r7, #24
+ 494              		.cfi_def_cfa_offset 8
+ 495 0206 BD46     		mov	sp, r7
+ 496              		.cfi_def_cfa_register 13
+ 497              		@ sp needed
+ 498 0208 80BD     		pop	{r7, pc}
+ 499              		.cfi_endproc
+ 500              	.LFE4:
+ 502              		.align	1
+ 503              		.global	tfp_format
+ 504              		.syntax unified
+ 505              		.thumb
+ 506              		.thumb_func
+ 508              	tfp_format:
+ 509              	.LFB5:
+ 125:printf.c      **** 
+ 126:printf.c      **** void tfp_format(void* putp,putcf putf,char *fmt, va_list va)
+ 127:printf.c      ****     {
+ 510              		.loc 1 127 5
+ 511              		.cfi_startproc
+ 512              		@ args = 0, pretend = 0, frame = 40
+ 513              		@ frame_needed = 1, uses_anonymous_args = 0
+ 514 020a 80B5     		push	{r7, lr}
+ 515              		.cfi_def_cfa_offset 8
+ 516              		.cfi_offset 7, -8
+ 517              		.cfi_offset 14, -4
+ 518 020c 8CB0     		sub	sp, sp, #48
+ 519              		.cfi_def_cfa_offset 56
+ 520 020e 02AF     		add	r7, sp, #8
+ 521              		.cfi_def_cfa 7, 48
+ 522 0210 F860     		str	r0, [r7, #12]
+ 523 0212 B960     		str	r1, [r7, #8]
+ 524 0214 7A60     		str	r2, [r7, #4]
+ 525 0216 3B60     		str	r3, [r7]
+ 128:printf.c      ****     char bf[12];
+ 129:printf.c      ****     
+ 130:printf.c      ****     char ch;
+ 131:printf.c      **** 
+ 132:printf.c      **** 
+ 133:printf.c      ****     while ((ch=*(fmt++))) {
+ 526              		.loc 1 133 11
+ 527 0218 F3E0     		b	.L37
+ 528              	.L54:
+ 134:printf.c      ****         if (ch!='%') 
+ 529              		.loc 1 134 12
+ 530 021a 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 531 021e 252B     		cmp	r3, #37
+ 532 0220 06D0     		beq	.L38
+ 135:printf.c      ****             putf(putp,ch);
+ 533              		.loc 1 135 13
+ 534 0222 97F82720 		ldrb	r2, [r7, #39]	@ zero_extendqisi2
+ 535 0226 BB68     		ldr	r3, [r7, #8]
+ 536 0228 1146     		mov	r1, r2
+ 537 022a F868     		ldr	r0, [r7, #12]
+ 538 022c 9847     		blx	r3
+ 539              	.LVL2:
+ 540 022e E8E0     		b	.L37
+ 541              	.L38:
+ 542              	.LBB3:
+ 136:printf.c      ****         else {
+ 137:printf.c      ****             char lz=0;
+ 543              		.loc 1 137 18
+ 544 0230 0023     		movs	r3, #0
+ 545 0232 87F82630 		strb	r3, [r7, #38]
+ 138:printf.c      **** #ifdef  PRINTF_LONG_SUPPORT
+ 139:printf.c      ****             char lng=0;
+ 140:printf.c      **** #endif
+ 141:printf.c      ****             int w=0;
+ 546              		.loc 1 141 17
+ 547 0236 0023     		movs	r3, #0
+ 548 0238 7B61     		str	r3, [r7, #20]
+ 142:printf.c      ****             ch=*(fmt++);
+ 549              		.loc 1 142 21
+ 550 023a 7B68     		ldr	r3, [r7, #4]
+ 551 023c 5A1C     		adds	r2, r3, #1
+ 552 023e 7A60     		str	r2, [r7, #4]
+ 553              		.loc 1 142 15
+ 554 0240 1B78     		ldrb	r3, [r3]
+ 555 0242 87F82730 		strb	r3, [r7, #39]
+ 143:printf.c      ****             if (ch=='0') {
+ 556              		.loc 1 143 16
+ 557 0246 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 558 024a 302B     		cmp	r3, #48
+ 559 024c 08D1     		bne	.L40
+ 144:printf.c      ****                 ch=*(fmt++);
+ 560              		.loc 1 144 25
+ 561 024e 7B68     		ldr	r3, [r7, #4]
+ 562 0250 5A1C     		adds	r2, r3, #1
+ 563 0252 7A60     		str	r2, [r7, #4]
+ 564              		.loc 1 144 19
+ 565 0254 1B78     		ldrb	r3, [r3]
+ 566 0256 87F82730 		strb	r3, [r7, #39]
+ 145:printf.c      ****                 lz=1;
+ 567              		.loc 1 145 19
+ 568 025a 0123     		movs	r3, #1
+ 569 025c 87F82630 		strb	r3, [r7, #38]
+ 570              	.L40:
+ 146:printf.c      ****                 }
+ 147:printf.c      ****             if (ch>='0' && ch<='9') {
+ 571              		.loc 1 147 16
+ 572 0260 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 573 0264 2F2B     		cmp	r3, #47
+ 574 0266 0ED9     		bls	.L41
+ 575              		.loc 1 147 25 discriminator 1
+ 576 0268 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 577 026c 392B     		cmp	r3, #57
+ 578 026e 0AD8     		bhi	.L41
+ 148:printf.c      ****                 ch=a2i(ch,&fmt,10,&w);
+ 579              		.loc 1 148 20
+ 580 0270 07F11403 		add	r3, r7, #20
+ 581 0274 391D     		adds	r1, r7, #4
+ 582 0276 97F82700 		ldrb	r0, [r7, #39]	@ zero_extendqisi2
+ 583 027a 0A22     		movs	r2, #10
+ 584 027c FFF757FF 		bl	a2i
+ 585 0280 0346     		mov	r3, r0
+ 586 0282 87F82730 		strb	r3, [r7, #39]
+ 587              	.L41:
+ 149:printf.c      ****                 }
+ 150:printf.c      **** #ifdef  PRINTF_LONG_SUPPORT
+ 151:printf.c      ****             if (ch=='l') {
+ 152:printf.c      ****                 ch=*(fmt++);
+ 153:printf.c      ****                 lng=1;
+ 154:printf.c      ****             }
+ 155:printf.c      **** #endif
+ 156:printf.c      ****             switch (ch) {
+ 588              		.loc 1 156 13
+ 589 0286 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 590 028a 782B     		cmp	r3, #120
+ 591 028c 00F3B880 		bgt	.L55
+ 592 0290 582B     		cmp	r3, #88
+ 593 0292 06DA     		bge	.L43
+ 594 0294 002B     		cmp	r3, #0
+ 595 0296 00F0C080 		beq	.L56
+ 596 029a 252B     		cmp	r3, #37
+ 597 029c 00F0AA80 		beq	.L45
+ 157:printf.c      ****                 case 0: 
+ 158:printf.c      ****                     goto abort;
+ 159:printf.c      ****                 case 'u' : {
+ 160:printf.c      **** #ifdef  PRINTF_LONG_SUPPORT
+ 161:printf.c      ****                     if (lng)
+ 162:printf.c      ****                         uli2a(va_arg(va, unsigned long int),10,0,bf);
+ 163:printf.c      ****                     else
+ 164:printf.c      **** #endif
+ 165:printf.c      ****                     ui2a(va_arg(va, unsigned int),10,0,bf);
+ 166:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 167:printf.c      ****                     break;
+ 168:printf.c      ****                     }
+ 169:printf.c      ****                 case 'd' :  {
+ 170:printf.c      **** #ifdef  PRINTF_LONG_SUPPORT
+ 171:printf.c      ****                     if (lng)
+ 172:printf.c      ****                         li2a(va_arg(va, unsigned long int),bf);
+ 173:printf.c      ****                     else
+ 174:printf.c      **** #endif
+ 175:printf.c      ****                     i2a(va_arg(va, int),bf);
+ 176:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 177:printf.c      ****                     break;
+ 178:printf.c      ****                     }
+ 179:printf.c      ****                 case 'x': case 'X' : 
+ 180:printf.c      **** #ifdef  PRINTF_LONG_SUPPORT
+ 181:printf.c      ****                     if (lng)
+ 182:printf.c      ****                         uli2a(va_arg(va, unsigned long int),16,(ch=='X'),bf);
+ 183:printf.c      ****                     else
+ 184:printf.c      **** #endif
+ 185:printf.c      ****                     ui2a(va_arg(va, unsigned int),16,(ch=='X'),bf);
+ 186:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 187:printf.c      ****                     break;
+ 188:printf.c      ****                 case 'c' : 
+ 189:printf.c      ****                     putf(putp,(char)(va_arg(va, int)));
+ 190:printf.c      ****                     break;
+ 191:printf.c      ****                 case 's' : 
+ 192:printf.c      ****                     putchw(putp,putf,w,0,va_arg(va, char*));
+ 193:printf.c      ****                     break;
+ 194:printf.c      ****                 case '%' :
+ 195:printf.c      ****                     putf(putp,ch);
+ 196:printf.c      ****                 default:
+ 197:printf.c      ****                     break;
+ 598              		.loc 1 197 21
+ 599 02a0 AEE0     		b	.L55
+ 600              	.L43:
+ 156:printf.c      ****                 case 0: 
+ 601              		.loc 1 156 13
+ 602 02a2 583B     		subs	r3, r3, #88
+ 603 02a4 202B     		cmp	r3, #32
+ 604 02a6 00F2AB80 		bhi	.L55
+ 605 02aa 01A2     		adr	r2, .L47
+ 606 02ac 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 607              		.p2align 2
+ 608              	.L47:
+ 609 02b0 8D030000 		.word	.L46+1
+ 610 02b4 01040000 		.word	.L55+1
+ 611 02b8 01040000 		.word	.L55+1
+ 612 02bc 01040000 		.word	.L55+1
+ 613 02c0 01040000 		.word	.L55+1
+ 614 02c4 01040000 		.word	.L55+1
+ 615 02c8 01040000 		.word	.L55+1
+ 616 02cc 01040000 		.word	.L55+1
+ 617 02d0 01040000 		.word	.L55+1
+ 618 02d4 01040000 		.word	.L55+1
+ 619 02d8 01040000 		.word	.L55+1
+ 620 02dc C7030000 		.word	.L51+1
+ 621 02e0 61030000 		.word	.L50+1
+ 622 02e4 01040000 		.word	.L55+1
+ 623 02e8 01040000 		.word	.L55+1
+ 624 02ec 01040000 		.word	.L55+1
+ 625 02f0 01040000 		.word	.L55+1
+ 626 02f4 01040000 		.word	.L55+1
+ 627 02f8 01040000 		.word	.L55+1
+ 628 02fc 01040000 		.word	.L55+1
+ 629 0300 01040000 		.word	.L55+1
+ 630 0304 01040000 		.word	.L55+1
+ 631 0308 01040000 		.word	.L55+1
+ 632 030c 01040000 		.word	.L55+1
+ 633 0310 01040000 		.word	.L55+1
+ 634 0314 01040000 		.word	.L55+1
+ 635 0318 01040000 		.word	.L55+1
+ 636 031c DB030000 		.word	.L49+1
+ 637 0320 01040000 		.word	.L55+1
+ 638 0324 35030000 		.word	.L48+1
+ 639 0328 01040000 		.word	.L55+1
+ 640 032c 01040000 		.word	.L55+1
+ 641 0330 8D030000 		.word	.L46+1
+ 642              		.p2align 1
+ 643              	.L48:
+ 165:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 644              		.loc 1 165 21
+ 645 0334 3B68     		ldr	r3, [r7]
+ 646 0336 1A1D     		adds	r2, r3, #4
+ 647 0338 3A60     		str	r2, [r7]
+ 648 033a 1868     		ldr	r0, [r3]
+ 165:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 649              		.loc 1 165 21 is_stmt 0 discriminator 1
+ 650 033c 07F11803 		add	r3, r7, #24
+ 651 0340 0022     		movs	r2, #0
+ 652 0342 0A21     		movs	r1, #10
+ 653 0344 FFF75CFE 		bl	ui2a
+ 166:printf.c      ****                     break;
+ 654              		.loc 1 166 21 is_stmt 1
+ 655 0348 7A69     		ldr	r2, [r7, #20]
+ 656 034a 97F82610 		ldrb	r1, [r7, #38]	@ zero_extendqisi2
+ 657 034e 07F11803 		add	r3, r7, #24
+ 658 0352 0093     		str	r3, [sp]
+ 659 0354 0B46     		mov	r3, r1
+ 660 0356 B968     		ldr	r1, [r7, #8]
+ 661 0358 F868     		ldr	r0, [r7, #12]
+ 662 035a FFF71BFF 		bl	putchw
+ 167:printf.c      ****                     }
+ 663              		.loc 1 167 21
+ 664 035e 50E0     		b	.L37
+ 665              	.L50:
+ 175:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 666              		.loc 1 175 21
+ 667 0360 3B68     		ldr	r3, [r7]
+ 668 0362 1A1D     		adds	r2, r3, #4
+ 669 0364 3A60     		str	r2, [r7]
+ 670 0366 1B68     		ldr	r3, [r3]
+ 175:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 671              		.loc 1 175 21 is_stmt 0 discriminator 1
+ 672 0368 07F11802 		add	r2, r7, #24
+ 673 036c 1146     		mov	r1, r2
+ 674 036e 1846     		mov	r0, r3
+ 675 0370 FFF79CFE 		bl	i2a
+ 176:printf.c      ****                     break;
+ 676              		.loc 1 176 21 is_stmt 1
+ 677 0374 7A69     		ldr	r2, [r7, #20]
+ 678 0376 97F82610 		ldrb	r1, [r7, #38]	@ zero_extendqisi2
+ 679 037a 07F11803 		add	r3, r7, #24
+ 680 037e 0093     		str	r3, [sp]
+ 681 0380 0B46     		mov	r3, r1
+ 682 0382 B968     		ldr	r1, [r7, #8]
+ 683 0384 F868     		ldr	r0, [r7, #12]
+ 684 0386 FFF705FF 		bl	putchw
+ 177:printf.c      ****                     }
+ 685              		.loc 1 177 21
+ 686 038a 3AE0     		b	.L37
+ 687              	.L46:
+ 185:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 688              		.loc 1 185 21
+ 689 038c 3B68     		ldr	r3, [r7]
+ 690 038e 1A1D     		adds	r2, r3, #4
+ 691 0390 3A60     		str	r2, [r7]
+ 692 0392 1868     		ldr	r0, [r3]
+ 185:printf.c      ****                     putchw(putp,putf,w,lz,bf);
+ 693              		.loc 1 185 21 is_stmt 0 discriminator 1
+ 694 0394 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 695 0398 582B     		cmp	r3, #88
+ 696 039a 0CBF     		ite	eq
+ 697 039c 0123     		moveq	r3, #1
+ 698 039e 0023     		movne	r3, #0
+ 699 03a0 DBB2     		uxtb	r3, r3
+ 700 03a2 1A46     		mov	r2, r3
+ 701 03a4 07F11803 		add	r3, r7, #24
+ 702 03a8 1021     		movs	r1, #16
+ 703 03aa FFF729FE 		bl	ui2a
+ 186:printf.c      ****                     break;
+ 704              		.loc 1 186 21 is_stmt 1
+ 705 03ae 7A69     		ldr	r2, [r7, #20]
+ 706 03b0 97F82610 		ldrb	r1, [r7, #38]	@ zero_extendqisi2
+ 707 03b4 07F11803 		add	r3, r7, #24
+ 708 03b8 0093     		str	r3, [sp]
+ 709 03ba 0B46     		mov	r3, r1
+ 710 03bc B968     		ldr	r1, [r7, #8]
+ 711 03be F868     		ldr	r0, [r7, #12]
+ 712 03c0 FFF7E8FE 		bl	putchw
+ 187:printf.c      ****                 case 'c' : 
+ 713              		.loc 1 187 21
+ 714 03c4 1DE0     		b	.L37
+ 715              	.L51:
+ 189:printf.c      ****                     break;
+ 716              		.loc 1 189 38
+ 717 03c6 3B68     		ldr	r3, [r7]
+ 718 03c8 1A1D     		adds	r2, r3, #4
+ 719 03ca 3A60     		str	r2, [r7]
+ 720 03cc 1B68     		ldr	r3, [r3]
+ 189:printf.c      ****                     break;
+ 721              		.loc 1 189 21 discriminator 1
+ 722 03ce DAB2     		uxtb	r2, r3
+ 723 03d0 BB68     		ldr	r3, [r7, #8]
+ 724 03d2 1146     		mov	r1, r2
+ 725 03d4 F868     		ldr	r0, [r7, #12]
+ 726 03d6 9847     		blx	r3
+ 727              	.LVL3:
+ 190:printf.c      ****                 case 's' : 
+ 728              		.loc 1 190 21
+ 729 03d8 13E0     		b	.L37
+ 730              	.L49:
+ 192:printf.c      ****                     break;
+ 731              		.loc 1 192 21
+ 732 03da 7969     		ldr	r1, [r7, #20]
+ 733 03dc 3B68     		ldr	r3, [r7]
+ 734 03de 1A1D     		adds	r2, r3, #4
+ 735 03e0 3A60     		str	r2, [r7]
+ 736 03e2 1B68     		ldr	r3, [r3]
+ 192:printf.c      ****                     break;
+ 737              		.loc 1 192 21 is_stmt 0 discriminator 1
+ 738 03e4 0093     		str	r3, [sp]
+ 739 03e6 0023     		movs	r3, #0
+ 740 03e8 0A46     		mov	r2, r1
+ 741 03ea B968     		ldr	r1, [r7, #8]
+ 742 03ec F868     		ldr	r0, [r7, #12]
+ 743 03ee FFF7D1FE 		bl	putchw
+ 193:printf.c      ****                 case '%' :
+ 744              		.loc 1 193 21 is_stmt 1
+ 745 03f2 06E0     		b	.L37
+ 746              	.L45:
+ 195:printf.c      ****                 default:
+ 747              		.loc 1 195 21
+ 748 03f4 97F82720 		ldrb	r2, [r7, #39]	@ zero_extendqisi2
+ 749 03f8 BB68     		ldr	r3, [r7, #8]
+ 750 03fa 1146     		mov	r1, r2
+ 751 03fc F868     		ldr	r0, [r7, #12]
+ 752 03fe 9847     		blx	r3
+ 753              	.LVL4:
+ 754              	.L55:
+ 755              		.loc 1 197 21
+ 756 0400 00BF     		nop
+ 757              	.L37:
+ 758              	.LBE3:
+ 133:printf.c      ****         if (ch!='%') 
+ 759              		.loc 1 133 21
+ 760 0402 7B68     		ldr	r3, [r7, #4]
+ 761 0404 5A1C     		adds	r2, r3, #1
+ 762 0406 7A60     		str	r2, [r7, #4]
+ 133:printf.c      ****         if (ch!='%') 
+ 763              		.loc 1 133 15
+ 764 0408 1B78     		ldrb	r3, [r3]
+ 765 040a 87F82730 		strb	r3, [r7, #39]
+ 133:printf.c      ****         if (ch!='%') 
+ 766              		.loc 1 133 12
+ 767 040e 97F82730 		ldrb	r3, [r7, #39]	@ zero_extendqisi2
+ 768 0412 002B     		cmp	r3, #0
+ 769 0414 7FF401AF 		bne	.L54
+ 198:printf.c      ****                 }
+ 199:printf.c      ****             }
+ 200:printf.c      ****         }
+ 201:printf.c      ****     abort:;
+ 770              		.loc 1 201 5
+ 771 0418 00E0     		b	.L52
+ 772              	.L56:
+ 773              	.LBB4:
+ 158:printf.c      ****                 case 'u' : {
+ 774              		.loc 1 158 21 discriminator 1
+ 775 041a 00BF     		nop
+ 776              	.L52:
+ 777              	.LBE4:
+ 202:printf.c      ****     }
+ 778              		.loc 1 202 5
+ 779 041c 00BF     		nop
+ 780 041e 2837     		adds	r7, r7, #40
+ 781              		.cfi_def_cfa_offset 8
+ 782 0420 BD46     		mov	sp, r7
+ 783              		.cfi_def_cfa_register 13
+ 784              		@ sp needed
+ 785 0422 80BD     		pop	{r7, pc}
+ 786              		.cfi_endproc
+ 787              	.LFE5:
+ 789              		.align	1
+ 790              		.global	init_printf
+ 791              		.syntax unified
+ 792              		.thumb
+ 793              		.thumb_func
+ 795              	init_printf:
+ 796              	.LFB6:
+ 203:printf.c      **** 
+ 204:printf.c      **** 
+ 205:printf.c      **** void init_printf(void* putp,void (*putf) (void*,char))
+ 206:printf.c      ****     {
+ 797              		.loc 1 206 5
+ 798              		.cfi_startproc
+ 799              		@ args = 0, pretend = 0, frame = 8
+ 800              		@ frame_needed = 1, uses_anonymous_args = 0
+ 801              		@ link register save eliminated.
+ 802 0424 80B4     		push	{r7}
+ 803              		.cfi_def_cfa_offset 4
+ 804              		.cfi_offset 7, -4
+ 805 0426 83B0     		sub	sp, sp, #12
+ 806              		.cfi_def_cfa_offset 16
+ 807 0428 00AF     		add	r7, sp, #0
+ 808              		.cfi_def_cfa_register 7
+ 809 042a 7860     		str	r0, [r7, #4]
+ 810 042c 3960     		str	r1, [r7]
+ 207:printf.c      ****     stdout_putf=putf;
+ 811              		.loc 1 207 16
+ 812 042e 054A     		ldr	r2, .L59
+ 813 0430 3B68     		ldr	r3, [r7]
+ 814 0432 1360     		str	r3, [r2]
+ 208:printf.c      ****     stdout_putp=putp;
+ 815              		.loc 1 208 16
+ 816 0434 044A     		ldr	r2, .L59+4
+ 817 0436 7B68     		ldr	r3, [r7, #4]
+ 818 0438 1360     		str	r3, [r2]
+ 209:printf.c      ****     }
+ 819              		.loc 1 209 5
+ 820 043a 00BF     		nop
+ 821 043c 0C37     		adds	r7, r7, #12
+ 822              		.cfi_def_cfa_offset 4
+ 823 043e BD46     		mov	sp, r7
+ 824              		.cfi_def_cfa_register 13
+ 825              		@ sp needed
+ 826 0440 80BC     		pop	{r7}
+ 827              		.cfi_restore 7
+ 828              		.cfi_def_cfa_offset 0
+ 829 0442 7047     		bx	lr
+ 830              	.L60:
+ 831              		.align	2
+ 832              	.L59:
+ 833 0444 00000000 		.word	stdout_putf
+ 834 0448 04000000 		.word	stdout_putp
+ 835              		.cfi_endproc
+ 836              	.LFE6:
+ 838              		.align	1
+ 839              		.global	tfp_printf
+ 840              		.syntax unified
+ 841              		.thumb
+ 842              		.thumb_func
+ 844              	tfp_printf:
+ 845              	.LFB7:
+ 210:printf.c      **** 
+ 211:printf.c      **** void tfp_printf(char *fmt, ...)
+ 212:printf.c      ****     {
+ 846              		.loc 1 212 5
+ 847              		.cfi_startproc
+ 848              		@ args = 4, pretend = 16, frame = 8
+ 849              		@ frame_needed = 1, uses_anonymous_args = 1
+ 850 044c 0FB4     		push	{r0, r1, r2, r3}
+ 851              		.cfi_def_cfa_offset 16
+ 852              		.cfi_offset 0, -16
+ 853              		.cfi_offset 1, -12
+ 854              		.cfi_offset 2, -8
+ 855              		.cfi_offset 3, -4
+ 856 044e 80B5     		push	{r7, lr}
+ 857              		.cfi_def_cfa_offset 24
+ 858              		.cfi_offset 7, -24
+ 859              		.cfi_offset 14, -20
+ 860 0450 82B0     		sub	sp, sp, #8
+ 861              		.cfi_def_cfa_offset 32
+ 862 0452 00AF     		add	r7, sp, #0
+ 863              		.cfi_def_cfa_register 7
+ 213:printf.c      ****     va_list va;
+ 214:printf.c      ****     va_start(va,fmt);
+ 864              		.loc 1 214 5
+ 865 0454 07F11403 		add	r3, r7, #20
+ 866 0458 7B60     		str	r3, [r7, #4]
+ 215:printf.c      ****     tfp_format(stdout_putp,stdout_putf,fmt,va);
+ 867              		.loc 1 215 5
+ 868 045a 074B     		ldr	r3, .L62
+ 869 045c 1868     		ldr	r0, [r3]
+ 870 045e 074B     		ldr	r3, .L62+4
+ 871 0460 1968     		ldr	r1, [r3]
+ 872 0462 7B68     		ldr	r3, [r7, #4]
+ 873 0464 3A69     		ldr	r2, [r7, #16]
+ 874 0466 FFF7FEFF 		bl	tfp_format
+ 216:printf.c      ****     va_end(va);
+ 217:printf.c      ****     }
+ 875              		.loc 1 217 5
+ 876 046a 00BF     		nop
+ 877 046c 0837     		adds	r7, r7, #8
+ 878              		.cfi_def_cfa_offset 24
+ 879 046e BD46     		mov	sp, r7
+ 880              		.cfi_def_cfa_register 13
+ 881              		@ sp needed
+ 882 0470 BDE88040 		pop	{r7, lr}
+ 883              		.cfi_restore 14
+ 884              		.cfi_restore 7
+ 885              		.cfi_def_cfa_offset 16
+ 886 0474 04B0     		add	sp, sp, #16
+ 887              		.cfi_restore 3
+ 888              		.cfi_restore 2
+ 889              		.cfi_restore 1
+ 890              		.cfi_restore 0
+ 891              		.cfi_def_cfa_offset 0
+ 892 0476 7047     		bx	lr
+ 893              	.L63:
+ 894              		.align	2
+ 895              	.L62:
+ 896 0478 04000000 		.word	stdout_putp
+ 897 047c 00000000 		.word	stdout_putf
+ 898              		.cfi_endproc
+ 899              	.LFE7:
+ 901              		.align	1
+ 902              		.syntax unified
+ 903              		.thumb
+ 904              		.thumb_func
+ 906              	putcp:
+ 907              	.LFB8:
+ 218:printf.c      **** 
+ 219:printf.c      **** static void putcp(void* p,char c)
+ 220:printf.c      ****     {
+ 908              		.loc 1 220 5
+ 909              		.cfi_startproc
+ 910              		@ args = 0, pretend = 0, frame = 8
+ 911              		@ frame_needed = 1, uses_anonymous_args = 0
+ 912              		@ link register save eliminated.
+ 913 0480 80B4     		push	{r7}
+ 914              		.cfi_def_cfa_offset 4
+ 915              		.cfi_offset 7, -4
+ 916 0482 83B0     		sub	sp, sp, #12
+ 917              		.cfi_def_cfa_offset 16
+ 918 0484 00AF     		add	r7, sp, #0
+ 919              		.cfi_def_cfa_register 7
+ 920 0486 7860     		str	r0, [r7, #4]
+ 921 0488 0B46     		mov	r3, r1
+ 922 048a FB70     		strb	r3, [r7, #3]
+ 221:printf.c      ****     *(*((char**)p))++ = c;
+ 923              		.loc 1 221 7
+ 924 048c 7B68     		ldr	r3, [r7, #4]
+ 925 048e 1B68     		ldr	r3, [r3]
+ 926              		.loc 1 221 20
+ 927 0490 591C     		adds	r1, r3, #1
+ 928 0492 7A68     		ldr	r2, [r7, #4]
+ 929 0494 1160     		str	r1, [r2]
+ 930              		.loc 1 221 23
+ 931 0496 FA78     		ldrb	r2, [r7, #3]
+ 932 0498 1A70     		strb	r2, [r3]
+ 222:printf.c      ****     }
+ 933              		.loc 1 222 5
+ 934 049a 00BF     		nop
+ 935 049c 0C37     		adds	r7, r7, #12
+ 936              		.cfi_def_cfa_offset 4
+ 937 049e BD46     		mov	sp, r7
+ 938              		.cfi_def_cfa_register 13
+ 939              		@ sp needed
+ 940 04a0 80BC     		pop	{r7}
+ 941              		.cfi_restore 7
+ 942              		.cfi_def_cfa_offset 0
+ 943 04a2 7047     		bx	lr
+ 944              		.cfi_endproc
+ 945              	.LFE8:
+ 947              		.align	1
+ 948              		.global	tfp_sprintf
+ 949              		.syntax unified
+ 950              		.thumb
+ 951              		.thumb_func
+ 953              	tfp_sprintf:
+ 954              	.LFB9:
+ 223:printf.c      **** 
+ 224:printf.c      **** 
+ 225:printf.c      **** 
+ 226:printf.c      **** void tfp_sprintf(char* s,char *fmt, ...)
+ 227:printf.c      ****     {
+ 955              		.loc 1 227 5
+ 956              		.cfi_startproc
+ 957              		@ args = 4, pretend = 12, frame = 16
+ 958              		@ frame_needed = 1, uses_anonymous_args = 1
+ 959 04a4 0EB4     		push	{r1, r2, r3}
+ 960              		.cfi_def_cfa_offset 12
+ 961              		.cfi_offset 1, -12
+ 962              		.cfi_offset 2, -8
+ 963              		.cfi_offset 3, -4
+ 964 04a6 80B5     		push	{r7, lr}
+ 965              		.cfi_def_cfa_offset 20
+ 966              		.cfi_offset 7, -20
+ 967              		.cfi_offset 14, -16
+ 968 04a8 85B0     		sub	sp, sp, #20
+ 969              		.cfi_def_cfa_offset 40
+ 970 04aa 00AF     		add	r7, sp, #0
+ 971              		.cfi_def_cfa_register 7
+ 972 04ac 7860     		str	r0, [r7, #4]
+ 228:printf.c      ****     va_list va;
+ 229:printf.c      ****     va_start(va,fmt);
+ 973              		.loc 1 229 5
+ 974 04ae 07F12003 		add	r3, r7, #32
+ 975 04b2 FB60     		str	r3, [r7, #12]
+ 230:printf.c      ****     tfp_format(&s,putcp,fmt,va);
+ 976              		.loc 1 230 5
+ 977 04b4 381D     		adds	r0, r7, #4
+ 978 04b6 FB68     		ldr	r3, [r7, #12]
+ 979 04b8 FA69     		ldr	r2, [r7, #28]
+ 980 04ba 0749     		ldr	r1, .L66
+ 981 04bc FFF7FEFF 		bl	tfp_format
+ 231:printf.c      ****     putcp(&s,0);
+ 982              		.loc 1 231 5
+ 983 04c0 3B1D     		adds	r3, r7, #4
+ 984 04c2 0021     		movs	r1, #0
+ 985 04c4 1846     		mov	r0, r3
+ 986 04c6 FFF7DBFF 		bl	putcp
+ 232:printf.c      ****     va_end(va);
+ 233:printf.c      ****     }...
+ 987              		.loc 1 233 5
+ 988 04ca 00BF     		nop
+ 989 04cc 1437     		adds	r7, r7, #20
+ 990              		.cfi_def_cfa_offset 20
+ 991 04ce BD46     		mov	sp, r7
+ 992              		.cfi_def_cfa_register 13
+ 993              		@ sp needed
+ 994 04d0 BDE88040 		pop	{r7, lr}
+ 995              		.cfi_restore 14
+ 996              		.cfi_restore 7
+ 997              		.cfi_def_cfa_offset 12
+ 998 04d4 03B0     		add	sp, sp, #12
+ 999              		.cfi_restore 3
+ 1000              		.cfi_restore 2
+ 1001              		.cfi_restore 1
+ 1002              		.cfi_def_cfa_offset 0
+ 1003 04d6 7047     		bx	lr
+ 1004              	.L67:
+ 1005              		.align	2
+ 1006              	.L66:
+ 1007 04d8 00000000 		.word	putcp
+ 1008              		.cfi_endproc
+ 1009              	.LFE9:
+ 1011              	.Letext0:
+ 1012              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+ 1013              		.file 3 "<built-in>"
+DEFINED SYMBOLS
+                            *ABS*:00000000 printf.c
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:19     .bss:00000000 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:20     .bss:00000000 stdout_putf
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:24     .bss:00000004 stdout_putp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:28     .text:00000000 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:33     .text:00000000 ui2a
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:174    .text:000000ac i2a
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:228    .text:000000e0 a2d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:305    .text:0000012e a2i
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:395    .text:00000194 putchw
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:508    .text:0000020a tfp_format
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:609    .text:000002b0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:642    .text:00000334 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:795    .text:00000424 init_printf
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:833    .text:00000444 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:838    .text:0000044c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:844    .text:0000044c tfp_printf
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:896    .text:00000478 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:901    .text:00000480 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:906    .text:00000480 putcp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:953    .text:000004a4 tfp_sprintf
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//cc1vvyQC.s:1007   .text:000004d8 $d
+
+NO UNDEFINED SYMBOLS

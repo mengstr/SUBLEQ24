@@ -845,7 +845,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 9179c37f-7d04-453c-aa8e-235b35a9d9a9)
     )
-    (fp_text value "74HCT541" (at -103.82 81.731) (layer "F.Fab")
+    (fp_text value "74HCT541" (at -103.82 81.731) (layer "F.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 81464f5f-84ab-4ff3-bfd0-9ab36f625474)
     )

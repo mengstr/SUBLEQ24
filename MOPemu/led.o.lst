@@ -1,0 +1,228 @@
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"led.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "led.c"
+  18              		.align	1
+  19              		.global	led_enable
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	led_enable:
+  25              	.LFB0:
+   1:led.c         **** #include "led.h"
+   2:led.c         **** 
+   3:led.c         **** // MODE13[1:0] is bits 21,20.
+   4:led.c         **** #define PC13_MODE_BP ((PC13 - 8) * 4)
+   5:led.c         **** 
+   6:led.c         **** // CNF13[1:0] is bits 23,22.
+   7:led.c         **** #define PC13_CRH_BP (PC13_MODE_BP + 2)
+   8:led.c         **** 
+   9:led.c         **** void led_enable(void) {
+  26              		.loc 1 9 23
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30 0000 80B5     		push	{r7, lr}
+  31              		.cfi_def_cfa_offset 8
+  32              		.cfi_offset 7, -8
+  33              		.cfi_offset 14, -4
+  34 0002 82B0     		sub	sp, sp, #8
+  35              		.cfi_def_cfa_offset 16
+  36 0004 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  10:led.c         ****   uint32_t *pRCC_APB2ENR = (uint32_t *)RCC_APB2ENR;
+  38              		.loc 1 10 13
+  39 0006 114B     		ldr	r3, .L2
+  40 0008 7B60     		str	r3, [r7, #4]
+  11:led.c         ****   uint32_t *pGPIOC_CRH = (uint32_t *)GPIOC_CRH;
+  41              		.loc 1 11 13
+  42 000a 114B     		ldr	r3, .L2+4
+  43 000c 3B60     		str	r3, [r7]
+  12:led.c         **** 
+  13:led.c         ****   // RCC_APB2ENR: Set IOPC_EN 1: :I/O port C clock enabled
+  14:led.c         ****   *pRCC_APB2ENR |= ( 1 << IOPC_EN );
+  44              		.loc 1 14 3
+  45 000e 7B68     		ldr	r3, [r7, #4]
+  46 0010 1B68     		ldr	r3, [r3]
+  47              		.loc 1 14 17
+  48 0012 43F01002 		orr	r2, r3, #16
+  49 0016 7B68     		ldr	r3, [r7, #4]
+  50 0018 1A60     		str	r2, [r3]
+  15:led.c         **** 
+  16:led.c         ****   // CRH: Set to 00: General purpose output push-pull
+  17:led.c         ****   *pGPIOC_CRH &= ~( 0b11 << PC13_CRH_BP );  // clear bits
+  51              		.loc 1 17 3
+  52 001a 3B68     		ldr	r3, [r7]
+  53 001c 1B68     		ldr	r3, [r3]
+  54              		.loc 1 17 15
+  55 001e 23F44002 		bic	r2, r3, #12582912
+  56 0022 3B68     		ldr	r3, [r7]
+  57 0024 1A60     		str	r2, [r3]
+  18:led.c         **** 
+  19:led.c         ****   // MODE: Set to 01: Output mode, max speed 10 MHz.
+  20:led.c         ****   *pGPIOC_CRH &= ~( 0b11 << PC13_MODE_BP );  // clear bits
+  58              		.loc 1 20 3
+  59 0026 3B68     		ldr	r3, [r7]
+  60 0028 1B68     		ldr	r3, [r3]
+  61              		.loc 1 20 15
+  62 002a 23F44012 		bic	r2, r3, #3145728
+  63 002e 3B68     		ldr	r3, [r7]
+  64 0030 1A60     		str	r2, [r3]
+  21:led.c         ****   *pGPIOC_CRH |= ( 0b01 << PC13_MODE_BP );   // set the new value
+  65              		.loc 1 21 3
+  66 0032 3B68     		ldr	r3, [r7]
+  67 0034 1B68     		ldr	r3, [r3]
+  68              		.loc 1 21 15
+  69 0036 43F48012 		orr	r2, r3, #1048576
+  70 003a 3B68     		ldr	r3, [r7]
+  71 003c 1A60     		str	r2, [r3]
+  22:led.c         **** 
+  23:led.c         ****   led_off();
+  72              		.loc 1 23 3
+  73 003e FFF7FEFF 		bl	led_off
+  24:led.c         **** }
+  74              		.loc 1 24 1
+  75 0042 00BF     		nop
+  76 0044 0837     		adds	r7, r7, #8
+  77              		.cfi_def_cfa_offset 8
+  78 0046 BD46     		mov	sp, r7
+  79              		.cfi_def_cfa_register 13
+  80              		@ sp needed
+  81 0048 80BD     		pop	{r7, pc}
+  82              	.L3:
+  83 004a 00BF     		.align	2
+  84              	.L2:
+  85 004c 18100240 		.word	1073877016
+  86 0050 04100140 		.word	1073811460
+  87              		.cfi_endproc
+  88              	.LFE0:
+  90              		.align	1
+  91              		.global	led_on
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	led_on:
+  97              	.LFB1:
+  25:led.c         **** 
+  26:led.c         **** void led_on(void) {
+  98              		.loc 1 26 19
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 8
+ 101              		@ frame_needed = 1, uses_anonymous_args = 0
+ 102              		@ link register save eliminated.
+ 103 0054 80B4     		push	{r7}
+ 104              		.cfi_def_cfa_offset 4
+ 105              		.cfi_offset 7, -4
+ 106 0056 83B0     		sub	sp, sp, #12
+ 107              		.cfi_def_cfa_offset 16
+ 108 0058 00AF     		add	r7, sp, #0
+ 109              		.cfi_def_cfa_register 7
+  27:led.c         ****   uint32_t *pGPIOC_ODR = (uint32_t *)GPIOC_ODR;
+ 110              		.loc 1 27 13
+ 111 005a 064B     		ldr	r3, .L5
+ 112 005c 7B60     		str	r3, [r7, #4]
+  28:led.c         ****   *pGPIOC_ODR |= ( 1 << PC13);
+ 113              		.loc 1 28 3
+ 114 005e 7B68     		ldr	r3, [r7, #4]
+ 115 0060 1B68     		ldr	r3, [r3]
+ 116              		.loc 1 28 15
+ 117 0062 43F40052 		orr	r2, r3, #8192
+ 118 0066 7B68     		ldr	r3, [r7, #4]
+ 119 0068 1A60     		str	r2, [r3]
+  29:led.c         **** }
+ 120              		.loc 1 29 1
+ 121 006a 00BF     		nop
+ 122 006c 0C37     		adds	r7, r7, #12
+ 123              		.cfi_def_cfa_offset 4
+ 124 006e BD46     		mov	sp, r7
+ 125              		.cfi_def_cfa_register 13
+ 126              		@ sp needed
+ 127 0070 80BC     		pop	{r7}
+ 128              		.cfi_restore 7
+ 129              		.cfi_def_cfa_offset 0
+ 130 0072 7047     		bx	lr
+ 131              	.L6:
+ 132              		.align	2
+ 133              	.L5:
+ 134 0074 0C100140 		.word	1073811468
+ 135              		.cfi_endproc
+ 136              	.LFE1:
+ 138              		.align	1
+ 139              		.global	led_off
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 144              	led_off:
+ 145              	.LFB2:
+  30:led.c         **** 
+  31:led.c         **** void led_off(void) {
+ 146              		.loc 1 31 20
+ 147              		.cfi_startproc
+ 148              		@ args = 0, pretend = 0, frame = 8
+ 149              		@ frame_needed = 1, uses_anonymous_args = 0
+ 150              		@ link register save eliminated.
+ 151 0078 80B4     		push	{r7}
+ 152              		.cfi_def_cfa_offset 4
+ 153              		.cfi_offset 7, -4
+ 154 007a 83B0     		sub	sp, sp, #12
+ 155              		.cfi_def_cfa_offset 16
+ 156 007c 00AF     		add	r7, sp, #0
+ 157              		.cfi_def_cfa_register 7
+  32:led.c         ****   uint32_t *pGPIOC_ODR = (uint32_t *)GPIOC_ODR;
+ 158              		.loc 1 32 13
+ 159 007e 064B     		ldr	r3, .L8
+ 160 0080 7B60     		str	r3, [r7, #4]
+  33:led.c         ****   *pGPIOC_ODR  &= ~( 1 << PC13);
+ 161              		.loc 1 33 3
+ 162 0082 7B68     		ldr	r3, [r7, #4]
+ 163 0084 1B68     		ldr	r3, [r3]
+ 164              		.loc 1 33 16
+ 165 0086 23F40052 		bic	r2, r3, #8192
+ 166 008a 7B68     		ldr	r3, [r7, #4]
+ 167 008c 1A60     		str	r2, [r3]
+  34:led.c         **** }
+ 168              		.loc 1 34 1
+ 169 008e 00BF     		nop
+ 170 0090 0C37     		adds	r7, r7, #12
+ 171              		.cfi_def_cfa_offset 4
+ 172 0092 BD46     		mov	sp, r7
+ 173              		.cfi_def_cfa_register 13
+ 174              		@ sp needed
+ 175 0094 80BC     		pop	{r7}
+ 176              		.cfi_restore 7
+ 177              		.cfi_def_cfa_offset 0
+ 178 0096 7047     		bx	lr
+ 179              	.L9:
+ 180              		.align	2
+ 181              	.L8:
+ 182 0098 0C100140 		.word	1073811468
+ 183              		.cfi_endproc
+ 184              	.LFE2:
+ 186              	.Letext0:
+ 187              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+DEFINED SYMBOLS
+                            *ABS*:00000000 led.c
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:18     .text:00000000 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:24     .text:00000000 led_enable
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:144    .text:00000078 led_off
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:85     .text:0000004c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:90     .text:00000054 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:96     .text:00000054 led_on
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:134    .text:00000074 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:138    .text:00000078 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccyStgrU.s:182    .text:00000098 $d
+
+NO UNDEFINED SYMBOLS

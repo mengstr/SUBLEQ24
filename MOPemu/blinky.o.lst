@@ -1,0 +1,3384 @@
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"blinky.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "blinky.c"
+  18              		.align	1
+  19              		.global	setclocks
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	setclocks:
+  25              	.LFB27:
+   1:blinky.c      **** #include "delay.h"
+   2:blinky.c      **** // #include "hal_gpio.h"
+   3:blinky.c      **** #include "led.h"
+   4:blinky.c      **** #include "printf.h"
+   5:blinky.c      **** #include "stm32f10x.h"
+   6:blinky.c      **** 
+   7:blinky.c      **** #include <stdint.h>
+   8:blinky.c      **** #include <stddef.h>
+   9:blinky.c      **** #include <stdbool.h>
+  10:blinky.c      **** 
+  11:blinky.c      **** // Set up the system clock for internal 8MHz HSI with PLL at 64MHz
+  12:blinky.c      **** void setclocks(void) {
+  26              		.loc 1 12 22
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 00AF     		add	r7, sp, #0
+  35              		.cfi_def_cfa_register 7
+  13:blinky.c      ****   // Enable HSI
+  14:blinky.c      ****   RCC->CR |= RCC_CR_HSION;
+  36              		.loc 1 14 6
+  37 0004 2D4B     		ldr	r3, .L5
+  38 0006 1B68     		ldr	r3, [r3]
+  39 0008 2C4A     		ldr	r2, .L5
+  40              		.loc 1 14 11
+  41 000a 43F00103 		orr	r3, r3, #1
+  42 000e 1360     		str	r3, [r2]
+  15:blinky.c      ****   // Wait until HSI is ready
+  16:blinky.c      ****   while ((RCC->CR & RCC_CR_HSIRDY) == 0)
+  43              		.loc 1 16 9
+  44 0010 00BF     		nop
+  45              	.L2:
+  46              		.loc 1 16 14 discriminator 1
+  47 0012 2A4B     		ldr	r3, .L5
+  48 0014 1B68     		ldr	r3, [r3]
+  49              		.loc 1 16 19 discriminator 1
+  50 0016 03F00203 		and	r3, r3, #2
+  51              		.loc 1 16 36 discriminator 1
+  52 001a 002B     		cmp	r3, #0
+  53 001c F9D0     		beq	.L2
+  17:blinky.c      ****     ;
+  18:blinky.c      **** 
+  19:blinky.c      ****   // Set flash latency to 2
+  20:blinky.c      ****   FLASH->ACR &= ~FLASH_ACR_LATENCY;
+  54              		.loc 1 20 8
+  55 001e 284B     		ldr	r3, .L5+4
+  56 0020 1B68     		ldr	r3, [r3]
+  57 0022 274A     		ldr	r2, .L5+4
+  58              		.loc 1 20 14
+  59 0024 23F00303 		bic	r3, r3, #3
+  60 0028 1360     		str	r3, [r2]
+  21:blinky.c      ****   FLASH->ACR |= FLASH_ACR_LATENCY_2;
+  61              		.loc 1 21 8
+  62 002a 254B     		ldr	r3, .L5+4
+  63 002c 1B68     		ldr	r3, [r3]
+  64 002e 244A     		ldr	r2, .L5+4
+  65              		.loc 1 21 14
+  66 0030 43F00203 		orr	r3, r3, #2
+  67 0034 1360     		str	r3, [r2]
+  22:blinky.c      **** 
+  23:blinky.c      ****   // Set PLL multiplication factor to 8
+  24:blinky.c      ****   RCC->CFGR &= ~RCC_CFGR_PLLMULL;
+  68              		.loc 1 24 6
+  69 0036 214B     		ldr	r3, .L5
+  70 0038 5B68     		ldr	r3, [r3, #4]
+  71 003a 204A     		ldr	r2, .L5
+  72              		.loc 1 24 13
+  73 003c 23F47013 		bic	r3, r3, #3932160
+  74 0040 5360     		str	r3, [r2, #4]
+  25:blinky.c      ****   RCC->CFGR |= RCC_CFGR_PLLMULL8;
+  75              		.loc 1 25 6
+  76 0042 1E4B     		ldr	r3, .L5
+  77 0044 5B68     		ldr	r3, [r3, #4]
+  78 0046 1D4A     		ldr	r2, .L5
+  79              		.loc 1 25 13
+  80 0048 43F4C013 		orr	r3, r3, #1572864
+  81 004c 5360     		str	r3, [r2, #4]
+  26:blinky.c      **** 
+  27:blinky.c      ****   // Enable PLL
+  28:blinky.c      ****   RCC->CR |= RCC_CR_PLLON;
+  82              		.loc 1 28 6
+  83 004e 1B4B     		ldr	r3, .L5
+  84 0050 1B68     		ldr	r3, [r3]
+  85 0052 1A4A     		ldr	r2, .L5
+  86              		.loc 1 28 11
+  87 0054 43F08073 		orr	r3, r3, #16777216
+  88 0058 1360     		str	r3, [r2]
+  29:blinky.c      ****   // Wait until PLL is ready
+  30:blinky.c      ****   while ((RCC->CR & RCC_CR_PLLRDY) == 0)
+  89              		.loc 1 30 9
+  90 005a 00BF     		nop
+  91              	.L3:
+  92              		.loc 1 30 14 discriminator 1
+  93 005c 174B     		ldr	r3, .L5
+  94 005e 1B68     		ldr	r3, [r3]
+  95              		.loc 1 30 19 discriminator 1
+  96 0060 03F00073 		and	r3, r3, #33554432
+  97              		.loc 1 30 36 discriminator 1
+  98 0064 002B     		cmp	r3, #0
+  99 0066 F9D0     		beq	.L3
+  31:blinky.c      ****     ;
+  32:blinky.c      **** 
+  33:blinky.c      ****   // Set system clock to PLL output
+  34:blinky.c      ****   RCC->CFGR &= ~RCC_CFGR_SW;
+ 100              		.loc 1 34 6
+ 101 0068 144B     		ldr	r3, .L5
+ 102 006a 5B68     		ldr	r3, [r3, #4]
+ 103 006c 134A     		ldr	r2, .L5
+ 104              		.loc 1 34 13
+ 105 006e 23F00303 		bic	r3, r3, #3
+ 106 0072 5360     		str	r3, [r2, #4]
+  35:blinky.c      ****   RCC->CFGR |= RCC_CFGR_SW_PLL;
+ 107              		.loc 1 35 6
+ 108 0074 114B     		ldr	r3, .L5
+ 109 0076 5B68     		ldr	r3, [r3, #4]
+ 110 0078 104A     		ldr	r2, .L5
+ 111              		.loc 1 35 13
+ 112 007a 43F00203 		orr	r3, r3, #2
+ 113 007e 5360     		str	r3, [r2, #4]
+  36:blinky.c      **** 
+  37:blinky.c      ****   // Wait until system clock is ready
+  38:blinky.c      ****   while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL)
+ 114              		.loc 1 38 9
+ 115 0080 00BF     		nop
+ 116              	.L4:
+ 117              		.loc 1 38 14 discriminator 1
+ 118 0082 0E4B     		ldr	r3, .L5
+ 119 0084 5B68     		ldr	r3, [r3, #4]
+ 120              		.loc 1 38 21 discriminator 1
+ 121 0086 03F00C03 		and	r3, r3, #12
+ 122              		.loc 1 38 37 discriminator 1
+ 123 008a 082B     		cmp	r3, #8
+ 124 008c F9D1     		bne	.L4
+  39:blinky.c      ****     ;
+  40:blinky.c      **** 
+  41:blinky.c      ****   // Set APB1 prescaler to 2 (when HCLK is 64MHz)
+  42:blinky.c      ****   RCC->CFGR &= ~RCC_CFGR_PPRE1;     // Clear prescaler bits
+ 125              		.loc 1 42 6
+ 126 008e 0B4B     		ldr	r3, .L5
+ 127 0090 5B68     		ldr	r3, [r3, #4]
+ 128 0092 0A4A     		ldr	r2, .L5
+ 129              		.loc 1 42 13
+ 130 0094 23F4E063 		bic	r3, r3, #1792
+ 131 0098 5360     		str	r3, [r2, #4]
+  43:blinky.c      ****   RCC->CFGR |= RCC_CFGR_PPRE1_DIV2; // Set prescaler to 2
+ 132              		.loc 1 43 6
+ 133 009a 084B     		ldr	r3, .L5
+ 134 009c 5B68     		ldr	r3, [r3, #4]
+ 135 009e 074A     		ldr	r2, .L5
+ 136              		.loc 1 43 13
+ 137 00a0 43F48063 		orr	r3, r3, #1024
+ 138 00a4 5360     		str	r3, [r2, #4]
+  44:blinky.c      **** 
+  45:blinky.c      ****   // APB2 does not need prescaling for 64MHz
+  46:blinky.c      ****   RCC->CFGR &= ~RCC_CFGR_PPRE2; // Clear prescaler bits
+ 139              		.loc 1 46 6
+ 140 00a6 054B     		ldr	r3, .L5
+ 141 00a8 5B68     		ldr	r3, [r3, #4]
+ 142 00aa 044A     		ldr	r2, .L5
+ 143              		.loc 1 46 13
+ 144 00ac 23F46053 		bic	r3, r3, #14336
+ 145 00b0 5360     		str	r3, [r2, #4]
+  47:blinky.c      **** }
+ 146              		.loc 1 47 1
+ 147 00b2 00BF     		nop
+ 148 00b4 BD46     		mov	sp, r7
+ 149              		.cfi_def_cfa_register 13
+ 150              		@ sp needed
+ 151 00b6 80BC     		pop	{r7}
+ 152              		.cfi_restore 7
+ 153              		.cfi_def_cfa_offset 0
+ 154 00b8 7047     		bx	lr
+ 155              	.L6:
+ 156 00ba 00BF     		.align	2
+ 157              	.L5:
+ 158 00bc 00100240 		.word	1073876992
+ 159 00c0 00200240 		.word	1073881088
+ 160              		.cfi_endproc
+ 161              	.LFE27:
+ 163              		.align	1
+ 164              		.global	enable_all_ports_clock
+ 165              		.syntax unified
+ 166              		.thumb
+ 167              		.thumb_func
+ 169              	enable_all_ports_clock:
+ 170              	.LFB28:
+  48:blinky.c      **** 
+  49:blinky.c      **** void enable_all_ports_clock() {
+ 171              		.loc 1 49 31
+ 172              		.cfi_startproc
+ 173              		@ args = 0, pretend = 0, frame = 0
+ 174              		@ frame_needed = 1, uses_anonymous_args = 0
+ 175              		@ link register save eliminated.
+ 176 00c4 80B4     		push	{r7}
+ 177              		.cfi_def_cfa_offset 4
+ 178              		.cfi_offset 7, -4
+ 179 00c6 00AF     		add	r7, sp, #0
+ 180              		.cfi_def_cfa_register 7
+  50:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_IOPAEN; // Enable GPIOA clock
+ 181              		.loc 1 50 6
+ 182 00c8 134B     		ldr	r3, .L8
+ 183 00ca 9B69     		ldr	r3, [r3, #24]
+ 184 00cc 124A     		ldr	r2, .L8
+ 185              		.loc 1 50 16
+ 186 00ce 43F00403 		orr	r3, r3, #4
+ 187 00d2 9361     		str	r3, [r2, #24]
+  51:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; // Enable GPIOB clock
+ 188              		.loc 1 51 6
+ 189 00d4 104B     		ldr	r3, .L8
+ 190 00d6 9B69     		ldr	r3, [r3, #24]
+ 191 00d8 0F4A     		ldr	r2, .L8
+ 192              		.loc 1 51 16
+ 193 00da 43F00803 		orr	r3, r3, #8
+ 194 00de 9361     		str	r3, [r2, #24]
+  52:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; // Enable GPIOC clock
+ 195              		.loc 1 52 6
+ 196 00e0 0D4B     		ldr	r3, .L8
+ 197 00e2 9B69     		ldr	r3, [r3, #24]
+ 198 00e4 0C4A     		ldr	r2, .L8
+ 199              		.loc 1 52 16
+ 200 00e6 43F01003 		orr	r3, r3, #16
+ 201 00ea 9361     		str	r3, [r2, #24]
+  53:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_IOPDEN; // Enable GPIOD clock
+ 202              		.loc 1 53 6
+ 203 00ec 0A4B     		ldr	r3, .L8
+ 204 00ee 9B69     		ldr	r3, [r3, #24]
+ 205 00f0 094A     		ldr	r2, .L8
+ 206              		.loc 1 53 16
+ 207 00f2 43F02003 		orr	r3, r3, #32
+ 208 00f6 9361     		str	r3, [r2, #24]
+  54:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_IOPEEN; // Enable GPIOE clock
+ 209              		.loc 1 54 6
+ 210 00f8 074B     		ldr	r3, .L8
+ 211 00fa 9B69     		ldr	r3, [r3, #24]
+ 212 00fc 064A     		ldr	r2, .L8
+ 213              		.loc 1 54 16
+ 214 00fe 43F04003 		orr	r3, r3, #64
+ 215 0102 9361     		str	r3, [r2, #24]
+  55:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_AFIOEN; // Enable AFIO clock
+ 216              		.loc 1 55 6
+ 217 0104 044B     		ldr	r3, .L8
+ 218 0106 9B69     		ldr	r3, [r3, #24]
+ 219 0108 034A     		ldr	r2, .L8
+ 220              		.loc 1 55 16
+ 221 010a 43F00103 		orr	r3, r3, #1
+ 222 010e 9361     		str	r3, [r2, #24]
+  56:blinky.c      **** }
+ 223              		.loc 1 56 1
+ 224 0110 00BF     		nop
+ 225 0112 BD46     		mov	sp, r7
+ 226              		.cfi_def_cfa_register 13
+ 227              		@ sp needed
+ 228 0114 80BC     		pop	{r7}
+ 229              		.cfi_restore 7
+ 230              		.cfi_def_cfa_offset 0
+ 231 0116 7047     		bx	lr
+ 232              	.L9:
+ 233              		.align	2
+ 234              	.L8:
+ 235 0118 00100240 		.word	1073876992
+ 236              		.cfi_endproc
+ 237              	.LFE28:
+ 239              		.align	1
+ 240              		.syntax unified
+ 241              		.thumb
+ 242              		.thumb_func
+ 244              	GPIO_PCe_pp:
+ 245              	.LFB29:
+  57:blinky.c      **** 
+  58:blinky.c      **** 
+  59:blinky.c      **** #define GPIO_PIN(name, port, pin)                                              \
+  60:blinky.c      ****   static inline void GPIO_##name##_pp(void) {                                  \
+  61:blinky.c      ****     if (pin > 7) {                                                             \
+  62:blinky.c      ****       GPIO##port->CRH &= ~(0xF << ((pin - 8) * 4));                                                
+  63:blinky.c      ****       GPIO##port->CRH |= (GPIO_CRH_MODE8_0 << ((pin - 8) * 4));                \
+  64:blinky.c      ****     } else {                                                                   \
+  65:blinky.c      ****       GPIO##port->CRL &= ~(0xF << (pin * 4));                                                     \
+  66:blinky.c      ****       GPIO##port->CRL |= (GPIO_CRL_MODE0_0 << (pin * 4));                      \
+  67:blinky.c      ****     }                                                                          \
+  68:blinky.c      ****     (void)GPIO_##name##_pp;                                                    \
+  69:blinky.c      ****   }                                                                            \
+  70:blinky.c      ****                                                                                \
+  71:blinky.c      ****   static inline void GPIO_##name##_set(void) {                                 \
+  72:blinky.c      ****     GPIO##port->BSRR = GPIO_BSRR_BS0 << pin;                                   \
+  73:blinky.c      ****     (void)GPIO_##name##_set;                                                   \
+  74:blinky.c      ****   }                                                                            \
+  75:blinky.c      ****                                                                                \
+  76:blinky.c      ****   static inline void GPIO_##name##_clr(void) {                                 \
+  77:blinky.c      ****     GPIO##port->BRR = GPIO_BRR_BR0 << pin;                                     \
+  78:blinky.c      ****     (void)GPIO_##name##_clr;                                                   \
+  79:blinky.c      ****   }                                                                            \
+  80:blinky.c      ****   static inline bool GPIO_##name##_read(void) {                              \
+  81:blinky.c      ****     return (GPIO##port->IDR >> pin) & 1;                                       \
+  82:blinky.c      ****   }                                                                            \
+  83:blinky.c      ****                                                                                \
+  84:blinky.c      **** /*  Floating: To configure a GPIO pin as an input with floating, you need to 
+  85:blinky.c      ****               set the corresponding CNFy bits to '01'.
+  86:blinky.c      **** 
+  87:blinky.c      ****   GPIOA->CRL &= ~(GPIO_CRL_CNF1 | GPIO_CRL_MODE1); // Reset CNF and MODE bits
+  88:blinky.c      ****   GPIOA->CRL |= GPIO_CRL_CNF1_0; // Set CNF bits to '01' for floating input
+  89:blinky.c      ****                                                                             */ \
+  90:blinky.c      ****   static inline void GPIO_##name##_inFloat(void) {                             \
+  91:blinky.c      ****     if (pin > 7) {                                                             \
+  92:blinky.c      ****       GPIO##port->CRH &= ~(0xF << ((pin - 8) * 4));                                                
+  93:blinky.c      ****     } else {                                                                   \
+  94:blinky.c      ****       GPIO##port->CRL &= ~(0xF << (pin * 4));                                                     \
+  95:blinky.c      ****     }                                                                          \
+  96:blinky.c      ****     (void)GPIO_##name##_inFloat;                                               \
+  97:blinky.c      ****   }                                                                            \
+  98:blinky.c      ****                                                                                \
+  99:blinky.c      **** /*  Pull-up: To configure a GPIO pin as an input with pull-up, you need to 
+ 100:blinky.c      ****             set the corresponding CNFy bits to '10' and 
+ 101:blinky.c      ****             set the corresponding ODRy bit to '1'.
+ 102:blinky.c      **** 
+ 103:blinky.c      ****   GPIOA->CRL &= ~(GPIO_CRL_CNF1 | GPIO_CRL_MODE1); // Reset CNF and MODE bits
+ 104:blinky.c      ****   GPIOA->CRL |= GPIO_CRL_CNF1_1; // Set CNF bits to '10' for pull-up/pull-down
+ 105:blinky.c      ****   GPIOA->ODR |= GPIO_ODR_ODR1; // Set ODR bit to '1' for pull-up
+ 106:blinky.c      ****                                                                             */ \
+ 107:blinky.c      ****   static inline void GPIO_##name##_inPU(void) {                                \
+ 108:blinky.c      ****     if (pin > 7) {                                                             \
+ 109:blinky.c      ****       GPIO##port->CRH &= ~(0xF << ((pin - 8) * 4));                                                
+ 110:blinky.c      ****       GPIO##port->CRH |=  ((GPIO_CRH_CNF8_1)<< ((pin - 8) * 4)); \
+ 111:blinky.c      ****     } else {                                                                   \
+ 112:blinky.c      ****       GPIO##port->CRL &= ~(0xF << (pin * 4));                                                     \
+ 113:blinky.c      ****       GPIO##port->CRL |=  ((GPIO_CRL_CNF0_1) << (pin * 4));     \
+ 114:blinky.c      ****     }                                                                          \
+ 115:blinky.c      ****     GPIO##port->BSRR = 1 << pin;                                   \
+ 116:blinky.c      ****     (void)GPIO_##name##_inPU;                                                  \
+ 117:blinky.c      ****   }                                                                            \
+ 118:blinky.c      ****                                                                                \
+ 119:blinky.c      **** /* Pull-down: To configure a GPIO pin as an input with pull-down, you need 
+ 120:blinky.c      ****               to set the corresponding CNFy bits to '10' and set 
+ 121:blinky.c      ****               the corresponding ODRy bit to '0'.
+ 122:blinky.c      **** 
+ 123:blinky.c      **** GPIOA->CRL &= ~(GPIO_CRL_CNF1 | GPIO_CRL_MODE1); // Reset CNF and MODE bits
+ 124:blinky.c      **** GPIOA->CRL |= GPIO_CRL_CNF1_1; // Set CNF bits to '10' for pull-up/pull-down
+ 125:blinky.c      **** GPIOA->ODR &= ~GPIO_ODR_ODR1; // Set ODR bit to '0' for pull-down
+ 126:blinky.c      ****                                                                             */ \
+ 127:blinky.c      ****   static inline void GPIO_##name##_inPD(void) {                                \
+ 128:blinky.c      ****     if (pin > 7) {                                                             \
+ 129:blinky.c      ****       GPIO##port->CRH &= ~(0xF << ((pin - 8) * 4));                                                
+ 130:blinky.c      ****       GPIO##port->CRH |= ((GPIO_CRH_CNF8_1)<< ((pin - 8) * 4));                 \
+ 131:blinky.c      ****     } else {                                                                    \
+ 132:blinky.c      ****       GPIO##port->CRL &= ~(0xF << (pin * 4));                                                     \
+ 133:blinky.c      ****       GPIO##port->CRL |=  ((GPIO_CRL_CNF0_1) << (pin * 4));                       \
+ 134:blinky.c      ****     }                                                                           \
+ 135:blinky.c      ****     GPIO##port->BSRR = 1 << (16+pin);                                           \
+ 136:blinky.c      ****     (void)GPIO_##name##_inPD;                                                   \
+ 137:blinky.c      ****   }                                                                            
+ 138:blinky.c      **** 
+ 139:blinky.c      **** 
+ 140:blinky.c      **** GPIO_PIN(PCe, D, 0)
+ 246              		.loc 1 140 1
+ 247              		.cfi_startproc
+ 248              		@ args = 0, pretend = 0, frame = 0
+ 249              		@ frame_needed = 1, uses_anonymous_args = 0
+ 250              		@ link register save eliminated.
+ 251 011c 80B4     		push	{r7}
+ 252              		.cfi_def_cfa_offset 4
+ 253              		.cfi_offset 7, -4
+ 254 011e 00AF     		add	r7, sp, #0
+ 255              		.cfi_def_cfa_register 7
+ 256              		.loc 1 140 1 discriminator 2
+ 257 0120 074B     		ldr	r3, .L11
+ 258 0122 1B68     		ldr	r3, [r3]
+ 259 0124 064A     		ldr	r2, .L11
+ 260 0126 23F00F03 		bic	r3, r3, #15
+ 261 012a 1360     		str	r3, [r2]
+ 262 012c 044B     		ldr	r3, .L11
+ 263 012e 1B68     		ldr	r3, [r3]
+ 264 0130 034A     		ldr	r2, .L11
+ 265 0132 43F00103 		orr	r3, r3, #1
+ 266 0136 1360     		str	r3, [r2]
+ 267              		.loc 1 140 1 is_stmt 0
+ 268 0138 BD46     		mov	sp, r7
+ 269              		.cfi_def_cfa_register 13
+ 270              		@ sp needed
+ 271 013a 80BC     		pop	{r7}
+ 272              		.cfi_restore 7
+ 273              		.cfi_def_cfa_offset 0
+ 274 013c 7047     		bx	lr
+ 275              	.L12:
+ 276 013e 00BF     		.align	2
+ 277              	.L11:
+ 278 0140 00140140 		.word	1073812480
+ 279              		.cfi_endproc
+ 280              	.LFE29:
+ 282              		.align	1
+ 283              		.syntax unified
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	GPIO_PCe_set:
+ 288              	.LFB30:
+ 289              		.loc 1 140 1 is_stmt 1
+ 290              		.cfi_startproc
+ 291              		@ args = 0, pretend = 0, frame = 0
+ 292              		@ frame_needed = 1, uses_anonymous_args = 0
+ 293              		@ link register save eliminated.
+ 294 0144 80B4     		push	{r7}
+ 295              		.cfi_def_cfa_offset 4
+ 296              		.cfi_offset 7, -4
+ 297 0146 00AF     		add	r7, sp, #0
+ 298              		.cfi_def_cfa_register 7
+ 299              		.loc 1 140 1
+ 300 0148 024B     		ldr	r3, .L14
+ 301 014a 0122     		movs	r2, #1
+ 302 014c 1A61     		str	r2, [r3, #16]
+ 303 014e BD46     		mov	sp, r7
+ 304              		.cfi_def_cfa_register 13
+ 305              		@ sp needed
+ 306 0150 80BC     		pop	{r7}
+ 307              		.cfi_restore 7
+ 308              		.cfi_def_cfa_offset 0
+ 309 0152 7047     		bx	lr
+ 310              	.L15:
+ 311              		.align	2
+ 312              	.L14:
+ 313 0154 00140140 		.word	1073812480
+ 314              		.cfi_endproc
+ 315              	.LFE30:
+ 317              		.align	1
+ 318              		.syntax unified
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	GPIO_PCe_clr:
+ 323              	.LFB31:
+ 324              		.loc 1 140 1
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 0
+ 327              		@ frame_needed = 1, uses_anonymous_args = 0
+ 328              		@ link register save eliminated.
+ 329 0158 80B4     		push	{r7}
+ 330              		.cfi_def_cfa_offset 4
+ 331              		.cfi_offset 7, -4
+ 332 015a 00AF     		add	r7, sp, #0
+ 333              		.cfi_def_cfa_register 7
+ 334              		.loc 1 140 1
+ 335 015c 024B     		ldr	r3, .L17
+ 336 015e 0122     		movs	r2, #1
+ 337 0160 5A61     		str	r2, [r3, #20]
+ 338 0162 BD46     		mov	sp, r7
+ 339              		.cfi_def_cfa_register 13
+ 340              		@ sp needed
+ 341 0164 80BC     		pop	{r7}
+ 342              		.cfi_restore 7
+ 343              		.cfi_def_cfa_offset 0
+ 344 0166 7047     		bx	lr
+ 345              	.L18:
+ 346              		.align	2
+ 347              	.L17:
+ 348 0168 00140140 		.word	1073812480
+ 349              		.cfi_endproc
+ 350              	.LFE31:
+ 352              		.align	1
+ 353              		.syntax unified
+ 354              		.thumb
+ 355              		.thumb_func
+ 357              	GPIO_PCe_inPU:
+ 358              	.LFB34:
+ 359              		.loc 1 140 1
+ 360              		.cfi_startproc
+ 361              		@ args = 0, pretend = 0, frame = 0
+ 362              		@ frame_needed = 1, uses_anonymous_args = 0
+ 363              		@ link register save eliminated.
+ 364 016c 80B4     		push	{r7}
+ 365              		.cfi_def_cfa_offset 4
+ 366              		.cfi_offset 7, -4
+ 367 016e 00AF     		add	r7, sp, #0
+ 368              		.cfi_def_cfa_register 7
+ 369              		.loc 1 140 1 discriminator 2
+ 370 0170 084B     		ldr	r3, .L20
+ 371 0172 1B68     		ldr	r3, [r3]
+ 372 0174 074A     		ldr	r2, .L20
+ 373 0176 23F00F03 		bic	r3, r3, #15
+ 374 017a 1360     		str	r3, [r2]
+ 375 017c 054B     		ldr	r3, .L20
+ 376 017e 1B68     		ldr	r3, [r3]
+ 377 0180 044A     		ldr	r2, .L20
+ 378 0182 43F00803 		orr	r3, r3, #8
+ 379 0186 1360     		str	r3, [r2]
+ 380              		.loc 1 140 1 is_stmt 0 discriminator 4
+ 381 0188 024B     		ldr	r3, .L20
+ 382 018a 0122     		movs	r2, #1
+ 383 018c 1A61     		str	r2, [r3, #16]
+ 384              		.loc 1 140 1
+ 385 018e BD46     		mov	sp, r7
+ 386              		.cfi_def_cfa_register 13
+ 387              		@ sp needed
+ 388 0190 80BC     		pop	{r7}
+ 389              		.cfi_restore 7
+ 390              		.cfi_def_cfa_offset 0
+ 391 0192 7047     		bx	lr
+ 392              	.L21:
+ 393              		.align	2
+ 394              	.L20:
+ 395 0194 00140140 		.word	1073812480
+ 396              		.cfi_endproc
+ 397              	.LFE34:
+ 399              		.align	1
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ 404              	GPIO_PCck_pp:
+ 405              	.LFB36:
+ 141:blinky.c      **** GPIO_PIN(PCck, D, 1)
+ 406              		.loc 1 141 1 is_stmt 1
+ 407              		.cfi_startproc
+ 408              		@ args = 0, pretend = 0, frame = 0
+ 409              		@ frame_needed = 1, uses_anonymous_args = 0
+ 410              		@ link register save eliminated.
+ 411 0198 80B4     		push	{r7}
+ 412              		.cfi_def_cfa_offset 4
+ 413              		.cfi_offset 7, -4
+ 414 019a 00AF     		add	r7, sp, #0
+ 415              		.cfi_def_cfa_register 7
+ 416              		.loc 1 141 1 discriminator 2
+ 417 019c 074B     		ldr	r3, .L23
+ 418 019e 1B68     		ldr	r3, [r3]
+ 419 01a0 064A     		ldr	r2, .L23
+ 420 01a2 23F0F003 		bic	r3, r3, #240
+ 421 01a6 1360     		str	r3, [r2]
+ 422 01a8 044B     		ldr	r3, .L23
+ 423 01aa 1B68     		ldr	r3, [r3]
+ 424 01ac 034A     		ldr	r2, .L23
+ 425 01ae 43F01003 		orr	r3, r3, #16
+ 426 01b2 1360     		str	r3, [r2]
+ 427              		.loc 1 141 1 is_stmt 0
+ 428 01b4 BD46     		mov	sp, r7
+ 429              		.cfi_def_cfa_register 13
+ 430              		@ sp needed
+ 431 01b6 80BC     		pop	{r7}
+ 432              		.cfi_restore 7
+ 433              		.cfi_def_cfa_offset 0
+ 434 01b8 7047     		bx	lr
+ 435              	.L24:
+ 436 01ba 00BF     		.align	2
+ 437              	.L23:
+ 438 01bc 00140140 		.word	1073812480
+ 439              		.cfi_endproc
+ 440              	.LFE36:
+ 442              		.align	1
+ 443              		.syntax unified
+ 444              		.thumb
+ 445              		.thumb_func
+ 447              	GPIO_PCck_set:
+ 448              	.LFB37:
+ 449              		.loc 1 141 1 is_stmt 1
+ 450              		.cfi_startproc
+ 451              		@ args = 0, pretend = 0, frame = 0
+ 452              		@ frame_needed = 1, uses_anonymous_args = 0
+ 453              		@ link register save eliminated.
+ 454 01c0 80B4     		push	{r7}
+ 455              		.cfi_def_cfa_offset 4
+ 456              		.cfi_offset 7, -4
+ 457 01c2 00AF     		add	r7, sp, #0
+ 458              		.cfi_def_cfa_register 7
+ 459              		.loc 1 141 1
+ 460 01c4 024B     		ldr	r3, .L26
+ 461 01c6 0222     		movs	r2, #2
+ 462 01c8 1A61     		str	r2, [r3, #16]
+ 463 01ca BD46     		mov	sp, r7
+ 464              		.cfi_def_cfa_register 13
+ 465              		@ sp needed
+ 466 01cc 80BC     		pop	{r7}
+ 467              		.cfi_restore 7
+ 468              		.cfi_def_cfa_offset 0
+ 469 01ce 7047     		bx	lr
+ 470              	.L27:
+ 471              		.align	2
+ 472              	.L26:
+ 473 01d0 00140140 		.word	1073812480
+ 474              		.cfi_endproc
+ 475              	.LFE37:
+ 477              		.align	1
+ 478              		.syntax unified
+ 479              		.thumb
+ 480              		.thumb_func
+ 482              	GPIO_PCck_clr:
+ 483              	.LFB38:
+ 484              		.loc 1 141 1
+ 485              		.cfi_startproc
+ 486              		@ args = 0, pretend = 0, frame = 0
+ 487              		@ frame_needed = 1, uses_anonymous_args = 0
+ 488              		@ link register save eliminated.
+ 489 01d4 80B4     		push	{r7}
+ 490              		.cfi_def_cfa_offset 4
+ 491              		.cfi_offset 7, -4
+ 492 01d6 00AF     		add	r7, sp, #0
+ 493              		.cfi_def_cfa_register 7
+ 494              		.loc 1 141 1
+ 495 01d8 024B     		ldr	r3, .L29
+ 496 01da 0222     		movs	r2, #2
+ 497 01dc 5A61     		str	r2, [r3, #20]
+ 498 01de BD46     		mov	sp, r7
+ 499              		.cfi_def_cfa_register 13
+ 500              		@ sp needed
+ 501 01e0 80BC     		pop	{r7}
+ 502              		.cfi_restore 7
+ 503              		.cfi_def_cfa_offset 0
+ 504 01e2 7047     		bx	lr
+ 505              	.L30:
+ 506              		.align	2
+ 507              	.L29:
+ 508 01e4 00140140 		.word	1073812480
+ 509              		.cfi_endproc
+ 510              	.LFE38:
+ 512              		.align	1
+ 513              		.syntax unified
+ 514              		.thumb
+ 515              		.thumb_func
+ 517              	GPIO_PCck_inPD:
+ 518              	.LFB42:
+ 519              		.loc 1 141 1
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 1, uses_anonymous_args = 0
+ 523              		@ link register save eliminated.
+ 524 01e8 80B4     		push	{r7}
+ 525              		.cfi_def_cfa_offset 4
+ 526              		.cfi_offset 7, -4
+ 527 01ea 00AF     		add	r7, sp, #0
+ 528              		.cfi_def_cfa_register 7
+ 529              		.loc 1 141 1 discriminator 2
+ 530 01ec 094B     		ldr	r3, .L32
+ 531 01ee 1B68     		ldr	r3, [r3]
+ 532 01f0 084A     		ldr	r2, .L32
+ 533 01f2 23F0F003 		bic	r3, r3, #240
+ 534 01f6 1360     		str	r3, [r2]
+ 535 01f8 064B     		ldr	r3, .L32
+ 536 01fa 1B68     		ldr	r3, [r3]
+ 537 01fc 054A     		ldr	r2, .L32
+ 538 01fe 43F08003 		orr	r3, r3, #128
+ 539 0202 1360     		str	r3, [r2]
+ 540              		.loc 1 141 1 is_stmt 0 discriminator 4
+ 541 0204 034B     		ldr	r3, .L32
+ 542 0206 4FF40032 		mov	r2, #131072
+ 543 020a 1A61     		str	r2, [r3, #16]
+ 544              		.loc 1 141 1
+ 545 020c BD46     		mov	sp, r7
+ 546              		.cfi_def_cfa_register 13
+ 547              		@ sp needed
+ 548 020e 80BC     		pop	{r7}
+ 549              		.cfi_restore 7
+ 550              		.cfi_def_cfa_offset 0
+ 551 0210 7047     		bx	lr
+ 552              	.L33:
+ 553 0212 00BF     		.align	2
+ 554              	.L32:
+ 555 0214 00140140 		.word	1073812480
+ 556              		.cfi_endproc
+ 557              	.LFE42:
+ 559              		.align	1
+ 560              		.syntax unified
+ 561              		.thumb
+ 562              		.thumb_func
+ 564              	GPIO_nPCld_pp:
+ 565              	.LFB43:
+ 142:blinky.c      **** GPIO_PIN(nPCld, A, 0)
+ 566              		.loc 1 142 1 is_stmt 1
+ 567              		.cfi_startproc
+ 568              		@ args = 0, pretend = 0, frame = 0
+ 569              		@ frame_needed = 1, uses_anonymous_args = 0
+ 570              		@ link register save eliminated.
+ 571 0218 80B4     		push	{r7}
+ 572              		.cfi_def_cfa_offset 4
+ 573              		.cfi_offset 7, -4
+ 574 021a 00AF     		add	r7, sp, #0
+ 575              		.cfi_def_cfa_register 7
+ 576              		.loc 1 142 1 discriminator 2
+ 577 021c 074B     		ldr	r3, .L35
+ 578 021e 1B68     		ldr	r3, [r3]
+ 579 0220 064A     		ldr	r2, .L35
+ 580 0222 23F00F03 		bic	r3, r3, #15
+ 581 0226 1360     		str	r3, [r2]
+ 582 0228 044B     		ldr	r3, .L35
+ 583 022a 1B68     		ldr	r3, [r3]
+ 584 022c 034A     		ldr	r2, .L35
+ 585 022e 43F00103 		orr	r3, r3, #1
+ 586 0232 1360     		str	r3, [r2]
+ 587              		.loc 1 142 1 is_stmt 0
+ 588 0234 BD46     		mov	sp, r7
+ 589              		.cfi_def_cfa_register 13
+ 590              		@ sp needed
+ 591 0236 80BC     		pop	{r7}
+ 592              		.cfi_restore 7
+ 593              		.cfi_def_cfa_offset 0
+ 594 0238 7047     		bx	lr
+ 595              	.L36:
+ 596 023a 00BF     		.align	2
+ 597              	.L35:
+ 598 023c 00080140 		.word	1073809408
+ 599              		.cfi_endproc
+ 600              	.LFE43:
+ 602              		.align	1
+ 603              		.syntax unified
+ 604              		.thumb
+ 605              		.thumb_func
+ 607              	GPIO_nPCld_set:
+ 608              	.LFB44:
+ 609              		.loc 1 142 1 is_stmt 1
+ 610              		.cfi_startproc
+ 611              		@ args = 0, pretend = 0, frame = 0
+ 612              		@ frame_needed = 1, uses_anonymous_args = 0
+ 613              		@ link register save eliminated.
+ 614 0240 80B4     		push	{r7}
+ 615              		.cfi_def_cfa_offset 4
+ 616              		.cfi_offset 7, -4
+ 617 0242 00AF     		add	r7, sp, #0
+ 618              		.cfi_def_cfa_register 7
+ 619              		.loc 1 142 1
+ 620 0244 024B     		ldr	r3, .L38
+ 621 0246 0122     		movs	r2, #1
+ 622 0248 1A61     		str	r2, [r3, #16]
+ 623 024a BD46     		mov	sp, r7
+ 624              		.cfi_def_cfa_register 13
+ 625              		@ sp needed
+ 626 024c 80BC     		pop	{r7}
+ 627              		.cfi_restore 7
+ 628              		.cfi_def_cfa_offset 0
+ 629 024e 7047     		bx	lr
+ 630              	.L39:
+ 631              		.align	2
+ 632              	.L38:
+ 633 0250 00080140 		.word	1073809408
+ 634              		.cfi_endproc
+ 635              	.LFE44:
+ 637              		.align	1
+ 638              		.syntax unified
+ 639              		.thumb
+ 640              		.thumb_func
+ 642              	GPIO_nPCld_clr:
+ 643              	.LFB45:
+ 644              		.loc 1 142 1
+ 645              		.cfi_startproc
+ 646              		@ args = 0, pretend = 0, frame = 0
+ 647              		@ frame_needed = 1, uses_anonymous_args = 0
+ 648              		@ link register save eliminated.
+ 649 0254 80B4     		push	{r7}
+ 650              		.cfi_def_cfa_offset 4
+ 651              		.cfi_offset 7, -4
+ 652 0256 00AF     		add	r7, sp, #0
+ 653              		.cfi_def_cfa_register 7
+ 654              		.loc 1 142 1
+ 655 0258 024B     		ldr	r3, .L41
+ 656 025a 0122     		movs	r2, #1
+ 657 025c 5A61     		str	r2, [r3, #20]
+ 658 025e BD46     		mov	sp, r7
+ 659              		.cfi_def_cfa_register 13
+ 660              		@ sp needed
+ 661 0260 80BC     		pop	{r7}
+ 662              		.cfi_restore 7
+ 663              		.cfi_def_cfa_offset 0
+ 664 0262 7047     		bx	lr
+ 665              	.L42:
+ 666              		.align	2
+ 667              	.L41:
+ 668 0264 00080140 		.word	1073809408
+ 669              		.cfi_endproc
+ 670              	.LFE45:
+ 672              		.align	1
+ 673              		.syntax unified
+ 674              		.thumb
+ 675              		.thumb_func
+ 677              	GPIO_nPCld_inPU:
+ 678              	.LFB48:
+ 679              		.loc 1 142 1
+ 680              		.cfi_startproc
+ 681              		@ args = 0, pretend = 0, frame = 0
+ 682              		@ frame_needed = 1, uses_anonymous_args = 0
+ 683              		@ link register save eliminated.
+ 684 0268 80B4     		push	{r7}
+ 685              		.cfi_def_cfa_offset 4
+ 686              		.cfi_offset 7, -4
+ 687 026a 00AF     		add	r7, sp, #0
+ 688              		.cfi_def_cfa_register 7
+ 689              		.loc 1 142 1 discriminator 2
+ 690 026c 084B     		ldr	r3, .L44
+ 691 026e 1B68     		ldr	r3, [r3]
+ 692 0270 074A     		ldr	r2, .L44
+ 693 0272 23F00F03 		bic	r3, r3, #15
+ 694 0276 1360     		str	r3, [r2]
+ 695 0278 054B     		ldr	r3, .L44
+ 696 027a 1B68     		ldr	r3, [r3]
+ 697 027c 044A     		ldr	r2, .L44
+ 698 027e 43F00803 		orr	r3, r3, #8
+ 699 0282 1360     		str	r3, [r2]
+ 700              		.loc 1 142 1 is_stmt 0 discriminator 4
+ 701 0284 024B     		ldr	r3, .L44
+ 702 0286 0122     		movs	r2, #1
+ 703 0288 1A61     		str	r2, [r3, #16]
+ 704              		.loc 1 142 1
+ 705 028a BD46     		mov	sp, r7
+ 706              		.cfi_def_cfa_register 13
+ 707              		@ sp needed
+ 708 028c 80BC     		pop	{r7}
+ 709              		.cfi_restore 7
+ 710              		.cfi_def_cfa_offset 0
+ 711 028e 7047     		bx	lr
+ 712              	.L45:
+ 713              		.align	2
+ 714              	.L44:
+ 715 0290 00080140 		.word	1073809408
+ 716              		.cfi_endproc
+ 717              	.LFE48:
+ 719              		.align	1
+ 720              		.syntax unified
+ 721              		.thumb
+ 722              		.thumb_func
+ 724              	GPIO_Wr_pp:
+ 725              	.LFB50:
+ 143:blinky.c      **** GPIO_PIN(Wr, A, 1)
+ 726              		.loc 1 143 1 is_stmt 1
+ 727              		.cfi_startproc
+ 728              		@ args = 0, pretend = 0, frame = 0
+ 729              		@ frame_needed = 1, uses_anonymous_args = 0
+ 730              		@ link register save eliminated.
+ 731 0294 80B4     		push	{r7}
+ 732              		.cfi_def_cfa_offset 4
+ 733              		.cfi_offset 7, -4
+ 734 0296 00AF     		add	r7, sp, #0
+ 735              		.cfi_def_cfa_register 7
+ 736              		.loc 1 143 1 discriminator 2
+ 737 0298 074B     		ldr	r3, .L47
+ 738 029a 1B68     		ldr	r3, [r3]
+ 739 029c 064A     		ldr	r2, .L47
+ 740 029e 23F0F003 		bic	r3, r3, #240
+ 741 02a2 1360     		str	r3, [r2]
+ 742 02a4 044B     		ldr	r3, .L47
+ 743 02a6 1B68     		ldr	r3, [r3]
+ 744 02a8 034A     		ldr	r2, .L47
+ 745 02aa 43F01003 		orr	r3, r3, #16
+ 746 02ae 1360     		str	r3, [r2]
+ 747              		.loc 1 143 1 is_stmt 0
+ 748 02b0 BD46     		mov	sp, r7
+ 749              		.cfi_def_cfa_register 13
+ 750              		@ sp needed
+ 751 02b2 80BC     		pop	{r7}
+ 752              		.cfi_restore 7
+ 753              		.cfi_def_cfa_offset 0
+ 754 02b4 7047     		bx	lr
+ 755              	.L48:
+ 756 02b6 00BF     		.align	2
+ 757              	.L47:
+ 758 02b8 00080140 		.word	1073809408
+ 759              		.cfi_endproc
+ 760              	.LFE50:
+ 762              		.align	1
+ 763              		.syntax unified
+ 764              		.thumb
+ 765              		.thumb_func
+ 767              	GPIO_Wr_set:
+ 768              	.LFB51:
+ 769              		.loc 1 143 1 is_stmt 1
+ 770              		.cfi_startproc
+ 771              		@ args = 0, pretend = 0, frame = 0
+ 772              		@ frame_needed = 1, uses_anonymous_args = 0
+ 773              		@ link register save eliminated.
+ 774 02bc 80B4     		push	{r7}
+ 775              		.cfi_def_cfa_offset 4
+ 776              		.cfi_offset 7, -4
+ 777 02be 00AF     		add	r7, sp, #0
+ 778              		.cfi_def_cfa_register 7
+ 779              		.loc 1 143 1
+ 780 02c0 024B     		ldr	r3, .L50
+ 781 02c2 0222     		movs	r2, #2
+ 782 02c4 1A61     		str	r2, [r3, #16]
+ 783 02c6 BD46     		mov	sp, r7
+ 784              		.cfi_def_cfa_register 13
+ 785              		@ sp needed
+ 786 02c8 80BC     		pop	{r7}
+ 787              		.cfi_restore 7
+ 788              		.cfi_def_cfa_offset 0
+ 789 02ca 7047     		bx	lr
+ 790              	.L51:
+ 791              		.align	2
+ 792              	.L50:
+ 793 02cc 00080140 		.word	1073809408
+ 794              		.cfi_endproc
+ 795              	.LFE51:
+ 797              		.align	1
+ 798              		.syntax unified
+ 799              		.thumb
+ 800              		.thumb_func
+ 802              	GPIO_Wr_inPU:
+ 803              	.LFB55:
+ 804              		.loc 1 143 1
+ 805              		.cfi_startproc
+ 806              		@ args = 0, pretend = 0, frame = 0
+ 807              		@ frame_needed = 1, uses_anonymous_args = 0
+ 808              		@ link register save eliminated.
+ 809 02d0 80B4     		push	{r7}
+ 810              		.cfi_def_cfa_offset 4
+ 811              		.cfi_offset 7, -4
+ 812 02d2 00AF     		add	r7, sp, #0
+ 813              		.cfi_def_cfa_register 7
+ 814              		.loc 1 143 1 discriminator 2
+ 815 02d4 084B     		ldr	r3, .L53
+ 816 02d6 1B68     		ldr	r3, [r3]
+ 817 02d8 074A     		ldr	r2, .L53
+ 818 02da 23F0F003 		bic	r3, r3, #240
+ 819 02de 1360     		str	r3, [r2]
+ 820 02e0 054B     		ldr	r3, .L53
+ 821 02e2 1B68     		ldr	r3, [r3]
+ 822 02e4 044A     		ldr	r2, .L53
+ 823 02e6 43F08003 		orr	r3, r3, #128
+ 824 02ea 1360     		str	r3, [r2]
+ 825              		.loc 1 143 1 is_stmt 0 discriminator 4
+ 826 02ec 024B     		ldr	r3, .L53
+ 827 02ee 0222     		movs	r2, #2
+ 828 02f0 1A61     		str	r2, [r3, #16]
+ 829              		.loc 1 143 1
+ 830 02f2 BD46     		mov	sp, r7
+ 831              		.cfi_def_cfa_register 13
+ 832              		@ sp needed
+ 833 02f4 80BC     		pop	{r7}
+ 834              		.cfi_restore 7
+ 835              		.cfi_def_cfa_offset 0
+ 836 02f6 7047     		bx	lr
+ 837              	.L54:
+ 838              		.align	2
+ 839              	.L53:
+ 840 02f8 00080140 		.word	1073809408
+ 841              		.cfi_endproc
+ 842              	.LFE55:
+ 844              		.align	1
+ 845              		.syntax unified
+ 846              		.thumb
+ 847              		.thumb_func
+ 849              	GPIO_Rd_pp:
+ 850              	.LFB57:
+ 144:blinky.c      **** GPIO_PIN(Rd, A, 2)
+ 851              		.loc 1 144 1 is_stmt 1
+ 852              		.cfi_startproc
+ 853              		@ args = 0, pretend = 0, frame = 0
+ 854              		@ frame_needed = 1, uses_anonymous_args = 0
+ 855              		@ link register save eliminated.
+ 856 02fc 80B4     		push	{r7}
+ 857              		.cfi_def_cfa_offset 4
+ 858              		.cfi_offset 7, -4
+ 859 02fe 00AF     		add	r7, sp, #0
+ 860              		.cfi_def_cfa_register 7
+ 861              		.loc 1 144 1 discriminator 2
+ 862 0300 074B     		ldr	r3, .L56
+ 863 0302 1B68     		ldr	r3, [r3]
+ 864 0304 064A     		ldr	r2, .L56
+ 865 0306 23F47063 		bic	r3, r3, #3840
+ 866 030a 1360     		str	r3, [r2]
+ 867 030c 044B     		ldr	r3, .L56
+ 868 030e 1B68     		ldr	r3, [r3]
+ 869 0310 034A     		ldr	r2, .L56
+ 870 0312 43F48073 		orr	r3, r3, #256
+ 871 0316 1360     		str	r3, [r2]
+ 872              		.loc 1 144 1 is_stmt 0
+ 873 0318 BD46     		mov	sp, r7
+ 874              		.cfi_def_cfa_register 13
+ 875              		@ sp needed
+ 876 031a 80BC     		pop	{r7}
+ 877              		.cfi_restore 7
+ 878              		.cfi_def_cfa_offset 0
+ 879 031c 7047     		bx	lr
+ 880              	.L57:
+ 881 031e 00BF     		.align	2
+ 882              	.L56:
+ 883 0320 00080140 		.word	1073809408
+ 884              		.cfi_endproc
+ 885              	.LFE57:
+ 887              		.align	1
+ 888              		.syntax unified
+ 889              		.thumb
+ 890              		.thumb_func
+ 892              	GPIO_Rd_set:
+ 893              	.LFB58:
+ 894              		.loc 1 144 1 is_stmt 1
+ 895              		.cfi_startproc
+ 896              		@ args = 0, pretend = 0, frame = 0
+ 897              		@ frame_needed = 1, uses_anonymous_args = 0
+ 898              		@ link register save eliminated.
+ 899 0324 80B4     		push	{r7}
+ 900              		.cfi_def_cfa_offset 4
+ 901              		.cfi_offset 7, -4
+ 902 0326 00AF     		add	r7, sp, #0
+ 903              		.cfi_def_cfa_register 7
+ 904              		.loc 1 144 1
+ 905 0328 024B     		ldr	r3, .L59
+ 906 032a 0422     		movs	r2, #4
+ 907 032c 1A61     		str	r2, [r3, #16]
+ 908 032e BD46     		mov	sp, r7
+ 909              		.cfi_def_cfa_register 13
+ 910              		@ sp needed
+ 911 0330 80BC     		pop	{r7}
+ 912              		.cfi_restore 7
+ 913              		.cfi_def_cfa_offset 0
+ 914 0332 7047     		bx	lr
+ 915              	.L60:
+ 916              		.align	2
+ 917              	.L59:
+ 918 0334 00080140 		.word	1073809408
+ 919              		.cfi_endproc
+ 920              	.LFE58:
+ 922              		.align	1
+ 923              		.syntax unified
+ 924              		.thumb
+ 925              		.thumb_func
+ 927              	GPIO_Rd_clr:
+ 928              	.LFB59:
+ 929              		.loc 1 144 1
+ 930              		.cfi_startproc
+ 931              		@ args = 0, pretend = 0, frame = 0
+ 932              		@ frame_needed = 1, uses_anonymous_args = 0
+ 933              		@ link register save eliminated.
+ 934 0338 80B4     		push	{r7}
+ 935              		.cfi_def_cfa_offset 4
+ 936              		.cfi_offset 7, -4
+ 937 033a 00AF     		add	r7, sp, #0
+ 938              		.cfi_def_cfa_register 7
+ 939              		.loc 1 144 1
+ 940 033c 024B     		ldr	r3, .L62
+ 941 033e 0422     		movs	r2, #4
+ 942 0340 5A61     		str	r2, [r3, #20]
+ 943 0342 BD46     		mov	sp, r7
+ 944              		.cfi_def_cfa_register 13
+ 945              		@ sp needed
+ 946 0344 80BC     		pop	{r7}
+ 947              		.cfi_restore 7
+ 948              		.cfi_def_cfa_offset 0
+ 949 0346 7047     		bx	lr
+ 950              	.L63:
+ 951              		.align	2
+ 952              	.L62:
+ 953 0348 00080140 		.word	1073809408
+ 954              		.cfi_endproc
+ 955              	.LFE59:
+ 957              		.align	1
+ 958              		.syntax unified
+ 959              		.thumb
+ 960              		.thumb_func
+ 962              	GPIO_Rd_inPU:
+ 963              	.LFB62:
+ 964              		.loc 1 144 1
+ 965              		.cfi_startproc
+ 966              		@ args = 0, pretend = 0, frame = 0
+ 967              		@ frame_needed = 1, uses_anonymous_args = 0
+ 968              		@ link register save eliminated.
+ 969 034c 80B4     		push	{r7}
+ 970              		.cfi_def_cfa_offset 4
+ 971              		.cfi_offset 7, -4
+ 972 034e 00AF     		add	r7, sp, #0
+ 973              		.cfi_def_cfa_register 7
+ 974              		.loc 1 144 1 discriminator 2
+ 975 0350 084B     		ldr	r3, .L65
+ 976 0352 1B68     		ldr	r3, [r3]
+ 977 0354 074A     		ldr	r2, .L65
+ 978 0356 23F47063 		bic	r3, r3, #3840
+ 979 035a 1360     		str	r3, [r2]
+ 980 035c 054B     		ldr	r3, .L65
+ 981 035e 1B68     		ldr	r3, [r3]
+ 982 0360 044A     		ldr	r2, .L65
+ 983 0362 43F40063 		orr	r3, r3, #2048
+ 984 0366 1360     		str	r3, [r2]
+ 985              		.loc 1 144 1 is_stmt 0 discriminator 4
+ 986 0368 024B     		ldr	r3, .L65
+ 987 036a 0422     		movs	r2, #4
+ 988 036c 1A61     		str	r2, [r3, #16]
+ 989              		.loc 1 144 1
+ 990 036e BD46     		mov	sp, r7
+ 991              		.cfi_def_cfa_register 13
+ 992              		@ sp needed
+ 993 0370 80BC     		pop	{r7}
+ 994              		.cfi_restore 7
+ 995              		.cfi_def_cfa_offset 0
+ 996 0372 7047     		bx	lr
+ 997              	.L66:
+ 998              		.align	2
+ 999              	.L65:
+ 1000 0374 00080140 		.word	1073809408
+ 1001              		.cfi_endproc
+ 1002              	.LFE62:
+ 1004              		.align	1
+ 1005              		.syntax unified
+ 1006              		.thumb
+ 1007              		.thumb_func
+ 1009              	GPIO_nMARe_pp:
+ 1010              	.LFB64:
+ 145:blinky.c      **** GPIO_PIN(nMARe, A, 3)
+ 1011              		.loc 1 145 1 is_stmt 1
+ 1012              		.cfi_startproc
+ 1013              		@ args = 0, pretend = 0, frame = 0
+ 1014              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1015              		@ link register save eliminated.
+ 1016 0378 80B4     		push	{r7}
+ 1017              		.cfi_def_cfa_offset 4
+ 1018              		.cfi_offset 7, -4
+ 1019 037a 00AF     		add	r7, sp, #0
+ 1020              		.cfi_def_cfa_register 7
+ 1021              		.loc 1 145 1 discriminator 2
+ 1022 037c 074B     		ldr	r3, .L68
+ 1023 037e 1B68     		ldr	r3, [r3]
+ 1024 0380 064A     		ldr	r2, .L68
+ 1025 0382 23F47043 		bic	r3, r3, #61440
+ 1026 0386 1360     		str	r3, [r2]
+ 1027 0388 044B     		ldr	r3, .L68
+ 1028 038a 1B68     		ldr	r3, [r3]
+ 1029 038c 034A     		ldr	r2, .L68
+ 1030 038e 43F48053 		orr	r3, r3, #4096
+ 1031 0392 1360     		str	r3, [r2]
+ 1032              		.loc 1 145 1 is_stmt 0
+ 1033 0394 BD46     		mov	sp, r7
+ 1034              		.cfi_def_cfa_register 13
+ 1035              		@ sp needed
+ 1036 0396 80BC     		pop	{r7}
+ 1037              		.cfi_restore 7
+ 1038              		.cfi_def_cfa_offset 0
+ 1039 0398 7047     		bx	lr
+ 1040              	.L69:
+ 1041 039a 00BF     		.align	2
+ 1042              	.L68:
+ 1043 039c 00080140 		.word	1073809408
+ 1044              		.cfi_endproc
+ 1045              	.LFE64:
+ 1047              		.align	1
+ 1048              		.syntax unified
+ 1049              		.thumb
+ 1050              		.thumb_func
+ 1052              	GPIO_nMARe_set:
+ 1053              	.LFB65:
+ 1054              		.loc 1 145 1 is_stmt 1
+ 1055              		.cfi_startproc
+ 1056              		@ args = 0, pretend = 0, frame = 0
+ 1057              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1058              		@ link register save eliminated.
+ 1059 03a0 80B4     		push	{r7}
+ 1060              		.cfi_def_cfa_offset 4
+ 1061              		.cfi_offset 7, -4
+ 1062 03a2 00AF     		add	r7, sp, #0
+ 1063              		.cfi_def_cfa_register 7
+ 1064              		.loc 1 145 1
+ 1065 03a4 024B     		ldr	r3, .L71
+ 1066 03a6 0822     		movs	r2, #8
+ 1067 03a8 1A61     		str	r2, [r3, #16]
+ 1068 03aa BD46     		mov	sp, r7
+ 1069              		.cfi_def_cfa_register 13
+ 1070              		@ sp needed
+ 1071 03ac 80BC     		pop	{r7}
+ 1072              		.cfi_restore 7
+ 1073              		.cfi_def_cfa_offset 0
+ 1074 03ae 7047     		bx	lr
+ 1075              	.L72:
+ 1076              		.align	2
+ 1077              	.L71:
+ 1078 03b0 00080140 		.word	1073809408
+ 1079              		.cfi_endproc
+ 1080              	.LFE65:
+ 1082              		.align	1
+ 1083              		.syntax unified
+ 1084              		.thumb
+ 1085              		.thumb_func
+ 1087              	GPIO_nMARe_clr:
+ 1088              	.LFB66:
+ 1089              		.loc 1 145 1
+ 1090              		.cfi_startproc
+ 1091              		@ args = 0, pretend = 0, frame = 0
+ 1092              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1093              		@ link register save eliminated.
+ 1094 03b4 80B4     		push	{r7}
+ 1095              		.cfi_def_cfa_offset 4
+ 1096              		.cfi_offset 7, -4
+ 1097 03b6 00AF     		add	r7, sp, #0
+ 1098              		.cfi_def_cfa_register 7
+ 1099              		.loc 1 145 1
+ 1100 03b8 024B     		ldr	r3, .L74
+ 1101 03ba 0822     		movs	r2, #8
+ 1102 03bc 5A61     		str	r2, [r3, #20]
+ 1103 03be BD46     		mov	sp, r7
+ 1104              		.cfi_def_cfa_register 13
+ 1105              		@ sp needed
+ 1106 03c0 80BC     		pop	{r7}
+ 1107              		.cfi_restore 7
+ 1108              		.cfi_def_cfa_offset 0
+ 1109 03c2 7047     		bx	lr
+ 1110              	.L75:
+ 1111              		.align	2
+ 1112              	.L74:
+ 1113 03c4 00080140 		.word	1073809408
+ 1114              		.cfi_endproc
+ 1115              	.LFE66:
+ 1117              		.align	1
+ 1118              		.syntax unified
+ 1119              		.thumb
+ 1120              		.thumb_func
+ 1122              	GPIO_nMARe_inPU:
+ 1123              	.LFB69:
+ 1124              		.loc 1 145 1
+ 1125              		.cfi_startproc
+ 1126              		@ args = 0, pretend = 0, frame = 0
+ 1127              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1128              		@ link register save eliminated.
+ 1129 03c8 80B4     		push	{r7}
+ 1130              		.cfi_def_cfa_offset 4
+ 1131              		.cfi_offset 7, -4
+ 1132 03ca 00AF     		add	r7, sp, #0
+ 1133              		.cfi_def_cfa_register 7
+ 1134              		.loc 1 145 1 discriminator 2
+ 1135 03cc 084B     		ldr	r3, .L77
+ 1136 03ce 1B68     		ldr	r3, [r3]
+ 1137 03d0 074A     		ldr	r2, .L77
+ 1138 03d2 23F47043 		bic	r3, r3, #61440
+ 1139 03d6 1360     		str	r3, [r2]
+ 1140 03d8 054B     		ldr	r3, .L77
+ 1141 03da 1B68     		ldr	r3, [r3]
+ 1142 03dc 044A     		ldr	r2, .L77
+ 1143 03de 43F40043 		orr	r3, r3, #32768
+ 1144 03e2 1360     		str	r3, [r2]
+ 1145              		.loc 1 145 1 is_stmt 0 discriminator 4
+ 1146 03e4 024B     		ldr	r3, .L77
+ 1147 03e6 0822     		movs	r2, #8
+ 1148 03e8 1A61     		str	r2, [r3, #16]
+ 1149              		.loc 1 145 1
+ 1150 03ea BD46     		mov	sp, r7
+ 1151              		.cfi_def_cfa_register 13
+ 1152              		@ sp needed
+ 1153 03ec 80BC     		pop	{r7}
+ 1154              		.cfi_restore 7
+ 1155              		.cfi_def_cfa_offset 0
+ 1156 03ee 7047     		bx	lr
+ 1157              	.L78:
+ 1158              		.align	2
+ 1159              	.L77:
+ 1160 03f0 00080140 		.word	1073809408
+ 1161              		.cfi_endproc
+ 1162              	.LFE69:
+ 1164              		.align	1
+ 1165              		.syntax unified
+ 1166              		.thumb
+ 1167              		.thumb_func
+ 1169              	GPIO_MARck_pp:
+ 1170              	.LFB71:
+ 146:blinky.c      **** GPIO_PIN(MARck, A, 4)
+ 1171              		.loc 1 146 1 is_stmt 1
+ 1172              		.cfi_startproc
+ 1173              		@ args = 0, pretend = 0, frame = 0
+ 1174              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1175              		@ link register save eliminated.
+ 1176 03f4 80B4     		push	{r7}
+ 1177              		.cfi_def_cfa_offset 4
+ 1178              		.cfi_offset 7, -4
+ 1179 03f6 00AF     		add	r7, sp, #0
+ 1180              		.cfi_def_cfa_register 7
+ 1181              		.loc 1 146 1 discriminator 2
+ 1182 03f8 074B     		ldr	r3, .L80
+ 1183 03fa 1B68     		ldr	r3, [r3]
+ 1184 03fc 064A     		ldr	r2, .L80
+ 1185 03fe 23F47023 		bic	r3, r3, #983040
+ 1186 0402 1360     		str	r3, [r2]
+ 1187 0404 044B     		ldr	r3, .L80
+ 1188 0406 1B68     		ldr	r3, [r3]
+ 1189 0408 034A     		ldr	r2, .L80
+ 1190 040a 43F48033 		orr	r3, r3, #65536
+ 1191 040e 1360     		str	r3, [r2]
+ 1192              		.loc 1 146 1 is_stmt 0
+ 1193 0410 BD46     		mov	sp, r7
+ 1194              		.cfi_def_cfa_register 13
+ 1195              		@ sp needed
+ 1196 0412 80BC     		pop	{r7}
+ 1197              		.cfi_restore 7
+ 1198              		.cfi_def_cfa_offset 0
+ 1199 0414 7047     		bx	lr
+ 1200              	.L81:
+ 1201 0416 00BF     		.align	2
+ 1202              	.L80:
+ 1203 0418 00080140 		.word	1073809408
+ 1204              		.cfi_endproc
+ 1205              	.LFE71:
+ 1207              		.align	1
+ 1208              		.syntax unified
+ 1209              		.thumb
+ 1210              		.thumb_func
+ 1212              	GPIO_MARck_set:
+ 1213              	.LFB72:
+ 1214              		.loc 1 146 1 is_stmt 1
+ 1215              		.cfi_startproc
+ 1216              		@ args = 0, pretend = 0, frame = 0
+ 1217              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1218              		@ link register save eliminated.
+ 1219 041c 80B4     		push	{r7}
+ 1220              		.cfi_def_cfa_offset 4
+ 1221              		.cfi_offset 7, -4
+ 1222 041e 00AF     		add	r7, sp, #0
+ 1223              		.cfi_def_cfa_register 7
+ 1224              		.loc 1 146 1
+ 1225 0420 024B     		ldr	r3, .L83
+ 1226 0422 1022     		movs	r2, #16
+ 1227 0424 1A61     		str	r2, [r3, #16]
+ 1228 0426 BD46     		mov	sp, r7
+ 1229              		.cfi_def_cfa_register 13
+ 1230              		@ sp needed
+ 1231 0428 80BC     		pop	{r7}
+ 1232              		.cfi_restore 7
+ 1233              		.cfi_def_cfa_offset 0
+ 1234 042a 7047     		bx	lr
+ 1235              	.L84:
+ 1236              		.align	2
+ 1237              	.L83:
+ 1238 042c 00080140 		.word	1073809408
+ 1239              		.cfi_endproc
+ 1240              	.LFE72:
+ 1242              		.align	1
+ 1243              		.syntax unified
+ 1244              		.thumb
+ 1245              		.thumb_func
+ 1247              	GPIO_MARck_clr:
+ 1248              	.LFB73:
+ 1249              		.loc 1 146 1
+ 1250              		.cfi_startproc
+ 1251              		@ args = 0, pretend = 0, frame = 0
+ 1252              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1253              		@ link register save eliminated.
+ 1254 0430 80B4     		push	{r7}
+ 1255              		.cfi_def_cfa_offset 4
+ 1256              		.cfi_offset 7, -4
+ 1257 0432 00AF     		add	r7, sp, #0
+ 1258              		.cfi_def_cfa_register 7
+ 1259              		.loc 1 146 1
+ 1260 0434 024B     		ldr	r3, .L86
+ 1261 0436 1022     		movs	r2, #16
+ 1262 0438 5A61     		str	r2, [r3, #20]
+ 1263 043a BD46     		mov	sp, r7
+ 1264              		.cfi_def_cfa_register 13
+ 1265              		@ sp needed
+ 1266 043c 80BC     		pop	{r7}
+ 1267              		.cfi_restore 7
+ 1268              		.cfi_def_cfa_offset 0
+ 1269 043e 7047     		bx	lr
+ 1270              	.L87:
+ 1271              		.align	2
+ 1272              	.L86:
+ 1273 0440 00080140 		.word	1073809408
+ 1274              		.cfi_endproc
+ 1275              	.LFE73:
+ 1277              		.align	1
+ 1278              		.syntax unified
+ 1279              		.thumb
+ 1280              		.thumb_func
+ 1282              	GPIO_MARck_inPD:
+ 1283              	.LFB77:
+ 1284              		.loc 1 146 1
+ 1285              		.cfi_startproc
+ 1286              		@ args = 0, pretend = 0, frame = 0
+ 1287              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1288              		@ link register save eliminated.
+ 1289 0444 80B4     		push	{r7}
+ 1290              		.cfi_def_cfa_offset 4
+ 1291              		.cfi_offset 7, -4
+ 1292 0446 00AF     		add	r7, sp, #0
+ 1293              		.cfi_def_cfa_register 7
+ 1294              		.loc 1 146 1 discriminator 2
+ 1295 0448 094B     		ldr	r3, .L89
+ 1296 044a 1B68     		ldr	r3, [r3]
+ 1297 044c 084A     		ldr	r2, .L89
+ 1298 044e 23F47023 		bic	r3, r3, #983040
+ 1299 0452 1360     		str	r3, [r2]
+ 1300 0454 064B     		ldr	r3, .L89
+ 1301 0456 1B68     		ldr	r3, [r3]
+ 1302 0458 054A     		ldr	r2, .L89
+ 1303 045a 43F40023 		orr	r3, r3, #524288
+ 1304 045e 1360     		str	r3, [r2]
+ 1305              		.loc 1 146 1 is_stmt 0 discriminator 4
+ 1306 0460 034B     		ldr	r3, .L89
+ 1307 0462 4FF48012 		mov	r2, #1048576
+ 1308 0466 1A61     		str	r2, [r3, #16]
+ 1309              		.loc 1 146 1
+ 1310 0468 BD46     		mov	sp, r7
+ 1311              		.cfi_def_cfa_register 13
+ 1312              		@ sp needed
+ 1313 046a 80BC     		pop	{r7}
+ 1314              		.cfi_restore 7
+ 1315              		.cfi_def_cfa_offset 0
+ 1316 046c 7047     		bx	lr
+ 1317              	.L90:
+ 1318 046e 00BF     		.align	2
+ 1319              	.L89:
+ 1320 0470 00080140 		.word	1073809408
+ 1321              		.cfi_endproc
+ 1322              	.LFE77:
+ 1324              		.align	1
+ 1325              		.syntax unified
+ 1326              		.thumb
+ 1327              		.thumb_func
+ 1329              	GPIO_AvalCk_pp:
+ 1330              	.LFB78:
+ 147:blinky.c      **** GPIO_PIN(AvalCk, A, 5)
+ 1331              		.loc 1 147 1 is_stmt 1
+ 1332              		.cfi_startproc
+ 1333              		@ args = 0, pretend = 0, frame = 0
+ 1334              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1335              		@ link register save eliminated.
+ 1336 0474 80B4     		push	{r7}
+ 1337              		.cfi_def_cfa_offset 4
+ 1338              		.cfi_offset 7, -4
+ 1339 0476 00AF     		add	r7, sp, #0
+ 1340              		.cfi_def_cfa_register 7
+ 1341              		.loc 1 147 1 discriminator 2
+ 1342 0478 074B     		ldr	r3, .L92
+ 1343 047a 1B68     		ldr	r3, [r3]
+ 1344 047c 064A     		ldr	r2, .L92
+ 1345 047e 23F47003 		bic	r3, r3, #15728640
+ 1346 0482 1360     		str	r3, [r2]
+ 1347 0484 044B     		ldr	r3, .L92
+ 1348 0486 1B68     		ldr	r3, [r3]
+ 1349 0488 034A     		ldr	r2, .L92
+ 1350 048a 43F48013 		orr	r3, r3, #1048576
+ 1351 048e 1360     		str	r3, [r2]
+ 1352              		.loc 1 147 1 is_stmt 0
+ 1353 0490 BD46     		mov	sp, r7
+ 1354              		.cfi_def_cfa_register 13
+ 1355              		@ sp needed
+ 1356 0492 80BC     		pop	{r7}
+ 1357              		.cfi_restore 7
+ 1358              		.cfi_def_cfa_offset 0
+ 1359 0494 7047     		bx	lr
+ 1360              	.L93:
+ 1361 0496 00BF     		.align	2
+ 1362              	.L92:
+ 1363 0498 00080140 		.word	1073809408
+ 1364              		.cfi_endproc
+ 1365              	.LFE78:
+ 1367              		.align	1
+ 1368              		.syntax unified
+ 1369              		.thumb
+ 1370              		.thumb_func
+ 1372              	GPIO_AvalCk_set:
+ 1373              	.LFB79:
+ 1374              		.loc 1 147 1 is_stmt 1
+ 1375              		.cfi_startproc
+ 1376              		@ args = 0, pretend = 0, frame = 0
+ 1377              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1378              		@ link register save eliminated.
+ 1379 049c 80B4     		push	{r7}
+ 1380              		.cfi_def_cfa_offset 4
+ 1381              		.cfi_offset 7, -4
+ 1382 049e 00AF     		add	r7, sp, #0
+ 1383              		.cfi_def_cfa_register 7
+ 1384              		.loc 1 147 1
+ 1385 04a0 024B     		ldr	r3, .L95
+ 1386 04a2 2022     		movs	r2, #32
+ 1387 04a4 1A61     		str	r2, [r3, #16]
+ 1388 04a6 BD46     		mov	sp, r7
+ 1389              		.cfi_def_cfa_register 13
+ 1390              		@ sp needed
+ 1391 04a8 80BC     		pop	{r7}
+ 1392              		.cfi_restore 7
+ 1393              		.cfi_def_cfa_offset 0
+ 1394 04aa 7047     		bx	lr
+ 1395              	.L96:
+ 1396              		.align	2
+ 1397              	.L95:
+ 1398 04ac 00080140 		.word	1073809408
+ 1399              		.cfi_endproc
+ 1400              	.LFE79:
+ 1402              		.align	1
+ 1403              		.syntax unified
+ 1404              		.thumb
+ 1405              		.thumb_func
+ 1407              	GPIO_AvalCk_clr:
+ 1408              	.LFB80:
+ 1409              		.loc 1 147 1
+ 1410              		.cfi_startproc
+ 1411              		@ args = 0, pretend = 0, frame = 0
+ 1412              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1413              		@ link register save eliminated.
+ 1414 04b0 80B4     		push	{r7}
+ 1415              		.cfi_def_cfa_offset 4
+ 1416              		.cfi_offset 7, -4
+ 1417 04b2 00AF     		add	r7, sp, #0
+ 1418              		.cfi_def_cfa_register 7
+ 1419              		.loc 1 147 1
+ 1420 04b4 024B     		ldr	r3, .L98
+ 1421 04b6 2022     		movs	r2, #32
+ 1422 04b8 5A61     		str	r2, [r3, #20]
+ 1423 04ba BD46     		mov	sp, r7
+ 1424              		.cfi_def_cfa_register 13
+ 1425              		@ sp needed
+ 1426 04bc 80BC     		pop	{r7}
+ 1427              		.cfi_restore 7
+ 1428              		.cfi_def_cfa_offset 0
+ 1429 04be 7047     		bx	lr
+ 1430              	.L99:
+ 1431              		.align	2
+ 1432              	.L98:
+ 1433 04c0 00080140 		.word	1073809408
+ 1434              		.cfi_endproc
+ 1435              	.LFE80:
+ 1437              		.align	1
+ 1438              		.syntax unified
+ 1439              		.thumb
+ 1440              		.thumb_func
+ 1442              	GPIO_AvalCk_inPD:
+ 1443              	.LFB84:
+ 1444              		.loc 1 147 1
+ 1445              		.cfi_startproc
+ 1446              		@ args = 0, pretend = 0, frame = 0
+ 1447              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1448              		@ link register save eliminated.
+ 1449 04c4 80B4     		push	{r7}
+ 1450              		.cfi_def_cfa_offset 4
+ 1451              		.cfi_offset 7, -4
+ 1452 04c6 00AF     		add	r7, sp, #0
+ 1453              		.cfi_def_cfa_register 7
+ 1454              		.loc 1 147 1 discriminator 2
+ 1455 04c8 094B     		ldr	r3, .L101
+ 1456 04ca 1B68     		ldr	r3, [r3]
+ 1457 04cc 084A     		ldr	r2, .L101
+ 1458 04ce 23F47003 		bic	r3, r3, #15728640
+ 1459 04d2 1360     		str	r3, [r2]
+ 1460 04d4 064B     		ldr	r3, .L101
+ 1461 04d6 1B68     		ldr	r3, [r3]
+ 1462 04d8 054A     		ldr	r2, .L101
+ 1463 04da 43F40003 		orr	r3, r3, #8388608
+ 1464 04de 1360     		str	r3, [r2]
+ 1465              		.loc 1 147 1 is_stmt 0 discriminator 4
+ 1466 04e0 034B     		ldr	r3, .L101
+ 1467 04e2 4FF40012 		mov	r2, #2097152
+ 1468 04e6 1A61     		str	r2, [r3, #16]
+ 1469              		.loc 1 147 1
+ 1470 04e8 BD46     		mov	sp, r7
+ 1471              		.cfi_def_cfa_register 13
+ 1472              		@ sp needed
+ 1473 04ea 80BC     		pop	{r7}
+ 1474              		.cfi_restore 7
+ 1475              		.cfi_def_cfa_offset 0
+ 1476 04ec 7047     		bx	lr
+ 1477              	.L102:
+ 1478 04ee 00BF     		.align	2
+ 1479              	.L101:
+ 1480 04f0 00080140 		.word	1073809408
+ 1481              		.cfi_endproc
+ 1482              	.LFE84:
+ 1484              		.align	1
+ 1485              		.syntax unified
+ 1486              		.thumb
+ 1487              		.thumb_func
+ 1489              	GPIO_Ack_pp:
+ 1490              	.LFB85:
+ 148:blinky.c      **** GPIO_PIN(Ack, A, 6)
+ 1491              		.loc 1 148 1 is_stmt 1
+ 1492              		.cfi_startproc
+ 1493              		@ args = 0, pretend = 0, frame = 0
+ 1494              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1495              		@ link register save eliminated.
+ 1496 04f4 80B4     		push	{r7}
+ 1497              		.cfi_def_cfa_offset 4
+ 1498              		.cfi_offset 7, -4
+ 1499 04f6 00AF     		add	r7, sp, #0
+ 1500              		.cfi_def_cfa_register 7
+ 1501              		.loc 1 148 1 discriminator 2
+ 1502 04f8 074B     		ldr	r3, .L104
+ 1503 04fa 1B68     		ldr	r3, [r3]
+ 1504 04fc 064A     		ldr	r2, .L104
+ 1505 04fe 23F07063 		bic	r3, r3, #251658240
+ 1506 0502 1360     		str	r3, [r2]
+ 1507 0504 044B     		ldr	r3, .L104
+ 1508 0506 1B68     		ldr	r3, [r3]
+ 1509 0508 034A     		ldr	r2, .L104
+ 1510 050a 43F08073 		orr	r3, r3, #16777216
+ 1511 050e 1360     		str	r3, [r2]
+ 1512              		.loc 1 148 1 is_stmt 0
+ 1513 0510 BD46     		mov	sp, r7
+ 1514              		.cfi_def_cfa_register 13
+ 1515              		@ sp needed
+ 1516 0512 80BC     		pop	{r7}
+ 1517              		.cfi_restore 7
+ 1518              		.cfi_def_cfa_offset 0
+ 1519 0514 7047     		bx	lr
+ 1520              	.L105:
+ 1521 0516 00BF     		.align	2
+ 1522              	.L104:
+ 1523 0518 00080140 		.word	1073809408
+ 1524              		.cfi_endproc
+ 1525              	.LFE85:
+ 1527              		.align	1
+ 1528              		.syntax unified
+ 1529              		.thumb
+ 1530              		.thumb_func
+ 1532              	GPIO_Ack_set:
+ 1533              	.LFB86:
+ 1534              		.loc 1 148 1 is_stmt 1
+ 1535              		.cfi_startproc
+ 1536              		@ args = 0, pretend = 0, frame = 0
+ 1537              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1538              		@ link register save eliminated.
+ 1539 051c 80B4     		push	{r7}
+ 1540              		.cfi_def_cfa_offset 4
+ 1541              		.cfi_offset 7, -4
+ 1542 051e 00AF     		add	r7, sp, #0
+ 1543              		.cfi_def_cfa_register 7
+ 1544              		.loc 1 148 1
+ 1545 0520 024B     		ldr	r3, .L107
+ 1546 0522 4022     		movs	r2, #64
+ 1547 0524 1A61     		str	r2, [r3, #16]
+ 1548 0526 BD46     		mov	sp, r7
+ 1549              		.cfi_def_cfa_register 13
+ 1550              		@ sp needed
+ 1551 0528 80BC     		pop	{r7}
+ 1552              		.cfi_restore 7
+ 1553              		.cfi_def_cfa_offset 0
+ 1554 052a 7047     		bx	lr
+ 1555              	.L108:
+ 1556              		.align	2
+ 1557              	.L107:
+ 1558 052c 00080140 		.word	1073809408
+ 1559              		.cfi_endproc
+ 1560              	.LFE86:
+ 1562              		.align	1
+ 1563              		.syntax unified
+ 1564              		.thumb
+ 1565              		.thumb_func
+ 1567              	GPIO_Ack_clr:
+ 1568              	.LFB87:
+ 1569              		.loc 1 148 1
+ 1570              		.cfi_startproc
+ 1571              		@ args = 0, pretend = 0, frame = 0
+ 1572              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1573              		@ link register save eliminated.
+ 1574 0530 80B4     		push	{r7}
+ 1575              		.cfi_def_cfa_offset 4
+ 1576              		.cfi_offset 7, -4
+ 1577 0532 00AF     		add	r7, sp, #0
+ 1578              		.cfi_def_cfa_register 7
+ 1579              		.loc 1 148 1
+ 1580 0534 024B     		ldr	r3, .L110
+ 1581 0536 4022     		movs	r2, #64
+ 1582 0538 5A61     		str	r2, [r3, #20]
+ 1583 053a BD46     		mov	sp, r7
+ 1584              		.cfi_def_cfa_register 13
+ 1585              		@ sp needed
+ 1586 053c 80BC     		pop	{r7}
+ 1587              		.cfi_restore 7
+ 1588              		.cfi_def_cfa_offset 0
+ 1589 053e 7047     		bx	lr
+ 1590              	.L111:
+ 1591              		.align	2
+ 1592              	.L110:
+ 1593 0540 00080140 		.word	1073809408
+ 1594              		.cfi_endproc
+ 1595              	.LFE87:
+ 1597              		.align	1
+ 1598              		.syntax unified
+ 1599              		.thumb
+ 1600              		.thumb_func
+ 1602              	GPIO_Ack_inPD:
+ 1603              	.LFB91:
+ 1604              		.loc 1 148 1
+ 1605              		.cfi_startproc
+ 1606              		@ args = 0, pretend = 0, frame = 0
+ 1607              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1608              		@ link register save eliminated.
+ 1609 0544 80B4     		push	{r7}
+ 1610              		.cfi_def_cfa_offset 4
+ 1611              		.cfi_offset 7, -4
+ 1612 0546 00AF     		add	r7, sp, #0
+ 1613              		.cfi_def_cfa_register 7
+ 1614              		.loc 1 148 1 discriminator 2
+ 1615 0548 094B     		ldr	r3, .L113
+ 1616 054a 1B68     		ldr	r3, [r3]
+ 1617 054c 084A     		ldr	r2, .L113
+ 1618 054e 23F07063 		bic	r3, r3, #251658240
+ 1619 0552 1360     		str	r3, [r2]
+ 1620 0554 064B     		ldr	r3, .L113
+ 1621 0556 1B68     		ldr	r3, [r3]
+ 1622 0558 054A     		ldr	r2, .L113
+ 1623 055a 43F00063 		orr	r3, r3, #134217728
+ 1624 055e 1360     		str	r3, [r2]
+ 1625              		.loc 1 148 1 is_stmt 0 discriminator 4
+ 1626 0560 034B     		ldr	r3, .L113
+ 1627 0562 4FF48002 		mov	r2, #4194304
+ 1628 0566 1A61     		str	r2, [r3, #16]
+ 1629              		.loc 1 148 1
+ 1630 0568 BD46     		mov	sp, r7
+ 1631              		.cfi_def_cfa_register 13
+ 1632              		@ sp needed
+ 1633 056a 80BC     		pop	{r7}
+ 1634              		.cfi_restore 7
+ 1635              		.cfi_def_cfa_offset 0
+ 1636 056c 7047     		bx	lr
+ 1637              	.L114:
+ 1638 056e 00BF     		.align	2
+ 1639              	.L113:
+ 1640 0570 00080140 		.word	1073809408
+ 1641              		.cfi_endproc
+ 1642              	.LFE91:
+ 1644              		.align	1
+ 1645              		.syntax unified
+ 1646              		.thumb
+ 1647              		.thumb_func
+ 1649              	GPIO_Bck_pp:
+ 1650              	.LFB92:
+ 149:blinky.c      **** GPIO_PIN(Bck, B, 9)
+ 1651              		.loc 1 149 1 is_stmt 1
+ 1652              		.cfi_startproc
+ 1653              		@ args = 0, pretend = 0, frame = 0
+ 1654              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1655              		@ link register save eliminated.
+ 1656 0574 80B4     		push	{r7}
+ 1657              		.cfi_def_cfa_offset 4
+ 1658              		.cfi_offset 7, -4
+ 1659 0576 00AF     		add	r7, sp, #0
+ 1660              		.cfi_def_cfa_register 7
+ 1661              		.loc 1 149 1 discriminator 1
+ 1662 0578 074B     		ldr	r3, .L116
+ 1663 057a 5B68     		ldr	r3, [r3, #4]
+ 1664 057c 064A     		ldr	r2, .L116
+ 1665 057e 23F0F003 		bic	r3, r3, #240
+ 1666 0582 5360     		str	r3, [r2, #4]
+ 1667 0584 044B     		ldr	r3, .L116
+ 1668 0586 5B68     		ldr	r3, [r3, #4]
+ 1669 0588 034A     		ldr	r2, .L116
+ 1670 058a 43F01003 		orr	r3, r3, #16
+ 1671 058e 5360     		str	r3, [r2, #4]
+ 1672              		.loc 1 149 1 is_stmt 0
+ 1673 0590 BD46     		mov	sp, r7
+ 1674              		.cfi_def_cfa_register 13
+ 1675              		@ sp needed
+ 1676 0592 80BC     		pop	{r7}
+ 1677              		.cfi_restore 7
+ 1678              		.cfi_def_cfa_offset 0
+ 1679 0594 7047     		bx	lr
+ 1680              	.L117:
+ 1681 0596 00BF     		.align	2
+ 1682              	.L116:
+ 1683 0598 000C0140 		.word	1073810432
+ 1684              		.cfi_endproc
+ 1685              	.LFE92:
+ 1687              		.align	1
+ 1688              		.syntax unified
+ 1689              		.thumb
+ 1690              		.thumb_func
+ 1692              	GPIO_Bck_set:
+ 1693              	.LFB93:
+ 1694              		.loc 1 149 1 is_stmt 1
+ 1695              		.cfi_startproc
+ 1696              		@ args = 0, pretend = 0, frame = 0
+ 1697              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1698              		@ link register save eliminated.
+ 1699 059c 80B4     		push	{r7}
+ 1700              		.cfi_def_cfa_offset 4
+ 1701              		.cfi_offset 7, -4
+ 1702 059e 00AF     		add	r7, sp, #0
+ 1703              		.cfi_def_cfa_register 7
+ 1704              		.loc 1 149 1
+ 1705 05a0 034B     		ldr	r3, .L119
+ 1706 05a2 4FF40072 		mov	r2, #512
+ 1707 05a6 1A61     		str	r2, [r3, #16]
+ 1708 05a8 BD46     		mov	sp, r7
+ 1709              		.cfi_def_cfa_register 13
+ 1710              		@ sp needed
+ 1711 05aa 80BC     		pop	{r7}
+ 1712              		.cfi_restore 7
+ 1713              		.cfi_def_cfa_offset 0
+ 1714 05ac 7047     		bx	lr
+ 1715              	.L120:
+ 1716 05ae 00BF     		.align	2
+ 1717              	.L119:
+ 1718 05b0 000C0140 		.word	1073810432
+ 1719              		.cfi_endproc
+ 1720              	.LFE93:
+ 1722              		.align	1
+ 1723              		.syntax unified
+ 1724              		.thumb
+ 1725              		.thumb_func
+ 1727              	GPIO_Bck_clr:
+ 1728              	.LFB94:
+ 1729              		.loc 1 149 1
+ 1730              		.cfi_startproc
+ 1731              		@ args = 0, pretend = 0, frame = 0
+ 1732              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1733              		@ link register save eliminated.
+ 1734 05b4 80B4     		push	{r7}
+ 1735              		.cfi_def_cfa_offset 4
+ 1736              		.cfi_offset 7, -4
+ 1737 05b6 00AF     		add	r7, sp, #0
+ 1738              		.cfi_def_cfa_register 7
+ 1739              		.loc 1 149 1
+ 1740 05b8 034B     		ldr	r3, .L122
+ 1741 05ba 4FF40072 		mov	r2, #512
+ 1742 05be 5A61     		str	r2, [r3, #20]
+ 1743 05c0 BD46     		mov	sp, r7
+ 1744              		.cfi_def_cfa_register 13
+ 1745              		@ sp needed
+ 1746 05c2 80BC     		pop	{r7}
+ 1747              		.cfi_restore 7
+ 1748              		.cfi_def_cfa_offset 0
+ 1749 05c4 7047     		bx	lr
+ 1750              	.L123:
+ 1751 05c6 00BF     		.align	2
+ 1752              	.L122:
+ 1753 05c8 000C0140 		.word	1073810432
+ 1754              		.cfi_endproc
+ 1755              	.LFE94:
+ 1757              		.align	1
+ 1758              		.syntax unified
+ 1759              		.thumb
+ 1760              		.thumb_func
+ 1762              	GPIO_Bck_inPD:
+ 1763              	.LFB98:
+ 1764              		.loc 1 149 1
+ 1765              		.cfi_startproc
+ 1766              		@ args = 0, pretend = 0, frame = 0
+ 1767              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1768              		@ link register save eliminated.
+ 1769 05cc 80B4     		push	{r7}
+ 1770              		.cfi_def_cfa_offset 4
+ 1771              		.cfi_offset 7, -4
+ 1772 05ce 00AF     		add	r7, sp, #0
+ 1773              		.cfi_def_cfa_register 7
+ 1774              		.loc 1 149 1 discriminator 1
+ 1775 05d0 094B     		ldr	r3, .L125
+ 1776 05d2 5B68     		ldr	r3, [r3, #4]
+ 1777 05d4 084A     		ldr	r2, .L125
+ 1778 05d6 23F0F003 		bic	r3, r3, #240
+ 1779 05da 5360     		str	r3, [r2, #4]
+ 1780 05dc 064B     		ldr	r3, .L125
+ 1781 05de 5B68     		ldr	r3, [r3, #4]
+ 1782 05e0 054A     		ldr	r2, .L125
+ 1783 05e2 43F08003 		orr	r3, r3, #128
+ 1784 05e6 5360     		str	r3, [r2, #4]
+ 1785              		.loc 1 149 1 is_stmt 0 discriminator 4
+ 1786 05e8 034B     		ldr	r3, .L125
+ 1787 05ea 4FF00072 		mov	r2, #33554432
+ 1788 05ee 1A61     		str	r2, [r3, #16]
+ 1789              		.loc 1 149 1
+ 1790 05f0 BD46     		mov	sp, r7
+ 1791              		.cfi_def_cfa_register 13
+ 1792              		@ sp needed
+ 1793 05f2 80BC     		pop	{r7}
+ 1794              		.cfi_restore 7
+ 1795              		.cfi_def_cfa_offset 0
+ 1796 05f4 7047     		bx	lr
+ 1797              	.L126:
+ 1798 05f6 00BF     		.align	2
+ 1799              	.L125:
+ 1800 05f8 000C0140 		.word	1073810432
+ 1801              		.cfi_endproc
+ 1802              	.LFE98:
+ 1804              		.align	1
+ 1805              		.syntax unified
+ 1806              		.thumb
+ 1807              		.thumb_func
+ 1809              	GPIO_BvalCk_pp:
+ 1810              	.LFB99:
+ 150:blinky.c      **** GPIO_PIN(BvalCk, B, 8)
+ 1811              		.loc 1 150 1 is_stmt 1
+ 1812              		.cfi_startproc
+ 1813              		@ args = 0, pretend = 0, frame = 0
+ 1814              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1815              		@ link register save eliminated.
+ 1816 05fc 80B4     		push	{r7}
+ 1817              		.cfi_def_cfa_offset 4
+ 1818              		.cfi_offset 7, -4
+ 1819 05fe 00AF     		add	r7, sp, #0
+ 1820              		.cfi_def_cfa_register 7
+ 1821              		.loc 1 150 1 discriminator 1
+ 1822 0600 074B     		ldr	r3, .L128
+ 1823 0602 5B68     		ldr	r3, [r3, #4]
+ 1824 0604 064A     		ldr	r2, .L128
+ 1825 0606 23F00F03 		bic	r3, r3, #15
+ 1826 060a 5360     		str	r3, [r2, #4]
+ 1827 060c 044B     		ldr	r3, .L128
+ 1828 060e 5B68     		ldr	r3, [r3, #4]
+ 1829 0610 034A     		ldr	r2, .L128
+ 1830 0612 43F00103 		orr	r3, r3, #1
+ 1831 0616 5360     		str	r3, [r2, #4]
+ 1832              		.loc 1 150 1 is_stmt 0
+ 1833 0618 BD46     		mov	sp, r7
+ 1834              		.cfi_def_cfa_register 13
+ 1835              		@ sp needed
+ 1836 061a 80BC     		pop	{r7}
+ 1837              		.cfi_restore 7
+ 1838              		.cfi_def_cfa_offset 0
+ 1839 061c 7047     		bx	lr
+ 1840              	.L129:
+ 1841 061e 00BF     		.align	2
+ 1842              	.L128:
+ 1843 0620 000C0140 		.word	1073810432
+ 1844              		.cfi_endproc
+ 1845              	.LFE99:
+ 1847              		.align	1
+ 1848              		.syntax unified
+ 1849              		.thumb
+ 1850              		.thumb_func
+ 1852              	GPIO_BvalCk_set:
+ 1853              	.LFB100:
+ 1854              		.loc 1 150 1 is_stmt 1
+ 1855              		.cfi_startproc
+ 1856              		@ args = 0, pretend = 0, frame = 0
+ 1857              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1858              		@ link register save eliminated.
+ 1859 0624 80B4     		push	{r7}
+ 1860              		.cfi_def_cfa_offset 4
+ 1861              		.cfi_offset 7, -4
+ 1862 0626 00AF     		add	r7, sp, #0
+ 1863              		.cfi_def_cfa_register 7
+ 1864              		.loc 1 150 1
+ 1865 0628 034B     		ldr	r3, .L131
+ 1866 062a 4FF48072 		mov	r2, #256
+ 1867 062e 1A61     		str	r2, [r3, #16]
+ 1868 0630 BD46     		mov	sp, r7
+ 1869              		.cfi_def_cfa_register 13
+ 1870              		@ sp needed
+ 1871 0632 80BC     		pop	{r7}
+ 1872              		.cfi_restore 7
+ 1873              		.cfi_def_cfa_offset 0
+ 1874 0634 7047     		bx	lr
+ 1875              	.L132:
+ 1876 0636 00BF     		.align	2
+ 1877              	.L131:
+ 1878 0638 000C0140 		.word	1073810432
+ 1879              		.cfi_endproc
+ 1880              	.LFE100:
+ 1882              		.align	1
+ 1883              		.syntax unified
+ 1884              		.thumb
+ 1885              		.thumb_func
+ 1887              	GPIO_BvalCk_clr:
+ 1888              	.LFB101:
+ 1889              		.loc 1 150 1
+ 1890              		.cfi_startproc
+ 1891              		@ args = 0, pretend = 0, frame = 0
+ 1892              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1893              		@ link register save eliminated.
+ 1894 063c 80B4     		push	{r7}
+ 1895              		.cfi_def_cfa_offset 4
+ 1896              		.cfi_offset 7, -4
+ 1897 063e 00AF     		add	r7, sp, #0
+ 1898              		.cfi_def_cfa_register 7
+ 1899              		.loc 1 150 1
+ 1900 0640 034B     		ldr	r3, .L134
+ 1901 0642 4FF48072 		mov	r2, #256
+ 1902 0646 5A61     		str	r2, [r3, #20]
+ 1903 0648 BD46     		mov	sp, r7
+ 1904              		.cfi_def_cfa_register 13
+ 1905              		@ sp needed
+ 1906 064a 80BC     		pop	{r7}
+ 1907              		.cfi_restore 7
+ 1908              		.cfi_def_cfa_offset 0
+ 1909 064c 7047     		bx	lr
+ 1910              	.L135:
+ 1911 064e 00BF     		.align	2
+ 1912              	.L134:
+ 1913 0650 000C0140 		.word	1073810432
+ 1914              		.cfi_endproc
+ 1915              	.LFE101:
+ 1917              		.align	1
+ 1918              		.syntax unified
+ 1919              		.thumb
+ 1920              		.thumb_func
+ 1922              	GPIO_BvalCk_inPD:
+ 1923              	.LFB105:
+ 1924              		.loc 1 150 1
+ 1925              		.cfi_startproc
+ 1926              		@ args = 0, pretend = 0, frame = 0
+ 1927              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1928              		@ link register save eliminated.
+ 1929 0654 80B4     		push	{r7}
+ 1930              		.cfi_def_cfa_offset 4
+ 1931              		.cfi_offset 7, -4
+ 1932 0656 00AF     		add	r7, sp, #0
+ 1933              		.cfi_def_cfa_register 7
+ 1934              		.loc 1 150 1 discriminator 1
+ 1935 0658 094B     		ldr	r3, .L137
+ 1936 065a 5B68     		ldr	r3, [r3, #4]
+ 1937 065c 084A     		ldr	r2, .L137
+ 1938 065e 23F00F03 		bic	r3, r3, #15
+ 1939 0662 5360     		str	r3, [r2, #4]
+ 1940 0664 064B     		ldr	r3, .L137
+ 1941 0666 5B68     		ldr	r3, [r3, #4]
+ 1942 0668 054A     		ldr	r2, .L137
+ 1943 066a 43F00803 		orr	r3, r3, #8
+ 1944 066e 5360     		str	r3, [r2, #4]
+ 1945              		.loc 1 150 1 is_stmt 0 discriminator 4
+ 1946 0670 034B     		ldr	r3, .L137
+ 1947 0672 4FF08072 		mov	r2, #16777216
+ 1948 0676 1A61     		str	r2, [r3, #16]
+ 1949              		.loc 1 150 1
+ 1950 0678 BD46     		mov	sp, r7
+ 1951              		.cfi_def_cfa_register 13
+ 1952              		@ sp needed
+ 1953 067a 80BC     		pop	{r7}
+ 1954              		.cfi_restore 7
+ 1955              		.cfi_def_cfa_offset 0
+ 1956 067c 7047     		bx	lr
+ 1957              	.L138:
+ 1958 067e 00BF     		.align	2
+ 1959              	.L137:
+ 1960 0680 000C0140 		.word	1073810432
+ 1961              		.cfi_endproc
+ 1962              	.LFE105:
+ 1964              		.align	1
+ 1965              		.syntax unified
+ 1966              		.thumb
+ 1967              		.thumb_func
+ 1969              	GPIO_nResultE_pp:
+ 1970              	.LFB106:
+ 151:blinky.c      **** GPIO_PIN(nResultE, B, 7)
+ 1971              		.loc 1 151 1 is_stmt 1
+ 1972              		.cfi_startproc
+ 1973              		@ args = 0, pretend = 0, frame = 0
+ 1974              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1975              		@ link register save eliminated.
+ 1976 0684 80B4     		push	{r7}
+ 1977              		.cfi_def_cfa_offset 4
+ 1978              		.cfi_offset 7, -4
+ 1979 0686 00AF     		add	r7, sp, #0
+ 1980              		.cfi_def_cfa_register 7
+ 1981              		.loc 1 151 1 discriminator 2
+ 1982 0688 074B     		ldr	r3, .L140
+ 1983 068a 1B68     		ldr	r3, [r3]
+ 1984 068c 064A     		ldr	r2, .L140
+ 1985 068e 23F07043 		bic	r3, r3, #-268435456
+ 1986 0692 1360     		str	r3, [r2]
+ 1987 0694 044B     		ldr	r3, .L140
+ 1988 0696 1B68     		ldr	r3, [r3]
+ 1989 0698 034A     		ldr	r2, .L140
+ 1990 069a 43F08053 		orr	r3, r3, #268435456
+ 1991 069e 1360     		str	r3, [r2]
+ 1992              		.loc 1 151 1 is_stmt 0
+ 1993 06a0 BD46     		mov	sp, r7
+ 1994              		.cfi_def_cfa_register 13
+ 1995              		@ sp needed
+ 1996 06a2 80BC     		pop	{r7}
+ 1997              		.cfi_restore 7
+ 1998              		.cfi_def_cfa_offset 0
+ 1999 06a4 7047     		bx	lr
+ 2000              	.L141:
+ 2001 06a6 00BF     		.align	2
+ 2002              	.L140:
+ 2003 06a8 000C0140 		.word	1073810432
+ 2004              		.cfi_endproc
+ 2005              	.LFE106:
+ 2007              		.align	1
+ 2008              		.syntax unified
+ 2009              		.thumb
+ 2010              		.thumb_func
+ 2012              	GPIO_nResultE_set:
+ 2013              	.LFB107:
+ 2014              		.loc 1 151 1 is_stmt 1
+ 2015              		.cfi_startproc
+ 2016              		@ args = 0, pretend = 0, frame = 0
+ 2017              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2018              		@ link register save eliminated.
+ 2019 06ac 80B4     		push	{r7}
+ 2020              		.cfi_def_cfa_offset 4
+ 2021              		.cfi_offset 7, -4
+ 2022 06ae 00AF     		add	r7, sp, #0
+ 2023              		.cfi_def_cfa_register 7
+ 2024              		.loc 1 151 1
+ 2025 06b0 024B     		ldr	r3, .L143
+ 2026 06b2 8022     		movs	r2, #128
+ 2027 06b4 1A61     		str	r2, [r3, #16]
+ 2028 06b6 BD46     		mov	sp, r7
+ 2029              		.cfi_def_cfa_register 13
+ 2030              		@ sp needed
+ 2031 06b8 80BC     		pop	{r7}
+ 2032              		.cfi_restore 7
+ 2033              		.cfi_def_cfa_offset 0
+ 2034 06ba 7047     		bx	lr
+ 2035              	.L144:
+ 2036              		.align	2
+ 2037              	.L143:
+ 2038 06bc 000C0140 		.word	1073810432
+ 2039              		.cfi_endproc
+ 2040              	.LFE107:
+ 2042              		.align	1
+ 2043              		.syntax unified
+ 2044              		.thumb
+ 2045              		.thumb_func
+ 2047              	GPIO_nResultE_inPU:
+ 2048              	.LFB111:
+ 2049              		.loc 1 151 1
+ 2050              		.cfi_startproc
+ 2051              		@ args = 0, pretend = 0, frame = 0
+ 2052              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2053              		@ link register save eliminated.
+ 2054 06c0 80B4     		push	{r7}
+ 2055              		.cfi_def_cfa_offset 4
+ 2056              		.cfi_offset 7, -4
+ 2057 06c2 00AF     		add	r7, sp, #0
+ 2058              		.cfi_def_cfa_register 7
+ 2059              		.loc 1 151 1 discriminator 2
+ 2060 06c4 084B     		ldr	r3, .L146
+ 2061 06c6 1B68     		ldr	r3, [r3]
+ 2062 06c8 074A     		ldr	r2, .L146
+ 2063 06ca 23F07043 		bic	r3, r3, #-268435456
+ 2064 06ce 1360     		str	r3, [r2]
+ 2065 06d0 054B     		ldr	r3, .L146
+ 2066 06d2 1B68     		ldr	r3, [r3]
+ 2067 06d4 044A     		ldr	r2, .L146
+ 2068 06d6 43F00043 		orr	r3, r3, #-2147483648
+ 2069 06da 1360     		str	r3, [r2]
+ 2070              		.loc 1 151 1 is_stmt 0 discriminator 4
+ 2071 06dc 024B     		ldr	r3, .L146
+ 2072 06de 8022     		movs	r2, #128
+ 2073 06e0 1A61     		str	r2, [r3, #16]
+ 2074              		.loc 1 151 1
+ 2075 06e2 BD46     		mov	sp, r7
+ 2076              		.cfi_def_cfa_register 13
+ 2077              		@ sp needed
+ 2078 06e4 80BC     		pop	{r7}
+ 2079              		.cfi_restore 7
+ 2080              		.cfi_def_cfa_offset 0
+ 2081 06e6 7047     		bx	lr
+ 2082              	.L147:
+ 2083              		.align	2
+ 2084              	.L146:
+ 2085 06e8 000C0140 		.word	1073810432
+ 2086              		.cfi_endproc
+ 2087              	.LFE111:
+ 2089              		.align	1
+ 2090              		.syntax unified
+ 2091              		.thumb
+ 2092              		.thumb_func
+ 2094              	GPIO_DISABLE_read:
+ 2095              	.LFB116:
+ 152:blinky.c      **** // GPIO_PIN(LEQ, B, 6)
+ 153:blinky.c      **** // GPIO_PIN(Aneg, B, 5)
+ 154:blinky.c      **** // GPIO_PIN(Bneg, B, 4)
+ 155:blinky.c      **** // GPIO_PIN(IOread, B, 3)
+ 156:blinky.c      **** // GPIO_PIN(IOwrite, A, 15)
+ 157:blinky.c      **** // GPIO_PIN(IOwriteP, B, 12)
+ 158:blinky.c      **** // GPIO_PIN(IoReadP, A, 7)
+ 159:blinky.c      **** // GPIO_PIN(MopEnd, B, 0)
+ 160:blinky.c      **** // GPIO_PIN(Spare1, B, 1)
+ 161:blinky.c      **** // GPIO_PIN(Spare2, B, 2)
+ 162:blinky.c      **** // GPIO_PIN(Spare3, B, 10)
+ 163:blinky.c      **** // GPIO_PIN(Spare4, B, 11)
+ 164:blinky.c      **** 
+ 165:blinky.c      **** GPIO_PIN(DISABLE, B, 13)
+ 2096              		.loc 1 165 1 is_stmt 1
+ 2097              		.cfi_startproc
+ 2098              		@ args = 0, pretend = 0, frame = 0
+ 2099              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2100              		@ link register save eliminated.
+ 2101 06ec 80B4     		push	{r7}
+ 2102              		.cfi_def_cfa_offset 4
+ 2103              		.cfi_offset 7, -4
+ 2104 06ee 00AF     		add	r7, sp, #0
+ 2105              		.cfi_def_cfa_register 7
+ 2106              		.loc 1 165 1
+ 2107 06f0 064B     		ldr	r3, .L150
+ 2108 06f2 9B68     		ldr	r3, [r3, #8]
+ 2109 06f4 5B0B     		lsrs	r3, r3, #13
+ 2110 06f6 03F00103 		and	r3, r3, #1
+ 2111 06fa 002B     		cmp	r3, #0
+ 2112 06fc 14BF     		ite	ne
+ 2113 06fe 0123     		movne	r3, #1
+ 2114 0700 0023     		moveq	r3, #0
+ 2115 0702 DBB2     		uxtb	r3, r3
+ 2116 0704 1846     		mov	r0, r3
+ 2117 0706 BD46     		mov	sp, r7
+ 2118              		.cfi_def_cfa_register 13
+ 2119              		@ sp needed
+ 2120 0708 80BC     		pop	{r7}
+ 2121              		.cfi_restore 7
+ 2122              		.cfi_def_cfa_offset 0
+ 2123 070a 7047     		bx	lr
+ 2124              	.L151:
+ 2125              		.align	2
+ 2126              	.L150:
+ 2127 070c 000C0140 		.word	1073810432
+ 2128              		.cfi_endproc
+ 2129              	.LFE116:
+ 2131              		.align	1
+ 2132              		.syntax unified
+ 2133              		.thumb
+ 2134              		.thumb_func
+ 2136              	GPIO_DISABLE_inPD:
+ 2137              	.LFB119:
+ 2138              		.loc 1 165 1
+ 2139              		.cfi_startproc
+ 2140              		@ args = 0, pretend = 0, frame = 0
+ 2141              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2142              		@ link register save eliminated.
+ 2143 0710 80B4     		push	{r7}
+ 2144              		.cfi_def_cfa_offset 4
+ 2145              		.cfi_offset 7, -4
+ 2146 0712 00AF     		add	r7, sp, #0
+ 2147              		.cfi_def_cfa_register 7
+ 2148              		.loc 1 165 1 discriminator 1
+ 2149 0714 094B     		ldr	r3, .L153
+ 2150 0716 5B68     		ldr	r3, [r3, #4]
+ 2151 0718 084A     		ldr	r2, .L153
+ 2152 071a 23F47003 		bic	r3, r3, #15728640
+ 2153 071e 5360     		str	r3, [r2, #4]
+ 2154 0720 064B     		ldr	r3, .L153
+ 2155 0722 5B68     		ldr	r3, [r3, #4]
+ 2156 0724 054A     		ldr	r2, .L153
+ 2157 0726 43F40003 		orr	r3, r3, #8388608
+ 2158 072a 5360     		str	r3, [r2, #4]
+ 2159              		.loc 1 165 1 is_stmt 0 discriminator 4
+ 2160 072c 034B     		ldr	r3, .L153
+ 2161 072e 4FF00052 		mov	r2, #536870912
+ 2162 0732 1A61     		str	r2, [r3, #16]
+ 2163              		.loc 1 165 1
+ 2164 0734 BD46     		mov	sp, r7
+ 2165              		.cfi_def_cfa_register 13
+ 2166              		@ sp needed
+ 2167 0736 80BC     		pop	{r7}
+ 2168              		.cfi_restore 7
+ 2169              		.cfi_def_cfa_offset 0
+ 2170 0738 7047     		bx	lr
+ 2171              	.L154:
+ 2172 073a 00BF     		.align	2
+ 2173              	.L153:
+ 2174 073c 000C0140 		.word	1073810432
+ 2175              		.cfi_endproc
+ 2176              	.LFE119:
+ 2178              		.align	1
+ 2179              		.syntax unified
+ 2180              		.thumb
+ 2181              		.thumb_func
+ 2183              	GPIO_LED_pp:
+ 2184              	.LFB120:
+ 166:blinky.c      **** GPIO_PIN(LED, C, 13)
+ 2185              		.loc 1 166 1 is_stmt 1
+ 2186              		.cfi_startproc
+ 2187              		@ args = 0, pretend = 0, frame = 0
+ 2188              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2189              		@ link register save eliminated.
+ 2190 0740 80B4     		push	{r7}
+ 2191              		.cfi_def_cfa_offset 4
+ 2192              		.cfi_offset 7, -4
+ 2193 0742 00AF     		add	r7, sp, #0
+ 2194              		.cfi_def_cfa_register 7
+ 2195              		.loc 1 166 1 discriminator 1
+ 2196 0744 074B     		ldr	r3, .L156
+ 2197 0746 5B68     		ldr	r3, [r3, #4]
+ 2198 0748 064A     		ldr	r2, .L156
+ 2199 074a 23F47003 		bic	r3, r3, #15728640
+ 2200 074e 5360     		str	r3, [r2, #4]
+ 2201 0750 044B     		ldr	r3, .L156
+ 2202 0752 5B68     		ldr	r3, [r3, #4]
+ 2203 0754 034A     		ldr	r2, .L156
+ 2204 0756 43F48013 		orr	r3, r3, #1048576
+ 2205 075a 5360     		str	r3, [r2, #4]
+ 2206              		.loc 1 166 1 is_stmt 0
+ 2207 075c BD46     		mov	sp, r7
+ 2208              		.cfi_def_cfa_register 13
+ 2209              		@ sp needed
+ 2210 075e 80BC     		pop	{r7}
+ 2211              		.cfi_restore 7
+ 2212              		.cfi_def_cfa_offset 0
+ 2213 0760 7047     		bx	lr
+ 2214              	.L157:
+ 2215 0762 00BF     		.align	2
+ 2216              	.L156:
+ 2217 0764 00100140 		.word	1073811456
+ 2218              		.cfi_endproc
+ 2219              	.LFE120:
+ 2221              		.align	1
+ 2222              		.syntax unified
+ 2223              		.thumb
+ 2224              		.thumb_func
+ 2226              	GPIO_LED_set:
+ 2227              	.LFB121:
+ 2228              		.loc 1 166 1 is_stmt 1
+ 2229              		.cfi_startproc
+ 2230              		@ args = 0, pretend = 0, frame = 0
+ 2231              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2232              		@ link register save eliminated.
+ 2233 0768 80B4     		push	{r7}
+ 2234              		.cfi_def_cfa_offset 4
+ 2235              		.cfi_offset 7, -4
+ 2236 076a 00AF     		add	r7, sp, #0
+ 2237              		.cfi_def_cfa_register 7
+ 2238              		.loc 1 166 1
+ 2239 076c 034B     		ldr	r3, .L159
+ 2240 076e 4FF40052 		mov	r2, #8192
+ 2241 0772 1A61     		str	r2, [r3, #16]
+ 2242 0774 BD46     		mov	sp, r7
+ 2243              		.cfi_def_cfa_register 13
+ 2244              		@ sp needed
+ 2245 0776 80BC     		pop	{r7}
+ 2246              		.cfi_restore 7
+ 2247              		.cfi_def_cfa_offset 0
+ 2248 0778 7047     		bx	lr
+ 2249              	.L160:
+ 2250 077a 00BF     		.align	2
+ 2251              	.L159:
+ 2252 077c 00100140 		.word	1073811456
+ 2253              		.cfi_endproc
+ 2254              	.LFE121:
+ 2256              		.align	1
+ 2257              		.syntax unified
+ 2258              		.thumb
+ 2259              		.thumb_func
+ 2261              	GPIO_LED_clr:
+ 2262              	.LFB122:
+ 2263              		.loc 1 166 1
+ 2264              		.cfi_startproc
+ 2265              		@ args = 0, pretend = 0, frame = 0
+ 2266              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2267              		@ link register save eliminated.
+ 2268 0780 80B4     		push	{r7}
+ 2269              		.cfi_def_cfa_offset 4
+ 2270              		.cfi_offset 7, -4
+ 2271 0782 00AF     		add	r7, sp, #0
+ 2272              		.cfi_def_cfa_register 7
+ 2273              		.loc 1 166 1
+ 2274 0784 034B     		ldr	r3, .L162
+ 2275 0786 4FF40052 		mov	r2, #8192
+ 2276 078a 5A61     		str	r2, [r3, #20]
+ 2277 078c BD46     		mov	sp, r7
+ 2278              		.cfi_def_cfa_register 13
+ 2279              		@ sp needed
+ 2280 078e 80BC     		pop	{r7}
+ 2281              		.cfi_restore 7
+ 2282              		.cfi_def_cfa_offset 0
+ 2283 0790 7047     		bx	lr
+ 2284              	.L163:
+ 2285 0792 00BF     		.align	2
+ 2286              	.L162:
+ 2287 0794 00100140 		.word	1073811456
+ 2288              		.cfi_endproc
+ 2289              	.LFE122:
+ 2291              		.align	1
+ 2292              		.global	setup_usart1
+ 2293              		.syntax unified
+ 2294              		.thumb
+ 2295              		.thumb_func
+ 2297              	setup_usart1:
+ 2298              	.LFB127:
+ 167:blinky.c      **** 
+ 168:blinky.c      **** void setup_usart1(void) {
+ 2299              		.loc 1 168 25
+ 2300              		.cfi_startproc
+ 2301              		@ args = 0, pretend = 0, frame = 0
+ 2302              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2303              		@ link register save eliminated.
+ 2304 0798 80B4     		push	{r7}
+ 2305              		.cfi_def_cfa_offset 4
+ 2306              		.cfi_offset 7, -4
+ 2307 079a 00AF     		add	r7, sp, #0
+ 2308              		.cfi_def_cfa_register 7
+ 169:blinky.c      ****   // Enable USART1 clock
+ 170:blinky.c      ****   RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
+ 2309              		.loc 1 170 6
+ 2310 079c 144B     		ldr	r3, .L165
+ 2311 079e 9B69     		ldr	r3, [r3, #24]
+ 2312 07a0 134A     		ldr	r2, .L165
+ 2313              		.loc 1 170 16
+ 2314 07a2 43F48043 		orr	r3, r3, #16384
+ 2315 07a6 9361     		str	r3, [r2, #24]
+ 171:blinky.c      **** 
+ 172:blinky.c      ****   // Configure USART1 pins
+ 173:blinky.c      ****   GPIOA->CRH &=
+ 2316              		.loc 1 173 8
+ 2317 07a8 124B     		ldr	r3, .L165+4
+ 2318 07aa 5B68     		ldr	r3, [r3, #4]
+ 2319 07ac 114A     		ldr	r2, .L165+4
+ 2320              		.loc 1 173 14
+ 2321 07ae 23F0F003 		bic	r3, r3, #240
+ 2322 07b2 5360     		str	r3, [r2, #4]
+ 174:blinky.c      ****       ~(GPIO_CRH_CNF9 | GPIO_CRH_MODE9); // Clear configuration for TX pin (PA9)
+ 175:blinky.c      ****   GPIOA->CRH |=
+ 2323              		.loc 1 175 8
+ 2324 07b4 0F4B     		ldr	r3, .L165+4
+ 2325 07b6 5B68     		ldr	r3, [r3, #4]
+ 2326 07b8 0E4A     		ldr	r2, .L165+4
+ 2327              		.loc 1 175 14
+ 2328 07ba 43F09003 		orr	r3, r3, #144
+ 2329 07be 5360     		str	r3, [r2, #4]
+ 176:blinky.c      ****       GPIO_CRH_CNF9_1 |
+ 177:blinky.c      ****       GPIO_CRH_MODE9_0; // Set TX pin as alternate function output push-pull
+ 178:blinky.c      **** 
+ 179:blinky.c      ****   GPIOA->CRH &= ~(GPIO_CRH_CNF10 |
+ 2330              		.loc 1 179 8
+ 2331 07c0 0C4B     		ldr	r3, .L165+4
+ 2332 07c2 5B68     		ldr	r3, [r3, #4]
+ 2333 07c4 0B4A     		ldr	r2, .L165+4
+ 2334              		.loc 1 179 14
+ 2335 07c6 23F47063 		bic	r3, r3, #3840
+ 2336 07ca 5360     		str	r3, [r2, #4]
+ 180:blinky.c      ****                   GPIO_CRH_MODE10); // Clear configuration for RX pin (PA10)
+ 181:blinky.c      ****   GPIOA->CRH |= GPIO_CRH_CNF10_0;   // Set RX pin as floating input
+ 2337              		.loc 1 181 8
+ 2338 07cc 094B     		ldr	r3, .L165+4
+ 2339 07ce 5B68     		ldr	r3, [r3, #4]
+ 2340 07d0 084A     		ldr	r2, .L165+4
+ 2341              		.loc 1 181 14
+ 2342 07d2 43F48063 		orr	r3, r3, #1024
+ 2343 07d6 5360     		str	r3, [r2, #4]
+ 182:blinky.c      **** 
+ 183:blinky.c      ****   // Configure USART1
+ 184:blinky.c      ****   USART1->BRR =64000000 /(2 * 9600); 
+ 2344              		.loc 1 184 9
+ 2345 07d8 074B     		ldr	r3, .L165+8
+ 2346              		.loc 1 184 15
+ 2347 07da 40F60552 		movw	r2, #3333
+ 2348 07de 1A81     		strh	r2, [r3, #8]	@ movhi
+ 185:blinky.c      ****   USART1->CR1 = USART_CR1_TE | USART_CR1_RE |
+ 2349              		.loc 1 185 9
+ 2350 07e0 054B     		ldr	r3, .L165+8
+ 2351              		.loc 1 185 15
+ 2352 07e2 42F20C02 		movw	r2, #8204
+ 2353 07e6 9A81     		strh	r2, [r3, #12]	@ movhi
+ 186:blinky.c      ****                 USART_CR1_UE; // Enable transmitter, receiver, and USART
+ 187:blinky.c      **** 
+ 188:blinky.c      **** 
+ 189:blinky.c      ****   // Enable USART1 interrupt (if needed)
+ 190:blinky.c      ****   // NVIC_EnableIRQ(USART1_IRQn);
+ 191:blinky.c      **** }
+ 2354              		.loc 1 191 1
+ 2355 07e8 00BF     		nop
+ 2356 07ea BD46     		mov	sp, r7
+ 2357              		.cfi_def_cfa_register 13
+ 2358              		@ sp needed
+ 2359 07ec 80BC     		pop	{r7}
+ 2360              		.cfi_restore 7
+ 2361              		.cfi_def_cfa_offset 0
+ 2362 07ee 7047     		bx	lr
+ 2363              	.L166:
+ 2364              		.align	2
+ 2365              	.L165:
+ 2366 07f0 00100240 		.word	1073876992
+ 2367 07f4 00080140 		.word	1073809408
+ 2368 07f8 00380140 		.word	1073821696
+ 2369              		.cfi_endproc
+ 2370              	.LFE127:
+ 2372              		.align	1
+ 2373              		.global	printchar
+ 2374              		.syntax unified
+ 2375              		.thumb
+ 2376              		.thumb_func
+ 2378              	printchar:
+ 2379              	.LFB128:
+ 192:blinky.c      **** 
+ 193:blinky.c      **** // // Handle received serial data
+ 194:blinky.c      **** // void USART1_IRQHandler(void) {
+ 195:blinky.c      **** //   if (USART1->SR & USART_SR_RXNE) {
+ 196:blinky.c      **** //     uint8_t data = USART1->DR;
+ 197:blinky.c      **** //     GPIO_LED_clr();
+ 198:blinky.c      **** //     delay(100);
+ 199:blinky.c      **** //     GPIO_LED_set();
+ 200:blinky.c      **** //     // Acknowledge the interrupt by writing a value to the SR register
+ 201:blinky.c      **** //     USART1->SR &= ~USART_SR_RXNE;
+ 202:blinky.c      **** //   }
+ 203:blinky.c      **** // }
+ 204:blinky.c      **** 
+ 205:blinky.c      **** 
+ 206:blinky.c      **** void printchar (void* p, char c) {
+ 2380              		.loc 1 206 34
+ 2381              		.cfi_startproc
+ 2382              		@ args = 0, pretend = 0, frame = 8
+ 2383              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2384              		@ link register save eliminated.
+ 2385 07fc 80B4     		push	{r7}
+ 2386              		.cfi_def_cfa_offset 4
+ 2387              		.cfi_offset 7, -4
+ 2388 07fe 83B0     		sub	sp, sp, #12
+ 2389              		.cfi_def_cfa_offset 16
+ 2390 0800 00AF     		add	r7, sp, #0
+ 2391              		.cfi_def_cfa_register 7
+ 2392 0802 7860     		str	r0, [r7, #4]
+ 2393 0804 0B46     		mov	r3, r1
+ 2394 0806 FB70     		strb	r3, [r7, #3]
+ 207:blinky.c      ****     while ((USART1->SR & USART_SR_TXE) == 0);
+ 2395              		.loc 1 207 11
+ 2396 0808 00BF     		nop
+ 2397              	.L168:
+ 2398              		.loc 1 207 19 discriminator 1
+ 2399 080a 084B     		ldr	r3, .L169
+ 2400 080c 1B88     		ldrh	r3, [r3]	@ movhi
+ 2401 080e 9BB2     		uxth	r3, r3
+ 2402              		.loc 1 207 24 discriminator 1
+ 2403 0810 03F08003 		and	r3, r3, #128
+ 2404              		.loc 1 207 40 discriminator 1
+ 2405 0814 002B     		cmp	r3, #0
+ 2406 0816 F8D0     		beq	.L168
+ 208:blinky.c      ****     USART1->DR =c; 
+ 2407              		.loc 1 208 11
+ 2408 0818 044B     		ldr	r3, .L169
+ 2409              		.loc 1 208 16
+ 2410 081a FA78     		ldrb	r2, [r7, #3]	@ zero_extendqisi2
+ 2411 081c 92B2     		uxth	r2, r2
+ 2412 081e 9A80     		strh	r2, [r3, #4]	@ movhi
+ 209:blinky.c      **** }
+ 2413              		.loc 1 209 1
+ 2414 0820 00BF     		nop
+ 2415 0822 0C37     		adds	r7, r7, #12
+ 2416              		.cfi_def_cfa_offset 4
+ 2417 0824 BD46     		mov	sp, r7
+ 2418              		.cfi_def_cfa_register 13
+ 2419              		@ sp needed
+ 2420 0826 80BC     		pop	{r7}
+ 2421              		.cfi_restore 7
+ 2422              		.cfi_def_cfa_offset 0
+ 2423 0828 7047     		bx	lr
+ 2424              	.L170:
+ 2425 082a 00BF     		.align	2
+ 2426              	.L169:
+ 2427 082c 00380140 		.word	1073821696
+ 2428              		.cfi_endproc
+ 2429              	.LFE128:
+ 2431              		.align	1
+ 2432              		.global	setupTimer2
+ 2433              		.syntax unified
+ 2434              		.thumb
+ 2435              		.thumb_func
+ 2437              	setupTimer2:
+ 2438              	.LFB129:
+ 210:blinky.c      **** 
+ 211:blinky.c      **** 
+ 212:blinky.c      **** void setupTimer2() {
+ 2439              		.loc 1 212 20
+ 2440              		.cfi_startproc
+ 2441              		@ args = 0, pretend = 0, frame = 0
+ 2442              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2443              		@ link register save eliminated.
+ 2444 0830 80B4     		push	{r7}
+ 2445              		.cfi_def_cfa_offset 4
+ 2446              		.cfi_offset 7, -4
+ 2447 0832 00AF     		add	r7, sp, #0
+ 2448              		.cfi_def_cfa_register 7
+ 213:blinky.c      **** //   // Enable TIM2 clock
+ 214:blinky.c      **** // RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
+ 215:blinky.c      **** 
+ 216:blinky.c      **** // // Set TIM2 prescaler to divide the system clock to 1MHz
+ 217:blinky.c      **** // TIM2->PSC = 64000000 / 1000000 - 1;
+ 218:blinky.c      **** 
+ 219:blinky.c      **** // // Set TIM2 auto-reload register to generate an update event every 100ms
+ 220:blinky.c      **** // TIM2->ARR = 100000 - 1;
+ 221:blinky.c      **** 
+ 222:blinky.c      **** // // Enable TIM2 update interrupt
+ 223:blinky.c      **** // TIM2->DIER |= TIM_DIER_UIE;
+ 224:blinky.c      **** 
+ 225:blinky.c      **** // // Enable TIM2
+ 226:blinky.c      **** // TIM2->CR1 |= TIM_CR1_CEN;
+ 227:blinky.c      **** 
+ 228:blinky.c      **** // // Enable TIM2 interrupt in NVIC
+ 229:blinky.c      **** // NVIC_EnableIRQ(TIM2_IRQn);
+ 230:blinky.c      **** }
+ 2449              		.loc 1 230 1
+ 2450 0834 00BF     		nop
+ 2451 0836 BD46     		mov	sp, r7
+ 2452              		.cfi_def_cfa_register 13
+ 2453              		@ sp needed
+ 2454 0838 80BC     		pop	{r7}
+ 2455              		.cfi_restore 7
+ 2456              		.cfi_def_cfa_offset 0
+ 2457 083a 7047     		bx	lr
+ 2458              		.cfi_endproc
+ 2459              	.LFE129:
+ 2461              		.align	1
+ 2462              		.global	TIM2_IRQHandler
+ 2463              		.syntax unified
+ 2464              		.thumb
+ 2465              		.thumb_func
+ 2467              	TIM2_IRQHandler:
+ 2468              	.LFB130:
+ 231:blinky.c      **** 
+ 232:blinky.c      **** 
+ 233:blinky.c      **** void TIM2_IRQHandler(void) {
+ 2469              		.loc 1 233 28
+ 2470              		.cfi_startproc
+ 2471              		@ args = 0, pretend = 0, frame = 0
+ 2472              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2473              		@ link register save eliminated.
+ 2474 083c 80B4     		push	{r7}
+ 2475              		.cfi_def_cfa_offset 4
+ 2476              		.cfi_offset 7, -4
+ 2477 083e 00AF     		add	r7, sp, #0
+ 2478              		.cfi_def_cfa_register 7
+ 234:blinky.c      ****   // static int count = 0;
+ 235:blinky.c      ****   // if (TIM2->SR & TIM_SR_UIF) {
+ 236:blinky.c      ****   //   count++;
+ 237:blinky.c      ****   //   if (count%2 == 0) {
+ 238:blinky.c      ****   //     GPIO_LED_clr();
+ 239:blinky.c      ****   //   } else {
+ 240:blinky.c      ****   //     GPIO_LED_set();
+ 241:blinky.c      ****   //   }
+ 242:blinky.c      **** 
+ 243:blinky.c      ****   //   // Clear update interrupt flag
+ 244:blinky.c      ****   //   TIM2->SR &= ~TIM_SR_UIF;
+ 245:blinky.c      ****   // }
+ 246:blinky.c      **** }
+ 2479              		.loc 1 246 1
+ 2480 0840 00BF     		nop
+ 2481 0842 BD46     		mov	sp, r7
+ 2482              		.cfi_def_cfa_register 13
+ 2483              		@ sp needed
+ 2484 0844 80BC     		pop	{r7}
+ 2485              		.cfi_restore 7
+ 2486              		.cfi_def_cfa_offset 0
+ 2487 0846 7047     		bx	lr
+ 2488              		.cfi_endproc
+ 2489              	.LFE130:
+ 2491              		.align	1
+ 2492              		.global	setup
+ 2493              		.syntax unified
+ 2494              		.thumb
+ 2495              		.thumb_func
+ 2497              	setup:
+ 2498              	.LFB131:
+ 247:blinky.c      **** 
+ 248:blinky.c      **** 
+ 249:blinky.c      **** 
+ 250:blinky.c      **** void setup() {
+ 2499              		.loc 1 250 14
+ 2500              		.cfi_startproc
+ 2501              		@ args = 0, pretend = 0, frame = 0
+ 2502              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2503 0848 80B5     		push	{r7, lr}
+ 2504              		.cfi_def_cfa_offset 8
+ 2505              		.cfi_offset 7, -8
+ 2506              		.cfi_offset 14, -4
+ 2507 084a 00AF     		add	r7, sp, #0
+ 2508              		.cfi_def_cfa_register 7
+ 251:blinky.c      ****   setclocks();
+ 2509              		.loc 1 251 3
+ 2510 084c FFF7FEFF 		bl	setclocks
+ 252:blinky.c      ****   enable_all_ports_clock();
+ 2511              		.loc 1 252 3
+ 2512 0850 FFF7FEFF 		bl	enable_all_ports_clock
+ 253:blinky.c      ****   // Remap PD0 and PD1 (from XTAL) and PB3, PB4, PA15 (from JTAG) to GPIO
+ 254:blinky.c      ****   AFIO->MAPR = AFIO_MAPR_PD01_REMAP | AFIO_MAPR_SWJ_CFG_JTAGDISABLE;
+ 2513              		.loc 1 254 7
+ 2514 0854 054B     		ldr	r3, .L174
+ 2515              		.loc 1 254 14
+ 2516 0856 064A     		ldr	r2, .L174+4
+ 2517 0858 5A60     		str	r2, [r3, #4]
+ 255:blinky.c      ****   setup_usart1();
+ 2518              		.loc 1 255 3
+ 2519 085a FFF7FEFF 		bl	setup_usart1
+ 256:blinky.c      ****   init_printf(NULL,printchar);
+ 2520              		.loc 1 256 3
+ 2521 085e 0549     		ldr	r1, .L174+8
+ 2522 0860 0020     		movs	r0, #0
+ 2523 0862 FFF7FEFF 		bl	init_printf
+ 257:blinky.c      **** }
+ 2524              		.loc 1 257 1
+ 2525 0866 00BF     		nop
+ 2526 0868 80BD     		pop	{r7, pc}
+ 2527              	.L175:
+ 2528 086a 00BF     		.align	2
+ 2529              	.L174:
+ 2530 086c 00000140 		.word	1073807360
+ 2531 0870 00800002 		.word	33587200
+ 2532 0874 00000000 		.word	printchar
+ 2533              		.cfi_endproc
+ 2534              	.LFE131:
+ 2536              		.section	.rodata
+ 2537              		.align	2
+ 2538              	.LC0:
+ 2539 0000 436F6E74 		.ascii	"Control signals floated\012\015\000"
+ 2539      726F6C20 
+ 2539      7369676E 
+ 2539      616C7320 
+ 2539      666C6F61 
+ 2540              		.text
+ 2541              		.align	1
+ 2542              		.global	DeactivateSignals
+ 2543              		.syntax unified
+ 2544              		.thumb
+ 2545              		.thumb_func
+ 2547              	DeactivateSignals:
+ 2548              	.LFB132:
+ 258:blinky.c      **** 
+ 259:blinky.c      **** void DeactivateSignals() {
+ 2549              		.loc 1 259 26
+ 2550              		.cfi_startproc
+ 2551              		@ args = 0, pretend = 0, frame = 0
+ 2552              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2553 0878 80B5     		push	{r7, lr}
+ 2554              		.cfi_def_cfa_offset 8
+ 2555              		.cfi_offset 7, -8
+ 2556              		.cfi_offset 14, -4
+ 2557 087a 00AF     		add	r7, sp, #0
+ 2558              		.cfi_def_cfa_register 7
+ 260:blinky.c      ****   GPIO_DISABLE_inPD();
+ 2559              		.loc 1 260 3
+ 2560 087c FFF748FF 		bl	GPIO_DISABLE_inPD
+ 261:blinky.c      ****   GPIO_LED_pp();
+ 2561              		.loc 1 261 3
+ 2562 0880 FFF75EFF 		bl	GPIO_LED_pp
+ 262:blinky.c      ****   GPIO_LED_set(); // Turn off LED
+ 2563              		.loc 1 262 3
+ 2564 0884 FFF770FF 		bl	GPIO_LED_set
+ 263:blinky.c      ****   GPIO_Wr_inPU();
+ 2565              		.loc 1 263 3
+ 2566 0888 FFF722FD 		bl	GPIO_Wr_inPU
+ 264:blinky.c      ****   GPIO_Rd_inPU();
+ 2567              		.loc 1 264 3
+ 2568 088c FFF75EFD 		bl	GPIO_Rd_inPU
+ 265:blinky.c      ****   GPIO_Ack_inPD();
+ 2569              		.loc 1 265 3
+ 2570 0890 FFF758FE 		bl	GPIO_Ack_inPD
+ 266:blinky.c      ****   GPIO_Bck_inPD();
+ 2571              		.loc 1 266 3
+ 2572 0894 FFF79AFE 		bl	GPIO_Bck_inPD
+ 267:blinky.c      ****   GPIO_AvalCk_inPD();
+ 2573              		.loc 1 267 3
+ 2574 0898 FFF714FE 		bl	GPIO_AvalCk_inPD
+ 268:blinky.c      ****   GPIO_BvalCk_inPD();
+ 2575              		.loc 1 268 3
+ 2576 089c FFF7DAFE 		bl	GPIO_BvalCk_inPD
+ 269:blinky.c      ****   GPIO_PCck_inPD();
+ 2577              		.loc 1 269 3
+ 2578 08a0 FFF7A2FC 		bl	GPIO_PCck_inPD
+ 270:blinky.c      ****   GPIO_MARck_inPD();
+ 2579              		.loc 1 270 3
+ 2580 08a4 FFF7CEFD 		bl	GPIO_MARck_inPD
+ 271:blinky.c      ****   GPIO_nResultE_inPU();
+ 2581              		.loc 1 271 3
+ 2582 08a8 FFF70AFF 		bl	GPIO_nResultE_inPU
+ 272:blinky.c      ****   GPIO_nMARe_inPU();
+ 2583              		.loc 1 272 3
+ 2584 08ac FFF78CFD 		bl	GPIO_nMARe_inPU
+ 273:blinky.c      ****   GPIO_PCe_inPU();
+ 2585              		.loc 1 273 3
+ 2586 08b0 FFF75CFC 		bl	GPIO_PCe_inPU
+ 274:blinky.c      ****   GPIO_nPCld_inPU();
+ 2587              		.loc 1 274 3
+ 2588 08b4 FFF7D8FC 		bl	GPIO_nPCld_inPU
+ 275:blinky.c      ****   printf("Control signals floated\n\r");
+ 2589              		.loc 1 275 3
+ 2590 08b8 0248     		ldr	r0, .L177
+ 2591 08ba FFF7FEFF 		bl	tfp_printf
+ 276:blinky.c      **** } 
+ 2592              		.loc 1 276 1
+ 2593 08be 00BF     		nop
+ 2594 08c0 80BD     		pop	{r7, pc}
+ 2595              	.L178:
+ 2596 08c2 00BF     		.align	2
+ 2597              	.L177:
+ 2598 08c4 00000000 		.word	.LC0
+ 2599              		.cfi_endproc
+ 2600              	.LFE132:
+ 2602              		.section	.rodata
+ 2603 001a 0000     		.align	2
+ 2604              	.LC1:
+ 2605 001c 436F6E74 		.ascii	"Control signals set to default idle state\012\015\000"
+ 2605      726F6C20 
+ 2605      7369676E 
+ 2605      616C7320 
+ 2605      73657420 
+ 2606              		.text
+ 2607              		.align	1
+ 2608              		.global	IdleAllSignals
+ 2609              		.syntax unified
+ 2610              		.thumb
+ 2611              		.thumb_func
+ 2613              	IdleAllSignals:
+ 2614              	.LFB133:
+ 277:blinky.c      **** 
+ 278:blinky.c      **** void IdleAllSignals() {
+ 2615              		.loc 1 278 23
+ 2616              		.cfi_startproc
+ 2617              		@ args = 0, pretend = 0, frame = 0
+ 2618              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2619 08c8 80B5     		push	{r7, lr}
+ 2620              		.cfi_def_cfa_offset 8
+ 2621              		.cfi_offset 7, -8
+ 2622              		.cfi_offset 14, -4
+ 2623 08ca 00AF     		add	r7, sp, #0
+ 2624              		.cfi_def_cfa_register 7
+ 279:blinky.c      ****   GPIO_DISABLE_inPD();
+ 2625              		.loc 1 279 3
+ 2626 08cc FFF720FF 		bl	GPIO_DISABLE_inPD
+ 280:blinky.c      ****   GPIO_LED_pp();
+ 2627              		.loc 1 280 3
+ 2628 08d0 FFF736FF 		bl	GPIO_LED_pp
+ 281:blinky.c      ****   GPIO_LED_clr(); // Turn on LED
+ 2629              		.loc 1 281 3
+ 2630 08d4 FFF754FF 		bl	GPIO_LED_clr
+ 282:blinky.c      ****   GPIO_Wr_pp(); GPIO_Wr_set();
+ 2631              		.loc 1 282 3
+ 2632 08d8 FFF7DCFC 		bl	GPIO_Wr_pp
+ 2633              		.loc 1 282 17 discriminator 1
+ 2634 08dc FFF7EEFC 		bl	GPIO_Wr_set
+ 283:blinky.c      ****   GPIO_Rd_pp(); GPIO_Rd_set();
+ 2635              		.loc 1 283 3
+ 2636 08e0 FFF70CFD 		bl	GPIO_Rd_pp
+ 2637              		.loc 1 283 17 discriminator 1
+ 2638 08e4 FFF71EFD 		bl	GPIO_Rd_set
+ 284:blinky.c      ****   GPIO_Ack_pp(); GPIO_Ack_clr();
+ 2639              		.loc 1 284 3
+ 2640 08e8 FFF704FE 		bl	GPIO_Ack_pp
+ 2641              		.loc 1 284 18 discriminator 1
+ 2642 08ec FFF720FE 		bl	GPIO_Ack_clr
+ 285:blinky.c      ****   GPIO_Bck_pp(); GPIO_Bck_clr();
+ 2643              		.loc 1 285 3
+ 2644 08f0 FFF740FE 		bl	GPIO_Bck_pp
+ 2645              		.loc 1 285 18 discriminator 1
+ 2646 08f4 FFF75EFE 		bl	GPIO_Bck_clr
+ 286:blinky.c      ****   GPIO_AvalCk_pp(); GPIO_AvalCk_clr();
+ 2647              		.loc 1 286 3
+ 2648 08f8 FFF7BCFD 		bl	GPIO_AvalCk_pp
+ 2649              		.loc 1 286 21 discriminator 1
+ 2650 08fc FFF7D8FD 		bl	GPIO_AvalCk_clr
+ 287:blinky.c      ****   GPIO_BvalCk_pp(); GPIO_AvalCk_clr();
+ 2651              		.loc 1 287 3
+ 2652 0900 FFF77CFE 		bl	GPIO_BvalCk_pp
+ 2653              		.loc 1 287 21 discriminator 1
+ 2654 0904 FFF7D4FD 		bl	GPIO_AvalCk_clr
+ 288:blinky.c      ****   GPIO_PCck_pp(); GPIO_PCck_clr();
+ 2655              		.loc 1 288 3
+ 2656 0908 FFF746FC 		bl	GPIO_PCck_pp
+ 2657              		.loc 1 288 19 discriminator 1
+ 2658 090c FFF762FC 		bl	GPIO_PCck_clr
+ 289:blinky.c      ****   GPIO_MARck_pp(); GPIO_MARck_clr();
+ 2659              		.loc 1 289 3
+ 2660 0910 FFF770FD 		bl	GPIO_MARck_pp
+ 2661              		.loc 1 289 20 discriminator 1
+ 2662 0914 FFF78CFD 		bl	GPIO_MARck_clr
+ 290:blinky.c      ****   GPIO_nResultE_pp(); GPIO_nResultE_set();
+ 2663              		.loc 1 290 3
+ 2664 0918 FFF7B4FE 		bl	GPIO_nResultE_pp
+ 2665              		.loc 1 290 23 discriminator 1
+ 2666 091c FFF7C6FE 		bl	GPIO_nResultE_set
+ 291:blinky.c      ****   GPIO_nMARe_pp(); GPIO_nMARe_set();
+ 2667              		.loc 1 291 3
+ 2668 0920 FFF72AFD 		bl	GPIO_nMARe_pp
+ 2669              		.loc 1 291 20 discriminator 1
+ 2670 0924 FFF73CFD 		bl	GPIO_nMARe_set
+ 292:blinky.c      ****   GPIO_PCe_pp();  GPIO_PCe_set();
+ 2671              		.loc 1 292 3
+ 2672 0928 FFF7F8FB 		bl	GPIO_PCe_pp
+ 2673              		.loc 1 292 19 discriminator 1
+ 2674 092c FFF70AFC 		bl	GPIO_PCe_set
+ 293:blinky.c      ****   GPIO_nPCld_pp(); GPIO_nPCld_set();
+ 2675              		.loc 1 293 3
+ 2676 0930 FFF772FC 		bl	GPIO_nPCld_pp
+ 2677              		.loc 1 293 20 discriminator 1
+ 2678 0934 FFF784FC 		bl	GPIO_nPCld_set
+ 294:blinky.c      ****   printf("Control signals set to default idle state\n\r");
+ 2679              		.loc 1 294 3
+ 2680 0938 0248     		ldr	r0, .L180
+ 2681 093a FFF7FEFF 		bl	tfp_printf
+ 295:blinky.c      **** } 
+ 2682              		.loc 1 295 1
+ 2683 093e 00BF     		nop
+ 2684 0940 80BD     		pop	{r7, pc}
+ 2685              	.L181:
+ 2686 0942 00BF     		.align	2
+ 2687              	.L180:
+ 2688 0944 1C000000 		.word	.LC1
+ 2689              		.cfi_endproc
+ 2690              	.LFE133:
+ 2692              		.align	1
+ 2693              		.global	TestForDeactivation
+ 2694              		.syntax unified
+ 2695              		.thumb
+ 2696              		.thumb_func
+ 2698              	TestForDeactivation:
+ 2699              	.LFB134:
+ 296:blinky.c      **** 
+ 297:blinky.c      ****  void TestForDeactivation() {
+ 2700              		.loc 1 297 29
+ 2701              		.cfi_startproc
+ 2702              		@ args = 0, pretend = 0, frame = 0
+ 2703              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2704 0948 80B5     		push	{r7, lr}
+ 2705              		.cfi_def_cfa_offset 8
+ 2706              		.cfi_offset 7, -8
+ 2707              		.cfi_offset 14, -4
+ 2708 094a 00AF     		add	r7, sp, #0
+ 2709              		.cfi_def_cfa_register 7
+ 298:blinky.c      ****   if (!GPIO_DISABLE_read()) return;
+ 2710              		.loc 1 298 8
+ 2711 094c FFF7CEFE 		bl	GPIO_DISABLE_read
+ 2712 0950 0346     		mov	r3, r0
+ 2713              		.loc 1 298 7 discriminator 1
+ 2714 0952 83F00103 		eor	r3, r3, #1
+ 2715 0956 DBB2     		uxtb	r3, r3
+ 2716              		.loc 1 298 6 discriminator 1
+ 2717 0958 002B     		cmp	r3, #0
+ 2718 095a 0AD1     		bne	.L186
+ 299:blinky.c      ****   DeactivateSignals();
+ 2719              		.loc 1 299 3
+ 2720 095c FFF7FEFF 		bl	DeactivateSignals
+ 300:blinky.c      ****   while (GPIO_DISABLE_read());
+ 2721              		.loc 1 300 9
+ 2722 0960 00BF     		nop
+ 2723              	.L185:
+ 2724              		.loc 1 300 10 discriminator 1
+ 2725 0962 FFF7C3FE 		bl	GPIO_DISABLE_read
+ 2726 0966 0346     		mov	r3, r0
+ 2727 0968 002B     		cmp	r3, #0
+ 2728 096a FAD1     		bne	.L185
+ 301:blinky.c      ****   IdleAllSignals();
+ 2729              		.loc 1 301 3
+ 2730 096c FFF7FEFF 		bl	IdleAllSignals
+ 2731 0970 00E0     		b	.L182
+ 2732              	.L186:
+ 298:blinky.c      ****   DeactivateSignals();
+ 2733              		.loc 1 298 29
+ 2734 0972 00BF     		nop
+ 2735              	.L182:
+ 302:blinky.c      ****  }
+ 2736              		.loc 1 302 2
+ 2737 0974 80BD     		pop	{r7, pc}
+ 2738              		.cfi_endproc
+ 2739              	.LFE134:
+ 2741              		.section	.rodata
+ 2742              		.align	2
+ 2743              	.LC2:
+ 2744 0048 0A0D4D4F 		.ascii	"\012\015MOP Emulator\012\015\000"
+ 2744      5020456D 
+ 2744      756C6174 
+ 2744      6F720A0D 
+ 2744      00
+ 2745 0059 000000   		.align	2
+ 2746              	.LC3:
+ 2747 005c 53746174 		.ascii	"State 0 - ~PCe ~Rd\012\015\000"
+ 2747      65203020 
+ 2747      2D207E50 
+ 2747      4365207E 
+ 2747      52640A0D 
+ 2748 0071 000000   		.align	2
+ 2749              	.LC4:
+ 2750 0074 53746174 		.ascii	"State 1 -\012\015\000"
+ 2750      65203120 
+ 2750      2D0A0D00 
+ 2751              		.align	2
+ 2752              	.LC5:
+ 2753 0080 53746174 		.ascii	"State 2 -\012\015\000"
+ 2753      65203220 
+ 2753      2D0A0D00 
+ 2754              		.text
+ 2755              		.align	1
+ 2756              		.global	main
+ 2757              		.syntax unified
+ 2758              		.thumb
+ 2759              		.thumb_func
+ 2761              	main:
+ 2762              	.LFB135:
+ 303:blinky.c      **** 
+ 304:blinky.c      **** 
+ 305:blinky.c      **** int main(void) {
+ 2763              		.loc 1 305 16
+ 2764              		.cfi_startproc
+ 2765              		@ args = 0, pretend = 0, frame = 8
+ 2766              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2767 0976 80B5     		push	{r7, lr}
+ 2768              		.cfi_def_cfa_offset 8
+ 2769              		.cfi_offset 7, -8
+ 2770              		.cfi_offset 14, -4
+ 2771 0978 82B0     		sub	sp, sp, #8
+ 2772              		.cfi_def_cfa_offset 16
+ 2773 097a 00AF     		add	r7, sp, #0
+ 2774              		.cfi_def_cfa_register 7
+ 306:blinky.c      ****   setup();
+ 2775              		.loc 1 306 3
+ 2776 097c FFF7FEFF 		bl	setup
+ 307:blinky.c      ****   printf("\n\rMOP Emulator\n\r");
+ 2777              		.loc 1 307 3
+ 2778 0980 3C48     		ldr	r0, .L194
+ 2779 0982 FFF7FEFF 		bl	tfp_printf
+ 308:blinky.c      ****   DeactivateSignals();
+ 2780              		.loc 1 308 3
+ 2781 0986 FFF7FEFF 		bl	DeactivateSignals
+ 309:blinky.c      ****   IdleAllSignals();
+ 2782              		.loc 1 309 3
+ 2783 098a FFF7FEFF 		bl	IdleAllSignals
+ 2784              	.L193:
+ 310:blinky.c      ****   
+ 311:blinky.c      ****   for (;;) {
+ 312:blinky.c      ****     TestForDeactivation();
+ 2785              		.loc 1 312 5
+ 2786 098e FFF7FEFF 		bl	TestForDeactivation
+ 313:blinky.c      **** 
+ 314:blinky.c      ****   GPIO_nMARe_set();
+ 2787              		.loc 1 314 3
+ 2788 0992 FFF705FD 		bl	GPIO_nMARe_set
+ 315:blinky.c      ****   GPIO_nResultE_set();
+ 2789              		.loc 1 315 3
+ 2790 0996 FFF789FE 		bl	GPIO_nResultE_set
+ 316:blinky.c      ****   GPIO_nPCld_set();
+ 2791              		.loc 1 316 3
+ 2792 099a FFF751FC 		bl	GPIO_nPCld_set
+ 317:blinky.c      ****   GPIO_Ack_set();
+ 2793              		.loc 1 317 3
+ 2794 099e FFF7BDFD 		bl	GPIO_Ack_set
+ 318:blinky.c      ****   GPIO_Bck_set();
+ 2795              		.loc 1 318 3
+ 2796 09a2 FFF7FBFD 		bl	GPIO_Bck_set
+ 319:blinky.c      ****   GPIO_AvalCk_set();
+ 2797              		.loc 1 319 3
+ 2798 09a6 FFF779FD 		bl	GPIO_AvalCk_set
+ 320:blinky.c      ****   GPIO_BvalCk_set();
+ 2799              		.loc 1 320 3
+ 2800 09aa FFF73BFE 		bl	GPIO_BvalCk_set
+ 321:blinky.c      **** 
+ 322:blinky.c      ****   delay(1000);
+ 2801              		.loc 1 322 3
+ 2802 09ae 4FF47A70 		mov	r0, #1000
+ 2803 09b2 FFF7FEFF 		bl	delay
+ 323:blinky.c      ****   GPIO_PCck_set();
+ 2804              		.loc 1 323 3
+ 2805 09b6 FFF703FC 		bl	GPIO_PCck_set
+ 324:blinky.c      ****   GPIO_PCck_clr();
+ 2806              		.loc 1 324 3
+ 2807 09ba FFF70BFC 		bl	GPIO_PCck_clr
+ 325:blinky.c      ****   GPIO_Ack_clr();
+ 2808              		.loc 1 325 3
+ 2809 09be FFF7B7FD 		bl	GPIO_Ack_clr
+ 326:blinky.c      ****   GPIO_Bck_clr();
+ 2810              		.loc 1 326 3
+ 2811 09c2 FFF7F7FD 		bl	GPIO_Bck_clr
+ 327:blinky.c      ****   GPIO_AvalCk_clr();
+ 2812              		.loc 1 327 3
+ 2813 09c6 FFF773FD 		bl	GPIO_AvalCk_clr
+ 328:blinky.c      ****   GPIO_BvalCk_clr();
+ 2814              		.loc 1 328 3
+ 2815 09ca FFF737FE 		bl	GPIO_BvalCk_clr
+ 329:blinky.c      ****   delay(1000);
+ 2816              		.loc 1 329 3
+ 2817 09ce 4FF47A70 		mov	r0, #1000
+ 2818 09d2 FFF7FEFF 		bl	delay
+ 330:blinky.c      **** 
+ 331:blinky.c      **** // Check for incoming character at USART1 and read it.
+ 332:blinky.c      ****     if (USART1->SR & USART_SR_RXNE) {
+ 2819              		.loc 1 332 15
+ 2820 09d6 284B     		ldr	r3, .L194+4
+ 2821 09d8 1B88     		ldrh	r3, [r3]	@ movhi
+ 2822 09da 9BB2     		uxth	r3, r3
+ 2823              		.loc 1 332 20
+ 2824 09dc 03F02003 		and	r3, r3, #32
+ 2825              		.loc 1 332 8
+ 2826 09e0 002B     		cmp	r3, #0
+ 2827 09e2 D4D0     		beq	.L193
+ 2828              	.LBB2:
+ 333:blinky.c      ****       uint8_t data = USART1->DR;
+ 2829              		.loc 1 333 28
+ 2830 09e4 244B     		ldr	r3, .L194+4
+ 2831 09e6 9B88     		ldrh	r3, [r3, #4]	@ movhi
+ 2832 09e8 9BB2     		uxth	r3, r3
+ 2833              		.loc 1 333 15
+ 2834 09ea FB71     		strb	r3, [r7, #7]
+ 334:blinky.c      ****       if (data=='=') {
+ 2835              		.loc 1 334 10
+ 2836 09ec FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2837 09ee 3D2B     		cmp	r3, #61
+ 2838 09f0 01D1     		bne	.L189
+ 335:blinky.c      ****         IdleAllSignals();
+ 2839              		.loc 1 335 9
+ 2840 09f2 FFF7FEFF 		bl	IdleAllSignals
+ 2841              	.L189:
+ 336:blinky.c      ****       }
+ 337:blinky.c      **** 
+ 338:blinky.c      ****       if (data=='.') {
+ 2842              		.loc 1 338 10
+ 2843 09f6 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2844 09f8 2E2B     		cmp	r3, #46
+ 2845 09fa 07D1     		bne	.L190
+ 339:blinky.c      ****         GPIO_nPCld_clr();
+ 2846              		.loc 1 339 9
+ 2847 09fc FFF72AFC 		bl	GPIO_nPCld_clr
+ 340:blinky.c      ****         GPIO_PCck_set();
+ 2848              		.loc 1 340 9
+ 2849 0a00 FFF7DEFB 		bl	GPIO_PCck_set
+ 341:blinky.c      ****         GPIO_PCck_clr();
+ 2850              		.loc 1 341 9
+ 2851 0a04 FFF7E6FB 		bl	GPIO_PCck_clr
+ 342:blinky.c      ****         GPIO_nPCld_set();
+ 2852              		.loc 1 342 9
+ 2853 0a08 FFF71AFC 		bl	GPIO_nPCld_set
+ 2854              	.L190:
+ 343:blinky.c      **** 
+ 344:blinky.c      ****       }
+ 345:blinky.c      **** 
+ 346:blinky.c      **** 
+ 347:blinky.c      ****       if (data=='0') {
+ 2855              		.loc 1 347 10
+ 2856 0a0c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2857 0a0e 302B     		cmp	r3, #48
+ 2858 0a10 06D1     		bne	.L191
+ 348:blinky.c      ****         printf("State 0 - ~PCe ~Rd\n\r");
+ 2859              		.loc 1 348 9
+ 2860 0a12 1A48     		ldr	r0, .L194+8
+ 2861 0a14 FFF7FEFF 		bl	tfp_printf
+ 349:blinky.c      ****         GPIO_PCe_clr();
+ 2862              		.loc 1 349 9
+ 2863 0a18 FFF79EFB 		bl	GPIO_PCe_clr
+ 350:blinky.c      ****         GPIO_Rd_clr();
+ 2864              		.loc 1 350 9
+ 2865 0a1c FFF78CFC 		bl	GPIO_Rd_clr
+ 2866              	.L191:
+ 351:blinky.c      ****       }
+ 352:blinky.c      ****       if (data=='1') {
+ 2867              		.loc 1 352 10
+ 2868 0a20 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2869 0a22 312B     		cmp	r3, #49
+ 2870 0a24 0ED1     		bne	.L192
+ 353:blinky.c      ****         printf("State 1 -\n\r");
+ 2871              		.loc 1 353 9
+ 2872 0a26 1648     		ldr	r0, .L194+12
+ 2873 0a28 FFF7FEFF 		bl	tfp_printf
+ 354:blinky.c      ****         GPIO_PCe_set();
+ 2874              		.loc 1 354 9
+ 2875 0a2c FFF78AFB 		bl	GPIO_PCe_set
+ 355:blinky.c      ****         GPIO_Rd_clr();
+ 2876              		.loc 1 355 9
+ 2877 0a30 FFF782FC 		bl	GPIO_Rd_clr
+ 356:blinky.c      ****         GPIO_nMARe_clr();
+ 2878              		.loc 1 356 9
+ 2879 0a34 FFF7BEFC 		bl	GPIO_nMARe_clr
+ 357:blinky.c      ****         GPIO_Ack_set();
+ 2880              		.loc 1 357 9
+ 2881 0a38 FFF770FD 		bl	GPIO_Ack_set
+ 358:blinky.c      ****         GPIO_PCck_set();
+ 2882              		.loc 1 358 9
+ 2883 0a3c FFF7C0FB 		bl	GPIO_PCck_set
+ 359:blinky.c      ****         GPIO_MARck_set();
+ 2884              		.loc 1 359 9
+ 2885 0a40 FFF7ECFC 		bl	GPIO_MARck_set
+ 2886              	.L192:
+ 360:blinky.c      ****       }
+ 361:blinky.c      ****       if (data=='2') {
+ 2887              		.loc 1 361 10
+ 2888 0a44 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2889 0a46 322B     		cmp	r3, #50
+ 2890 0a48 A1D1     		bne	.L193
+ 362:blinky.c      ****         printf("State 2 -\n\r");
+ 2891              		.loc 1 362 9
+ 2892 0a4a 0E48     		ldr	r0, .L194+16
+ 2893 0a4c FFF7FEFF 		bl	tfp_printf
+ 363:blinky.c      ****         GPIO_PCe_clr();
+ 2894              		.loc 1 363 9
+ 2895 0a50 FFF782FB 		bl	GPIO_PCe_clr
+ 364:blinky.c      ****         GPIO_Rd_clr();
+ 2896              		.loc 1 364 9
+ 2897 0a54 FFF770FC 		bl	GPIO_Rd_clr
+ 365:blinky.c      ****         GPIO_nMARe_set();
+ 2898              		.loc 1 365 9
+ 2899 0a58 FFF7A2FC 		bl	GPIO_nMARe_set
+ 366:blinky.c      ****         GPIO_Ack_clr();
+ 2900              		.loc 1 366 9
+ 2901 0a5c FFF768FD 		bl	GPIO_Ack_clr
+ 367:blinky.c      ****         GPIO_PCck_clr();
+ 2902              		.loc 1 367 9
+ 2903 0a60 FFF7B8FB 		bl	GPIO_PCck_clr
+ 368:blinky.c      ****         GPIO_MARck_clr();
+ 2904              		.loc 1 368 9
+ 2905 0a64 FFF7E4FC 		bl	GPIO_MARck_clr
+ 369:blinky.c      ****         GPIO_AvalCk_set();
+ 2906              		.loc 1 369 9
+ 2907 0a68 FFF718FD 		bl	GPIO_AvalCk_set
+ 370:blinky.c      ****         GPIO_nMARe_clr();
+ 2908              		.loc 1 370 9
+ 2909 0a6c FFF7A2FC 		bl	GPIO_nMARe_clr
+ 2910              	.LBE2:
+ 312:blinky.c      **** 
+ 2911              		.loc 1 312 5
+ 2912 0a70 8DE7     		b	.L193
+ 2913              	.L195:
+ 2914 0a72 00BF     		.align	2
+ 2915              	.L194:
+ 2916 0a74 48000000 		.word	.LC2
+ 2917 0a78 00380140 		.word	1073821696
+ 2918 0a7c 5C000000 		.word	.LC3
+ 2919 0a80 74000000 		.word	.LC4
+ 2920 0a84 80000000 		.word	.LC5
+ 2921              		.cfi_endproc
+ 2922              	.LFE135:
+ 2924              	.Letext0:
+ 2925              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+ 2926              		.file 3 "stm32f10x.h"
+ 2927              		.file 4 "delay.h"
+ 2928              		.file 5 "printf.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 blinky.c
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:18     .text:00000000 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:24     .text:00000000 setclocks
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:158    .text:000000bc $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:163    .text:000000c4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:169    .text:000000c4 enable_all_ports_clock
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:235    .text:00000118 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:239    .text:0000011c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:244    .text:0000011c GPIO_PCe_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:278    .text:00000140 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:282    .text:00000144 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:287    .text:00000144 GPIO_PCe_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:313    .text:00000154 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:317    .text:00000158 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:322    .text:00000158 GPIO_PCe_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:348    .text:00000168 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:352    .text:0000016c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:357    .text:0000016c GPIO_PCe_inPU
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:395    .text:00000194 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:399    .text:00000198 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:404    .text:00000198 GPIO_PCck_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:438    .text:000001bc $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:442    .text:000001c0 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:447    .text:000001c0 GPIO_PCck_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:473    .text:000001d0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:477    .text:000001d4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:482    .text:000001d4 GPIO_PCck_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:508    .text:000001e4 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:512    .text:000001e8 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:517    .text:000001e8 GPIO_PCck_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:555    .text:00000214 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:559    .text:00000218 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:564    .text:00000218 GPIO_nPCld_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:598    .text:0000023c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:602    .text:00000240 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:607    .text:00000240 GPIO_nPCld_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:633    .text:00000250 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:637    .text:00000254 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:642    .text:00000254 GPIO_nPCld_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:668    .text:00000264 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:672    .text:00000268 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:677    .text:00000268 GPIO_nPCld_inPU
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:715    .text:00000290 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:719    .text:00000294 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:724    .text:00000294 GPIO_Wr_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:758    .text:000002b8 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:762    .text:000002bc $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:767    .text:000002bc GPIO_Wr_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:793    .text:000002cc $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:797    .text:000002d0 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:802    .text:000002d0 GPIO_Wr_inPU
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:840    .text:000002f8 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:844    .text:000002fc $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:849    .text:000002fc GPIO_Rd_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:883    .text:00000320 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:887    .text:00000324 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:892    .text:00000324 GPIO_Rd_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:918    .text:00000334 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:922    .text:00000338 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:927    .text:00000338 GPIO_Rd_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:953    .text:00000348 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:957    .text:0000034c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:962    .text:0000034c GPIO_Rd_inPU
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1000   .text:00000374 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1004   .text:00000378 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1009   .text:00000378 GPIO_nMARe_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1043   .text:0000039c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1047   .text:000003a0 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1052   .text:000003a0 GPIO_nMARe_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1078   .text:000003b0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1082   .text:000003b4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1087   .text:000003b4 GPIO_nMARe_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1113   .text:000003c4 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1117   .text:000003c8 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1122   .text:000003c8 GPIO_nMARe_inPU
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1160   .text:000003f0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1164   .text:000003f4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1169   .text:000003f4 GPIO_MARck_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1203   .text:00000418 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1207   .text:0000041c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1212   .text:0000041c GPIO_MARck_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1238   .text:0000042c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1242   .text:00000430 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1247   .text:00000430 GPIO_MARck_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1273   .text:00000440 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1277   .text:00000444 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1282   .text:00000444 GPIO_MARck_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1320   .text:00000470 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1324   .text:00000474 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1329   .text:00000474 GPIO_AvalCk_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1363   .text:00000498 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1367   .text:0000049c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1372   .text:0000049c GPIO_AvalCk_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1398   .text:000004ac $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1402   .text:000004b0 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1407   .text:000004b0 GPIO_AvalCk_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1433   .text:000004c0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1437   .text:000004c4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1442   .text:000004c4 GPIO_AvalCk_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1480   .text:000004f0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1484   .text:000004f4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1489   .text:000004f4 GPIO_Ack_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1523   .text:00000518 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1527   .text:0000051c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1532   .text:0000051c GPIO_Ack_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1558   .text:0000052c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1562   .text:00000530 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1567   .text:00000530 GPIO_Ack_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1593   .text:00000540 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1597   .text:00000544 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1602   .text:00000544 GPIO_Ack_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1640   .text:00000570 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1644   .text:00000574 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1649   .text:00000574 GPIO_Bck_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1683   .text:00000598 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1687   .text:0000059c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1692   .text:0000059c GPIO_Bck_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1718   .text:000005b0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1722   .text:000005b4 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1727   .text:000005b4 GPIO_Bck_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1753   .text:000005c8 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1757   .text:000005cc $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1762   .text:000005cc GPIO_Bck_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1800   .text:000005f8 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1804   .text:000005fc $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1809   .text:000005fc GPIO_BvalCk_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1843   .text:00000620 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1847   .text:00000624 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1852   .text:00000624 GPIO_BvalCk_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1878   .text:00000638 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1882   .text:0000063c $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1887   .text:0000063c GPIO_BvalCk_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1913   .text:00000650 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1917   .text:00000654 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1922   .text:00000654 GPIO_BvalCk_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1960   .text:00000680 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1964   .text:00000684 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:1969   .text:00000684 GPIO_nResultE_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2003   .text:000006a8 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2007   .text:000006ac $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2012   .text:000006ac GPIO_nResultE_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2038   .text:000006bc $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2042   .text:000006c0 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2047   .text:000006c0 GPIO_nResultE_inPU
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2085   .text:000006e8 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2089   .text:000006ec $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2094   .text:000006ec GPIO_DISABLE_read
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2127   .text:0000070c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2131   .text:00000710 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2136   .text:00000710 GPIO_DISABLE_inPD
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2174   .text:0000073c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2178   .text:00000740 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2183   .text:00000740 GPIO_LED_pp
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2217   .text:00000764 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2221   .text:00000768 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2226   .text:00000768 GPIO_LED_set
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2252   .text:0000077c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2256   .text:00000780 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2261   .text:00000780 GPIO_LED_clr
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2287   .text:00000794 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2291   .text:00000798 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2297   .text:00000798 setup_usart1
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2366   .text:000007f0 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2372   .text:000007fc $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2378   .text:000007fc printchar
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2427   .text:0000082c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2431   .text:00000830 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2437   .text:00000830 setupTimer2
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2467   .text:0000083c TIM2_IRQHandler
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2497   .text:00000848 setup
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2530   .text:0000086c $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2537   .rodata:00000000 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2541   .text:00000878 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2547   .text:00000878 DeactivateSignals
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2598   .text:000008c4 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2607   .text:000008c8 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2613   .text:000008c8 IdleAllSignals
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2688   .text:00000944 $d
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2692   .text:00000948 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2698   .text:00000948 TestForDeactivation
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2761   .text:00000976 main
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccG5AvDn.s:2916   .text:00000a74 $d
+
+UNDEFINED SYMBOLS
+init_printf
+tfp_printf
+delay

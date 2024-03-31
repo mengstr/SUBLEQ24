@@ -1,0 +1,254 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00010000         xr
+SRAM             0x20000000         0x00005000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/libgcc.a
+LOAD /Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/libc.a
+LOAD blinky.o
+LOAD delay.o
+LOAD led.o
+LOAD printf.o
+LOAD stm32_startup.o
+
+.text           0x08000000     0x1278
+ *(.isr_vector)
+ .isr_vector    0x08000000      0x130 stm32_startup.o
+                0x08000000                vectors
+ *(.text)
+ .text          0x08000130      0xa88 blinky.o
+                0x08000130                setclocks
+                0x080001f4                enable_all_ports_clock
+                0x080008c8                setup_usart1
+                0x0800092c                printchar
+                0x08000960                setupTimer2
+                0x0800096c                TIM2_IRQHandler
+                0x08000978                setup
+                0x080009a8                DeactivateSignals
+                0x080009f8                IdleAllSignals
+                0x08000a78                TestForDeactivation
+                0x08000aa6                main
+ .text          0x08000bb8       0x30 delay.o
+                0x08000bb8                delay
+ .text          0x08000be8       0x9c led.o
+                0x08000be8                led_enable
+                0x08000c3c                led_on
+                0x08000c60                led_off
+ .text          0x08000c84      0x4dc printf.o
+                0x08000e8e                tfp_format
+                0x080010a8                init_printf
+                0x080010d0                tfp_printf
+                0x08001128                tfp_sprintf
+ .text          0x08001160       0x8c stm32_startup.o
+                0x08001160                DMA2_Channel3_IRQHandler
+                0x08001160                EXTI2_IRQHandler
+                0x08001160                TIM8_TRG_COM_IRQHandler
+                0x08001160                TIM8_CC_IRQHandler
+                0x08001160                DebugMon_Handler
+                0x08001160                TIM1_CC_IRQHandler
+                0x08001160                HardFault_Handler
+                0x08001160                TIM6_IRQHandler
+                0x08001160                SysTick_Handler
+                0x08001160                PVD_IRQHandler
+                0x08001160                SDIO_IRQHandler
+                0x08001160                TAMP_STAMP_IRQHandler
+                0x08001160                PendSV_Handler
+                0x08001160                NMI_Handler
+                0x08001160                EXTI3_IRQHandler
+                0x08001160                USB_HP_CAN_TX_IRQHandler
+                0x08001160                EXTI0_IRQHandler
+                0x08001160                I2C2_EV_IRQHandler
+                0x08001160                UsageFault_Handler
+                0x08001160                SPI1_IRQHandler
+                0x08001160                CAN_SCE_IRQHandler
+                0x08001160                TIM8_UP_IRQHandler
+                0x08001160                DMA2_Channel2_IRQHandler
+                0x08001160                DMA1_Channel4_IRQHandler
+                0x08001160                USART3_IRQHandler
+                0x08001160                DMA1_Channel7_IRQHandler
+                0x08001160                RTC_Alarm_IRQHandler
+                0x08001160                UART5_IRQHandler
+                0x08001160                ADC3_IRQHandler
+                0x08001160                TIM4_IRQHandler
+                0x08001160                CAN_RX1_IRQHandler
+                0x08001160                DMA2_Channel1_IRQHandler
+                0x08001160                USB_Wakeup_IRQHandler
+                0x08001160                I2C1_EV_IRQHandler
+                0x08001160                DMA1_Channel6_IRQHandler
+                0x08001160                UART4_IRQHandler
+                0x08001160                TIM3_IRQHandler
+                0x08001160                RCC_IRQHandler
+                0x08001160                TIM1_TRG_COM_IRQHandler
+                0x08001160                DMA1_Channel1_IRQHandler
+                0x08001160                Default_Handler
+                0x08001160                EXTI15_10_IRQHandler
+                0x08001160                ADC_IRQHandler
+                0x08001160                TIM7_IRQHandler
+                0x08001160                TIM5_IRQHandler
+                0x08001160                EXTI9_5_IRQHandler
+                0x08001160                RTC_WKUP_IRQHandler
+                0x08001160                SPI2_IRQHandler
+                0x08001160                USB_LP_CAN_RX0_IRQHandler
+                0x08001160                MemManage_Handler
+                0x08001160                SVC_Handler
+                0x08001160                DMA1_Channel5_IRQHandler
+                0x08001160                EXTI4_IRQHandler
+                0x08001160                DMA1_Channel3_IRQHandler
+                0x08001160                FSMC_IRQHandler
+                0x08001160                TIM1_UP_IRQHandler
+                0x08001160                WWDG_IRQHandler
+                0x08001160                TIM1_BRK_IRQHandler
+                0x08001160                EXTI1_IRQHandler
+                0x08001160                DMA2_Channel4_5_IRQHandler
+                0x08001160                USART2_IRQHandler
+                0x08001160                I2C2_ER_IRQHandler
+                0x08001160                DMA1_Channel2_IRQHandler
+                0x08001160                TIM8_BRK_IRQHandler
+                0x08001160                BusFault_Handler
+                0x08001160                USART1_IRQHandler
+                0x08001160                SPI3_IRQHandler
+                0x08001160                I2C1_ER_IRQHandler
+                0x08001168                Reset_Handler
+ *(.text.*)
+ *(.init)
+ *(.fini)
+ *(.rodata)
+ .rodata        0x080011ec       0x8c blinky.o
+ *(.rodata.*)
+                0x08001278                        . = ALIGN (0x4)
+                0x08001278                        _etext = .
+                0x08001278                        _la_data = LOADADDR (.data)
+
+.glue_7         0x08001278        0x0
+ .glue_7        0x08001278        0x0 linker stubs
+
+.glue_7t        0x08001278        0x0
+ .glue_7t       0x08001278        0x0 linker stubs
+
+.vfp11_veneer   0x08001278        0x0
+ .vfp11_veneer  0x08001278        0x0 linker stubs
+
+.v4_bx          0x08001278        0x0
+ .v4_bx         0x08001278        0x0 linker stubs
+
+.iplt           0x08001278        0x0
+ .iplt          0x08001278        0x0 blinky.o
+
+.rel.dyn        0x08001278        0x0
+ .rel.iplt      0x08001278        0x0 blinky.o
+
+.data           0x20000000        0x0 load address 0x08001278
+                0x20000000                        _sdata = .
+ *(.data)
+ .data          0x20000000        0x0 blinky.o
+ .data          0x20000000        0x0 delay.o
+ .data          0x20000000        0x0 led.o
+ .data          0x20000000        0x0 printf.o
+ .data          0x20000000        0x0 stm32_startup.o
+ *(.data.*)
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x08001278
+ .igot.plt      0x20000000        0x0 blinky.o
+
+.bss            0x20000000        0x8 load address 0x08001278
+                0x20000000                        _sbss = .
+                0x20000000                        __bss_start__ = _sbss
+ *(.bss)
+ .bss           0x20000000        0x0 blinky.o
+ .bss           0x20000000        0x0 delay.o
+ .bss           0x20000000        0x0 led.o
+ .bss           0x20000000        0x8 printf.o
+ .bss           0x20000008        0x0 stm32_startup.o
+ *(.bss.*)
+ *(COMMON)
+                0x20000008                        . = ALIGN (0x4)
+                0x20000008                        _ebss = .
+                0x20000008                        __bss_end__ = _ebss
+                0x20000008                        . = ALIGN (0x4)
+                0x20000008                        end = .
+                0x20000008                        __end__ = .
+OUTPUT(blinky.elf elf32-littlearm)
+LOAD linker stubs
+
+.debug_info     0x00000000      0xefb
+ .debug_info    0x00000000      0x7de blinky.o
+ .debug_info    0x000007de       0xb1 delay.o
+ .debug_info    0x0000088f       0xf0 led.o
+ .debug_info    0x0000097f      0x3fb printf.o
+ .debug_info    0x00000d7a      0x181 stm32_startup.o
+
+.debug_abbrev   0x00000000      0x59b
+ .debug_abbrev  0x00000000      0x1cf blinky.o
+ .debug_abbrev  0x000001cf       0x7d delay.o
+ .debug_abbrev  0x0000024c       0x8b led.o
+ .debug_abbrev  0x000002d7      0x1c4 printf.o
+ .debug_abbrev  0x0000049b      0x100 stm32_startup.o
+
+.debug_aranges  0x00000000       0xa0
+ .debug_aranges
+                0x00000000       0x20 blinky.o
+ .debug_aranges
+                0x00000020       0x20 delay.o
+ .debug_aranges
+                0x00000040       0x20 led.o
+ .debug_aranges
+                0x00000060       0x20 printf.o
+ .debug_aranges
+                0x00000080       0x20 stm32_startup.o
+
+.debug_line     0x00000000      0x9b4
+ .debug_line    0x00000000      0x486 blinky.o
+ .debug_line    0x00000486       0xc0 delay.o
+ .debug_line    0x00000546       0xe0 led.o
+ .debug_line    0x00000626      0x284 printf.o
+ .debug_line    0x000008aa      0x10a stm32_startup.o
+
+.debug_str      0x00000000      0x6f8
+ .debug_str     0x00000000      0x6f8 blinky.o
+                                0x5ea (size before relaxing)
+ .debug_str     0x000006f8      0x131 delay.o
+ .debug_str     0x000006f8      0x166 led.o
+ .debug_str     0x000006f8      0x155 printf.o
+ .debug_str     0x000006f8      0x1ba stm32_startup.o
+
+.comment        0x00000000       0x44
+ .comment       0x00000000       0x44 blinky.o
+                                 0x45 (size before relaxing)
+ .comment       0x00000044       0x45 delay.o
+ .comment       0x00000044       0x45 led.o
+ .comment       0x00000044       0x45 printf.o
+ .comment       0x00000044       0x45 stm32_startup.o
+
+.ARM.attributes
+                0x00000000       0x2d
+ .ARM.attributes
+                0x00000000       0x2d blinky.o
+ .ARM.attributes
+                0x0000002d       0x2d delay.o
+ .ARM.attributes
+                0x0000005a       0x2d led.o
+ .ARM.attributes
+                0x00000087       0x2d printf.o
+ .ARM.attributes
+                0x000000b4       0x2d stm32_startup.o
+
+.debug_frame    0x00000000      0xa88
+ .debug_frame   0x00000000      0x7c8 blinky.o
+ .debug_frame   0x000007c8       0x38 delay.o
+ .debug_frame   0x00000800       0x84 led.o
+ .debug_frame   0x00000884      0x1b8 printf.o
+ .debug_frame   0x00000a3c       0x4c stm32_startup.o
+
+.debug_rnglists
+                0x00000000       0x17
+ .debug_rnglists
+                0x00000000       0x17 printf.o

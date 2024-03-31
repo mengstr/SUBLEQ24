@@ -1,0 +1,88 @@
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"delay.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "delay.c"
+  18              		.align	1
+  19              		.global	delay
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	delay:
+  25              	.LFB0:
+   1:delay.c       **** #include "delay.h"
+   2:delay.c       **** 
+   3:delay.c       **** #define DELAY_COUNT_1MS      568U
+   4:delay.c       **** 
+   5:delay.c       **** // Command: a simple do-nothing delay for approximately `ms` milliseconds
+   6:delay.c       **** void delay(uint32_t ms) {
+  26              		.loc 1 6 25
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 16
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 85B0     		sub	sp, sp, #20
+  35              		.cfi_def_cfa_offset 24
+  36 0004 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  38 0006 7860     		str	r0, [r7, #4]
+  39              	.LBB2:
+   7:delay.c       ****   for(uint32_t i = 0 ; i < ms * DELAY_COUNT_1MS ; i++);
+  40              		.loc 1 7 16
+  41 0008 0023     		movs	r3, #0
+  42 000a FB60     		str	r3, [r7, #12]
+  43              		.loc 1 7 3
+  44 000c 02E0     		b	.L2
+  45              	.L3:
+  46              		.loc 1 7 52 discriminator 3
+  47 000e FB68     		ldr	r3, [r7, #12]
+  48 0010 0133     		adds	r3, r3, #1
+  49 0012 FB60     		str	r3, [r7, #12]
+  50              	.L2:
+  51              		.loc 1 7 31 discriminator 1
+  52 0014 7B68     		ldr	r3, [r7, #4]
+  53 0016 4FF40E72 		mov	r2, #568
+  54 001a 02FB03F3 		mul	r3, r2, r3
+  55              		.loc 1 7 26 discriminator 1
+  56 001e FA68     		ldr	r2, [r7, #12]
+  57 0020 9A42     		cmp	r2, r3
+  58 0022 F4D3     		bcc	.L3
+  59              	.LBE2:
+   8:delay.c       **** }
+  60              		.loc 1 8 1
+  61 0024 00BF     		nop
+  62 0026 00BF     		nop
+  63 0028 1437     		adds	r7, r7, #20
+  64              		.cfi_def_cfa_offset 4
+  65 002a BD46     		mov	sp, r7
+  66              		.cfi_def_cfa_register 13
+  67              		@ sp needed
+  68 002c 80BC     		pop	{r7}
+  69              		.cfi_restore 7
+  70              		.cfi_def_cfa_offset 0
+  71 002e 7047     		bx	lr
+  72              		.cfi_endproc
+  73              	.LFE0:
+  75              	.Letext0:
+  76              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccqcr7Rr.s:18     .text:00000000 $t
+/var/folders/gq/0j92t6dx65ndp499b5mkgzm40000gn/T//ccqcr7Rr.s:24     .text:00000000 delay
+
+NO UNDEFINED SYMBOLS
