@@ -36,3 +36,8 @@ Gerbers/
 Production/
 JLCPCB/
 .gold/
+
+node_modules/
+
+*.lst
+*.v20raw

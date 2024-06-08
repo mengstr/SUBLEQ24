@@ -32,6 +32,16 @@
 .            0
 
 main:
+     z z main1
+main1:
+     z z main2
+main2:
+     z z main3
+main3:
+
+
+
+
 #        c;       # clear c
 #        (-8) c   # input to c
 #        inc c
@@ -88,6 +98,9 @@ stop:
 .string_bubblesort_a:-? "\nBubblesort\nEnter a string:\n" 0
 .string_bubblesort_b:-? "Sorting according to ASCII codes...\n" 0
 menu_bubblesort:
+   inc icnt
+    icnt (-4)
+
     # puts(string_bubblesort_a)
     puts_arg_s; string_bubblesort_a puts_arg_s
     puts_return_address; ?+5 puts_return_address

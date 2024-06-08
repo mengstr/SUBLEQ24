@@ -1,0 +1,14 @@
+    .ORG 0
+
+
+    .PROC FOO
+FOO:    0 0 @DONE
+@DONE:   
+    .ENDP
+
+    .PROC BAR
+BAR:    0 0 @DONE
+@DONE:   
+    .ENDP
+
+    .END

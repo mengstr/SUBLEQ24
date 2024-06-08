@@ -1,0 +1,1786 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>2</version>
+  <attributes>
+    <entry>
+      <string>backgroundColor</string>
+      <awt-color>
+        <red>204</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </awt-color>
+    </entry>
+    <entry>
+      <string>romContent</string>
+      <romList>
+        <roms/>
+      </romList>
+    </entry>
+    <entry>
+      <string>Width</string>
+      <int>15</int>
+    </entry>
+  </attributes>
+  <visualElements>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>8</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>1*8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="120" y="-200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>splitterSpreading</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Input Splitting</string>
+          <string>8*3</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>24</string>
+        </entry>
+      </elementAttributes>
+      <pos x="360" y="-240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>1*8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS541.dig</elementName>
+      <elementAttributes/>
+      <pos x="140" y="0"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>1*8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="0"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="60"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="40"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="100"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="80"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="140"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="120"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="160"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS541.dig</elementName>
+      <elementAttributes/>
+      <pos x="140" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>1*8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="300"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="340"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="380"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="360"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="400"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Rectangle</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>48</int>
+        </entry>
+        <entry>
+          <string>RectHeight</string>
+          <int>74</int>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>GPIO</string>
+        </entry>
+        <entry>
+          <string>RectWidth</string>
+          <int>46</int>
+        </entry>
+      </elementAttributes>
+      <pos x="-260" y="-980"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Description</string>
+          <string>GPIOw</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-200" y="-640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>~IOwriteP</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-280" y="-660"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>~IOreadP</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-280" y="-340"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Description</string>
+          <string>GPIOr</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-200" y="-320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>DBUS</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>24</int>
+        </entry>
+      </elementAttributes>
+      <pos x="-500" y="-720"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-1) UARTrxdRead</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="198" y="-413"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="-180" y="-680"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS238.dig</elementName>
+      <elementAttributes/>
+      <pos x="0" y="-860"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>DOWN</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="-180" y="-360"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>24</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>1*8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="360" y="-900"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>1*8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="480" y="-940"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>DBUS</string>
+        </entry>
+      </elementAttributes>
+      <pos x="360" y="-900"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="540" y="-940"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="380" y="-940"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS564.dig</elementName>
+      <elementAttributes/>
+      <pos x="380" y="-940"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS175.dig</elementName>
+      <elementAttributes/>
+      <pos x="-160" y="-860"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>24</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>1*4</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-180" y="-860"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes/>
+      <pos x="-160" y="-760"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>DBUS</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-280" y="-860"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>B_CK</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-280" y="-780"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes/>
+      <pos x="0" y="-800"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS175.dig</elementName>
+      <elementAttributes/>
+      <pos x="-160" y="-540"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>24</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>1*4</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-180" y="-540"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes/>
+      <pos x="-160" y="-440"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>DBUS</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-180" y="-540"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>A_CK</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-280" y="-460"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes/>
+      <pos x="0" y="-480"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-540"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-520"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-500"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-480"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-460"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-440"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-420"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS138.dig</elementName>
+      <elementAttributes/>
+      <pos x="0" y="-540"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Const</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Value</string>
+          <long>0</long>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="420"/>
+    </visualElement>
+    <visualElement>
+      <elementName>74LS541.dig</elementName>
+      <elementAttributes/>
+      <pos x="140" y="-240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="340" y="-400"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-4) PORT2read</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="196" y="-475"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-3) UARTbusyRead</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="198" y="-453"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-2) UARTavailRead</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="197" y="-433"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-5)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="196" y="-495"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-6)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="196" y="-515"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-7)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="196" y="-535"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-8)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="196" y="-557"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-1) UARTtxdWrite</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="158" y="-733"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-860"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-840"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-820"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-800"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-780"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-760"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-740"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Probe</elementName>
+      <elementAttributes>
+        <entry>
+          <string>probeMode</string>
+          <de.neemann.digital.core.io.ProbeMode>UP</de.neemann.digital.core.io.ProbeMode>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>dec</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="-720"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-4) PORT2Write</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="156" y="-795"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-3)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="158" y="-773"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-2)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="157" y="-753"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-5)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="156" y="-815"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-6)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="156" y="-835"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-7)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="156" y="-855"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>textFontSize</string>
+          <int>12</int>
+        </entry>
+        <entry>
+          <string>Description</string>
+          <string>(-8)</string>
+        </entry>
+        <entry>
+          <string>snapToGrid</string>
+          <boolean>false</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="156" y="-875"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>UARTtxdWrite</string>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="-700"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>~UARTrxdRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="-380"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>~UARTavailRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="-340"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>~UARTbusyRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="-300"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>DBUS</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-480" y="-720"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>B_CK</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-480" y="-560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>~IOwriteP</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-480" y="-680"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>A_CK</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-480" y="-600"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>~IOreadP</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-480" y="-640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>GPIO2in</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+        <entry>
+          <string>InDefault</string>
+          <value v="80" z="false"/>
+        </entry>
+      </elementAttributes>
+      <pos x="80" y="-200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>~IOwriteP</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-500" y="-680"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>~IOreadP</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-500" y="-640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>A_ck</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-500" y="-600"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>B_ck</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-500" y="-560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>DBUSo</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>24</int>
+        </entry>
+      </elementAttributes>
+      <pos x="780" y="-240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>~UARTrxdRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="780" y="-180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>~UARTavailRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="780" y="-140"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>~UARTbusyRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="780" y="-100"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>~UARTrxdRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="760" y="-180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>~UARTavailRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="760" y="-140"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>~UARTbusyRead</string>
+        </entry>
+      </elementAttributes>
+      <pos x="760" y="-100"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>UARTtxdWrite</string>
+        </entry>
+      </elementAttributes>
+      <pos x="780" y="-640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>UARTtxdWrite</string>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="-640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>PORT2OUT</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+      </elementAttributes>
+      <pos x="740" y="-900"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="240" y="0"/>
+      <p2 x="340" y="0"/>
+    </wire>
+    <wire>
+      <p1 x="-20" y="0"/>
+      <p2 x="100" y="0"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="0"/>
+      <p2 x="140" y="0"/>
+    </wire>
+    <wire>
+      <p1 x="520" y="-900"/>
+      <p2 x="740" y="-900"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="260"/>
+      <p2 x="140" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="260"/>
+      <p2 x="340" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-520"/>
+      <p2 x="0" y="-520"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-520"/>
+      <p2 x="340" y="-520"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-780"/>
+      <p2 x="120" y="-780"/>
+    </wire>
+    <wire>
+      <p1 x="-280" y="-780"/>
+      <p2 x="-160" y="-780"/>
+    </wire>
+    <wire>
+      <p1 x="-40" y="-780"/>
+      <p2 x="0" y="-780"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-780"/>
+      <p2 x="280" y="-780"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-140"/>
+      <p2 x="340" y="-140"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="-140"/>
+      <p2 x="780" y="-140"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="140"/>
+      <p2 x="340" y="140"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-400"/>
+      <p2 x="-40" y="-400"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-400"/>
+      <p2 x="180" y="-400"/>
+    </wire>
+    <wire>
+      <p1 x="180" y="-400"/>
+      <p2 x="340" y="-400"/>
+    </wire>
+    <wire>
+      <p1 x="-280" y="-660"/>
+      <p2 x="-180" y="-660"/>
+    </wire>
+    <wire>
+      <p1 x="-180" y="-660"/>
+      <p2 x="-20" y="-660"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="20"/>
+      <p2 x="140" y="20"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="20"/>
+      <p2 x="340" y="20"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-920"/>
+      <p2 x="380" y="-920"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="280"/>
+      <p2 x="340" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-540"/>
+      <p2 x="0" y="-540"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-540"/>
+      <p2 x="340" y="-540"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-800"/>
+      <p2 x="280" y="-800"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-160"/>
+      <p2 x="340" y="-160"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-420"/>
+      <p2 x="160" y="-420"/>
+    </wire>
+    <wire>
+      <p1 x="160" y="-420"/>
+      <p2 x="340" y="-420"/>
+    </wire>
+    <wire>
+      <p1 x="-500" y="-680"/>
+      <p2 x="-480" y="-680"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="40"/>
+      <p2 x="340" y="40"/>
+    </wire>
+    <wire>
+      <p1 x="140" y="-300"/>
+      <p2 x="680" y="-300"/>
+    </wire>
+    <wire>
+      <p1 x="500" y="-940"/>
+      <p2 x="520" y="-940"/>
+    </wire>
+    <wire>
+      <p1 x="520" y="-940"/>
+      <p2 x="540" y="-940"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="300"/>
+      <p2 x="340" y="300"/>
+    </wire>
+    <wire>
+      <p1 x="-500" y="-560"/>
+      <p2 x="-480" y="-560"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-180"/>
+      <p2 x="340" y="-180"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="-180"/>
+      <p2 x="780" y="-180"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-820"/>
+      <p2 x="280" y="-820"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-820"/>
+      <p2 x="0" y="-820"/>
+    </wire>
+    <wire>
+      <p1 x="-20" y="-440"/>
+      <p2 x="0" y="-440"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-440"/>
+      <p2 x="140" y="-440"/>
+    </wire>
+    <wire>
+      <p1 x="140" y="-440"/>
+      <p2 x="340" y="-440"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-700"/>
+      <p2 x="680" y="-700"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="60"/>
+      <p2 x="340" y="60"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="320"/>
+      <p2 x="340" y="320"/>
+    </wire>
+    <wire>
+      <p1 x="80" y="-200"/>
+      <p2 x="120" y="-200"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-200"/>
+      <p2 x="340" y="-200"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-840"/>
+      <p2 x="280" y="-840"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-840"/>
+      <p2 x="0" y="-840"/>
+    </wire>
+    <wire>
+      <p1 x="-280" y="-460"/>
+      <p2 x="-160" y="-460"/>
+    </wire>
+    <wire>
+      <p1 x="-40" y="-460"/>
+      <p2 x="0" y="-460"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-460"/>
+      <p2 x="120" y="-460"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-460"/>
+      <p2 x="340" y="-460"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-720"/>
+      <p2 x="120" y="-720"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-720"/>
+      <p2 x="-40" y="-720"/>
+    </wire>
+    <wire>
+      <p1 x="-500" y="-720"/>
+      <p2 x="-480" y="-720"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-720"/>
+      <p2 x="280" y="-720"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="80"/>
+      <p2 x="340" y="80"/>
+    </wire>
+    <wire>
+      <p1 x="-280" y="-340"/>
+      <p2 x="-180" y="-340"/>
+    </wire>
+    <wire>
+      <p1 x="160" y="-340"/>
+      <p2 x="680" y="-340"/>
+    </wire>
+    <wire>
+      <p1 x="-180" y="-340"/>
+      <p2 x="-20" y="-340"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="340"/>
+      <p2 x="340" y="340"/>
+    </wire>
+    <wire>
+      <p1 x="-500" y="-600"/>
+      <p2 x="-480" y="-600"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-220"/>
+      <p2 x="140" y="-220"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-220"/>
+      <p2 x="340" y="-220"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-860"/>
+      <p2 x="280" y="-860"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-860"/>
+      <p2 x="0" y="-860"/>
+    </wire>
+    <wire>
+      <p1 x="-280" y="-860"/>
+      <p2 x="-180" y="-860"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-480"/>
+      <p2 x="340" y="-480"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-100"/>
+      <p2 x="340" y="-100"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="-100"/>
+      <p2 x="780" y="-100"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-740"/>
+      <p2 x="280" y="-740"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="100"/>
+      <p2 x="340" y="100"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="360"/>
+      <p2 x="340" y="360"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-240"/>
+      <p2 x="340" y="-240"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-240"/>
+      <p2 x="140" y="-240"/>
+    </wire>
+    <wire>
+      <p1 x="380" y="-240"/>
+      <p2 x="780" y="-240"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="240"/>
+      <p2 x="140" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="240"/>
+      <p2 x="340" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="-60" y="-500"/>
+      <p2 x="0" y="-500"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-500"/>
+      <p2 x="340" y="-500"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="-760"/>
+      <p2 x="280" y="-760"/>
+    </wire>
+    <wire>
+      <p1 x="-20" y="-760"/>
+      <p2 x="0" y="-760"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-120"/>
+      <p2 x="340" y="-120"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="120"/>
+      <p2 x="340" y="120"/>
+    </wire>
+    <wire>
+      <p1 x="180" y="-380"/>
+      <p2 x="680" y="-380"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="380"/>
+      <p2 x="340" y="380"/>
+    </wire>
+    <wire>
+      <p1 x="-500" y="-640"/>
+      <p2 x="-480" y="-640"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="-640"/>
+      <p2 x="780" y="-640"/>
+    </wire>
+    <wire>
+      <p1 x="160" y="-420"/>
+      <p2 x="160" y="-340"/>
+    </wire>
+    <wire>
+      <p1 x="-20" y="-440"/>
+      <p2 x="-20" y="-340"/>
+    </wire>
+    <wire>
+      <p1 x="-20" y="-760"/>
+      <p2 x="-20" y="-660"/>
+    </wire>
+    <wire>
+      <p1 x="-20" y="-340"/>
+      <p2 x="-20" y="0"/>
+    </wire>
+    <wire>
+      <p1 x="-180" y="-680"/>
+      <p2 x="-180" y="-660"/>
+    </wire>
+    <wire>
+      <p1 x="-180" y="-360"/>
+      <p2 x="-180" y="-340"/>
+    </wire>
+    <wire>
+      <p1 x="180" y="-400"/>
+      <p2 x="180" y="-380"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="0"/>
+      <p2 x="100" y="20"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="240"/>
+      <p2 x="100" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="20"/>
+      <p2 x="100" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="-40" y="-780"/>
+      <p2 x="-40" y="-720"/>
+    </wire>
+    <wire>
+      <p1 x="-40" y="-460"/>
+      <p2 x="-40" y="-400"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-460"/>
+      <p2 x="120" y="-240"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-720"/>
+      <p2 x="120" y="-700"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-920"/>
+      <p2 x="120" y="-780"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="-240"/>
+      <p2 x="120" y="-220"/>
+    </wire>
+    <wire>
+      <p1 x="520" y="-940"/>
+      <p2 x="520" y="-900"/>
+    </wire>
+    <wire>
+      <p1 x="140" y="-440"/>
+      <p2 x="140" y="-300"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

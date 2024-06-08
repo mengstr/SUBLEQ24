@@ -1,0 +1,16 @@
+    .include tests/MACROS.inc
+
+    .org 0
+
+Z:      .data 0 
+PLUS1:  .data 1 
+MINUS1: .data (-1)
+
+        JMP Start
+
+
+Start:
+    JEQZ 100 200           ; Call MACRO
+    JEQZ 101 201           ; Call MACRO
+    0 0 (-1)    ; HALT
+

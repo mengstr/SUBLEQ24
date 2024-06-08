@@ -1,48 +1,67 @@
 { 
-  config: { hscale: 1 },
   signal: [
-  ['PC+0 (A)',
-    {name: "CNT",     wave: "22222222222222222", data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,"(16)"] },
-    {name: "EnaPC",   wave: "1......0........1" },
-    {name: "CkPC",    wave: "0......10........"},
-    {name: "OeRAM",   wave: "1................"},
-    {name: "OeSUB",   wave: "0................"},
-    {name: "ABUS",    wave: "2......xx2.....x.",data:["PC+0","A"]},
-    {name: "DBUS",    wave: "xxxx2..x.....2..x",data:["A","[A]"]},
-    {name: "LatAA",   wave: "0....10.........."},
-    {name: "EnaAA",   wave: "0.......1.......0"},
-    {name: "LatAV",   wave: "0.............10."},
-    {name: "CNT",     wave: "22222222222222222", data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,"(16)"] },
-  ],
-  {},
-  ['PC+1 (B)',
-  {name: "CNT",     wave: "22222222222222222", data: [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,"(32)"] },
-  {name: "EnaPC",   wave: "1......0........." },
-  {name: "CkPC",    wave: "0......10........"},
-  {name: "OeRAM",   wave: "1...............0"},
-  {name: "OeSUB",   wave: "0...............1"},
-  {name: "ABUS",    wave: "2......xx2.......",data:["PC+1","B"]},
-  {name: "DBUS",    wave: "xxxx2..x.....2..x",data:["B","[B]"]},
-  {name: "LatBA",   wave: "0....10.........."},
-  {name: "EnaBA",   wave: "0.......1........"},
-  {name: "LatBV",   wave: "0.............10."}, 
-  {name: "CNT",     wave: "22222222222222222", data: [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,"(32)"] },
-],
-{},
-['PC+2 (Writeback B)',
-{name: "CNT",     wave: "22222222222222222", data: [32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,"..."] },
-{name: "EnaPC",   wave: "0.......1........" },
-{name: "CkPC",    wave: "0................"},
-{name: "OeRAM",   wave: "0................"},
-{name: "WeRAM",   wave: "0...1..0........."},
-{name: "OeSUB",   wave: "1......0........."},
-{name: "ABUS",    wave: "2......xx2.....x.",data:["B","C"]},
-{name: "DBUS",    wave: "x2.....x.....2..x",data:["DIFF","[C]"]},
-{name: "LatBA",   wave: "0................"},
-{name: "EnaBA",   wave: "1......0........0"},
-{name: "LatBV",   wave: "0.............10."}, 
-{name: "CNT",     wave: "22222222222222222", data: [32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,"..."] },
-],
-{},
+    { name: "clk",     wave: "p......"},
+    { name: "PcE",     wave: "1010.10"},
+    { name: "RD",      wave: "1...010"},
+    { name: "WR",      wave: "0...10."},
+    { name: "MarCk",   wave: "01010.."},
+    { name: "AnegCk",     wave: "010...."},
+    { name: "AvalCk",  wave: "0.10..."},
+    { name: "BnegCk",     wave: "0..10.."},
+    { name: "BvalCk",  wave: "0...10."},
+    { name: "PCck",    wave: "01010.1"},
+    { name: "ResultE", wave: "0...10."},
+    { name: "MarE",    wave: "0101.0."},
+    { name: "PcLd",    wave: "0....10"},
+    ],
+    head:{
+      text:'SUBLEQ24 Timing Diagram',
+      tick:0,
+    },  
+  }
 
-]}
+
+  // TS0 Get A address
+  //        Output PC (pointing to A) to address bus
+  //        Enable RAM read
+  // Transition TS0->TS1
+  //        Latch value from data bus into MAR register
+  //        Latch Databus bit 23 into AisNeg register
+  //        Increment PC (Now points to B address)
+  //
+  // TS1 Get value from [A]
+  //        Stop outputting PC to address bus
+  //        Output MAR to address bus
+  // Transition TS1->TS2
+  //        Latch value from data bus into Subtractor A register
+  //
+  // TS2 Get B address
+  //        Output PC (pointing to B) to address bus
+  // Transition TS2->TS3
+  //        Latch value from data bus into MAR register
+  //        Latch Databus bit 23 into BisNeg register
+  //        Increment PC (Now points to C address)
+  //
+  // TS3 Get value from [B]
+  //        Stop outputting PC to address bus
+  //        Output MAR to address bus
+  // Transition TS3->TS4
+  //        Latch value from data bus into Subtractor B register
+  //        Stop reading from RAM and enable the WR signal
+  //
+  // TS4 - Subtract and store result
+  //        Output the subtraction result to the data bus
+  //        Continue to output MAR (B-address) to the address bus
+  // Transition TS4->TS5
+  //       Store the subtraction into RAM by de-asserting WR
+  //
+  // TS5 - Get C address
+  //      Output PC (pointing to C) to address bus
+  //      Read from RAM
+  //      If isLEQ then enable PC load signal
+  // Transition TS5->TS6
+  //      Increment or Load PC based on result
+
+  // TS6 - Set PC to C if result is negative or zero
+  //       (happens at the TS5->TS6 transition)
+   

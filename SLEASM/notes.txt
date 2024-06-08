@@ -1,0 +1,1004 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include <string.h>
+
+FILE *F1; // OpCode File
+FILE *F2; // Subleq File
+
+// Labels and implicit variables
+const char *T="T";
+const char *Z="Z";
+const char *P="P";
+const char *N="N";
+const char *SP="SP";
+const char *DP="DP";
+
+void macro1(char *Name,char *A)
+{
+  if (strcmp(Name,"jump")==0) {
+   fprintf(F2,"\t; jump %s\n",A);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,A);
+
+  } else if (strcmp(Name,"clear")==0) {
+    fprintf(F2,"\t; clear %s\n",A);
+    fprintf(F2,"\t%s\t%s\t%s\n",A,A,"?");
+
+  } else if (strcmp(Name,"not")==0) {
+    fprintf(F2,"\t; %s = not %s\n",A,A);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+
+  } else if (strcmp(Name,"shl")==0) {
+    fprintf(F2,"\t; %s = shl %s\n",A,A);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,A,"?");
+
+  } else if (strcmp(Name,"inc")==0) {
+    fprintf(F2,"\t; %s = inc %s\n",A,A);
+    fprintf(F2,"\t%s\t%s\t%s\n",N,A,"?");
+
+  } else if (strcmp(Name,"dec")==0) {
+    fprintf(F2,"\t; %s = dec %s\n",A,A);
+    fprintf(F2,"\t%s\t%s\t%s\n",P,A,"?");
+
+  } else if (strcmp(Name,"chs")==0) {
+    fprintf(F2,"\t; %s = chs %s\n",A,A);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+
+  } else if (strcmp(Name,"label")==0) {
+    fprintf(F2,"; Set label %s:\n",A);
+    fprintf(F2,"%s:\n",A);
+
+  } else if (strcmp(Name,"return")==0) {
+    fprintf(F2,"; Set return %s:\n",A);
+    fprintf(F2,"\t%s\t%s\t%s:\t%s\n",Z,Z,A,"?");
+
+  } else if (strcmp(Name,"putc")==0) {
+    fprintf(F2,"\t; putc %s\n",A);
+    fprintf(F2,"\t%s\tOUTPUT\t%s\n",A,"?");
+
+  } else if (strcmp(Name,"getc")==0) {
+    fprintf(F2,"\t; getc %s\n",A);
+    fprintf(F2,"\tINPUT\t%s\t%s\n",A,"?");
+
+  } else {
+    fprintf(stderr,"Macro not found: %s\n",Name);
+
+  }
+}
+void macro2(char *Name,char *A,char *B)
+{
+  if (strcmp(Name,"sub")==0) {
+    fprintf(F2,"\t; sub %s = %s - %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",B,A,"?");
+
+  } else if (strcmp(Name,"add")==0) {
+    fprintf(F2,"\t; add %s = %s + %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",B,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,A,"?");
+
+  } else if (strcmp(Name,"copy")==0) {
+    fprintf(F2,"\t; copy %s = %s\n",A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",B,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,A,"?");
+
+  } else if (strcmp(Name,"ncopy")==0) {
+    fprintf(F2,"\t; negative copy %s = -%s\n",A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",A,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",B,A,"?");
+
+  } else if (strcmp(Name,"jlez")==0) {
+    fprintf(F2,"\t; jlez Test: %s Jump: %s\n",A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,A,B);
+
+  } else if (strcmp(Name,"jgez")==0) {
+    fprintf(F2,"\t; jgez Test: %s Jump: %s\n",A,B);
+    // This version handle _MIN correctly
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"?"       );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,A,"L1f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,B         ); // GTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L1",A,T,"L2f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // LTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L2",P,T,B         ); // EQZ
+    fprintf(F2,   "\t%s\t%s\t%s\t%s:\n",T,T,"L3f","L3"); // MIN FALSE:
+
+  } else if (strcmp(Name,"jeqz")==0) {
+    fprintf(F2,"\t; jz Test: %s Jump: %s\n",A,B);
+    // This version handle _MIN correctly
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"?"       );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,A,"L1f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // GTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L1",A,T,"L2f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // LTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L2",P,T,B         ); // EQZ
+    fprintf(F2,   "\t%s\t%s\t%s\t%s:\n",T,T,"L3f","L3"); // MIN FALSE:
+
+  } else if (strcmp(Name,"jgtz")==0) {
+    fprintf(F2,"\t; jgtz Test: %s Jump: %s\n",A,B);
+    // This version handle _MIN correctly
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"?"       );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,A,"L1f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,B         ); // GTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L1",A,T,"L2f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // LTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L2",P,T,"L3f"     ); // EQZ
+    fprintf(F2,   "\t%s\t%s\t%s\t%s:\n",T,T,"L3f","L3"); // MIN FALSE:
+
+  } else if (strcmp(Name,"jltz")==0) {
+    fprintf(F2,"\t; jltz Test: %s Jump: %s\n",A,B);
+    // This version handle _MIN correctly
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"?"       );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,A,"L1f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // GTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L1",A,T,"L2f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,B         ); // LTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L2",P,T,"L3f"     ); // EQZ
+    fprintf(F2,   "\t%s\t%s\t%s\t%s:\n",T,T,"L3f","L3"); // MIN FALSE:
+
+  } else if (strcmp(Name,"jnez")==0) {
+    fprintf(F2,"\t; jnez Test: %s Jump: %s\n",A,B);
+    // This version handle _MIN correctly
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"?"       );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,A,"L1f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,B         ); // GTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L1",A,T,"L2f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,B         ); // LTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L2",P,T,"L3f"     ); // EQZ
+    fprintf(F2,   "\t%s\t%s\t%s\t%s:\n",T,T,B    ,"L3"); // MIN FALSE:
+
+  } else if (strcmp(Name,"jmin")==0) {
+    fprintf(F2,"\t; jmin Test: %s Jump: %s\n",A,B);
+    // This version handle _MIN correctly
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"?"       );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,A,"L1f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // GTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L1",A,T,"L2f"     );
+    fprintf(F2,   "\t%s\t%s\t%s\n"     ,T,T,"L3f"     ); // LTZ
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","L2",P,T,"L3f"     ); // EQZ
+    fprintf(F2,   "\t%s\t%s\t%s\t%s:\n",T,T,B    ,"L3"); // MIN FALSE:
+
+  } else if (strcmp(Name,"store")==0) {
+    fprintf(F2,"; store immediate value .%s %s\n",A,B);
+    fprintf(F2,".%s\t%s\n",A,B);
+
+  } else if (strcmp(Name,"absolute")==0) {
+    fprintf(F2,"; set absolute address @%s %s\n",A,B);
+    fprintf(F2,"@%s\t%s\n",A,B);
+
+  } else if (strcmp(Name,"xor")==0) {
+    fprintf(F2,"; %s = %s xor %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"LOOPf");
+    fprintf(F2,".%s\t%s\n","res","0");
+    fprintf(F2,".%s\t%s\n","word","0");
+    fprintf(F2,"%s:\n","LOOP");
+    fprintf(F2,"\t; res=res+res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"resb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; TEST 1 Ax<0 AND Bx>=0\n");
+    fprintf(F2,"\t; Test Ax<0\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",T,"TEST1A_GEZf");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"TEST1Bf");
+    fprintf(F2,"%s:\n","TEST1A_GEZ");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"TEST2f");
+    fprintf(F2,"%s:\n","TEST1B");
+    fprintf(F2,"\t; Test Bx>=0\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",T,"TEST1B_GEZf");
+    fprintf(F2,"\t%s\t%s\t%s\n","T",T,"TEST2f");
+    fprintf(F2,"%s:\n","TEST1B_GEZ");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"SETBITf");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"NEXTf");
+    fprintf(F2,"%s:\n","TEST2");
+    fprintf(F2,"\t; TEST 2 Ax>=0 AND Bx<0\n");
+    fprintf(F2,"\t; Test Bx<0\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",T,"TEST2B_GEZf");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"TEST2Af");
+    fprintf(F2,"%s:\n","TEST2B_GEZ");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"NEXTf");
+    fprintf(F2,"%s:\n","TEST2A");
+    fprintf(F2,"\t; Test Ax>=0\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",T,"TEST2A_GEZf");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"NEXTf");
+    fprintf(F2,"%s:\n","TEST2A_GEZ");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"SETBITf");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"NEXTf");
+    fprintf(F2,"%s:\n","SETBIT");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"resb","?");
+    fprintf(F2,"%s:\n","NEXT");
+    fprintf(F2,"\t; Ax=Ax+Ax\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; Bx=Bx+Bx\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Bx","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; word=word+word+1\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t; loop\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"LOOPb");
+    fprintf(F2,"\t; return res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+
+  } else if (strcmp(Name,"and")==0) {
+    fprintf(F2,"; %s = %s and %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"LOOPf");
+    fprintf(F2,".%s\t%s\n","res","0");
+    fprintf(F2,".%s\t%s\n","word","0");
+    fprintf(F2,"%s:\n","LOOP");
+    fprintf(F2,"\t; res=res+res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"resb","?");
+    fprintf(F2,"\t; TEST 1 Ax<0 AND Bx<0/n");                 // TEST 1 Ax<0 AND Bx<0
+    fprintf(F2,"%s:\n","TESTAx");                             // Test Ax<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",T,"TESTAx_GEZf");        // Ax>=0 & Ax=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"TESTBxf");               // Ax<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTAx_GEZ",P,T,"NEXTf"); // Ax>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");                     // Exit: Ax=MIN or Ax<0
+    fprintf(F2,"%s:\n","TESTBx");                             // Test Bx<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",T,"TESTBx_GEZf");        // Bx>=0 & Bx=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");               // Bx<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTBx_GEZ",P,T,"NEXTf"); // Bx>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");                     // Exit: Bx=MIN or Bx<0
+    fprintf(F2,"%s:\n","SETBIT");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"resb","?");
+    fprintf(F2,"%s:\n","NEXT");
+    fprintf(F2,"\t; Ax=Ax+Ax\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; Bx=Bx+Bx\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Bx","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; word=word+word+1\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t; loop\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"LOOPb");
+    fprintf(F2,"\t; return res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax","Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+
+  } else if (strcmp(Name,"or")==0) {
+    fprintf(F2,"; %s = %s or %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"LOOPf");
+    fprintf(F2,".%s\t%s\n","res","0");
+    fprintf(F2,".%s\t%s\n","word","0");
+    fprintf(F2,"%s:\n","LOOP");
+    fprintf(F2,"\t; res=res+res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"resb","?");
+    fprintf(F2,"\t; TEST 1 Ax<0 AND Bx<0/n");                   // TEST 1 Ax<0 AND Bx<0
+    fprintf(F2,"%s:\n","TESTAx");                               // Test Ax<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",T,"TESTAx_GEZf");          // Ax>=0 & Ax=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");                 // Ax<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTAx_GEZ",P,T,"TESTBxf"); // Ax>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");                 // Exit: Ax=MIN or Ax<0
+    fprintf(F2,"%s:\n","TESTBx");                               // Test Bx<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",T,"TESTBx_GEZf");          // Bx>=0 & Bx=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");                 // Bx<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTBx_GEZ",P,T,"NEXTf");   // Bx>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");                       // Exit: Bx=MIN or Bx<0
+    fprintf(F2,"%s:\n","SETBIT");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"resb","?");
+    fprintf(F2,"%s:\n","NEXT");
+    fprintf(F2,"\t; Ax=Ax+Ax\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; Bx=Bx+Bx\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Bx","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; word=word+word+1\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t; loop\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"LOOPb");
+    fprintf(F2,"\t; return res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax","Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+
+  } else if (strcmp(Name,"nand")==0) {
+    fprintf(F2,"; %s = %s nand %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"LOOPf");
+    fprintf(F2,".%s\t%s\n","res","0");
+    fprintf(F2,".%s\t%s\n","word","0");
+    fprintf(F2,"%s:\n","LOOP");
+    fprintf(F2,"\t; res=res+res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"resb","?");
+    fprintf(F2,"\t; TEST 1 Ax<0 AND Bx<0/n");                 // TEST 1 Ax<0 AND Bx<0
+    fprintf(F2,"%s:\n","TESTAx");                             // Test Ax<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",T,"TESTAx_GEZf");        // Ax>=0 & Ax=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"TESTBxf");               // Ax<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTAx_GEZ",P,T,"NEXTf"); // Ax>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");                     // Exit: Ax=MIN or Ax<0
+    fprintf(F2,"%s:\n","TESTBx");                             // Test Bx<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",T,"TESTBx_GEZf");        // Bx>=0 & Bx=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");               // Bx<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTBx_GEZ",P,T,"NEXTf"); // Bx>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");                     // Exit: Bx=MIN or Bx<0
+    fprintf(F2,"%s:\n","SETBIT");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"resb","?");
+    fprintf(F2,"%s:\n","NEXT");
+    fprintf(F2,"\t; Ax=Ax+Ax\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; Bx=Bx+Bx\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Bx","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; word=word+word+1\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t; loop\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"LOOPb");
+    fprintf(F2,"\t; return res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax","Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"Ax","?");
+
+  } else if (strcmp(Name,"nor")==0) {
+    fprintf(F2,"; %s = %s nor %s\n",A,A,B);
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"LOOPf");
+    fprintf(F2,".%s\t%s\n","res","0");
+    fprintf(F2,".%s\t%s\n","word","0");
+    fprintf(F2,"%s:\n","LOOP");
+    fprintf(F2,"\t; res=res+res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"resb","?");
+    fprintf(F2,"\t; TEST 1 Ax<0 AND Bx<0/n");                   // TEST 1 Ax<0 AND Bx<0
+    fprintf(F2,"%s:\n","TESTAx");                               // Test Ax<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",T,"TESTAx_GEZf");          // Ax>=0 & Ax=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");                 // Ax<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTAx_GEZ",P,T,"TESTBxf"); // Ax>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");                 // Exit: Ax=MIN or Ax<0
+    fprintf(F2,"%s:\n","TESTBx");                               // Test Bx<0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",T,"TESTBx_GEZf");          // Bx>=0 & Bx=MIN
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"SETBITf");                 // Bx<0
+    fprintf(F2,"%s:\t%s\t%s\t%s\n","TESTBx_GEZ",P,T,"NEXTf");   // Bx>=0
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");                       // Exit: Bx=MIN or Bx<0
+    fprintf(F2,"%s:\n","SETBIT");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"resb","?");
+    fprintf(F2,"%s:\n","NEXT");
+    fprintf(F2,"\t; Ax=Ax+Ax\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; Bx=Bx+Bx\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Bx",Z,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,"Bx","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",Z,Z,"?");
+    fprintf(F2,"\t; word=word+word+1\n");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",N,"wordb","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t; loop\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","wordb",T,"LOOPb");
+    fprintf(F2,"\t; return res\n");
+    fprintf(F2,"\t%s\t%s\t%s\n","Ax","Ax","?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n","resb",T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",P,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,"Ax","?");
+
+  } else {
+    fprintf(stderr,"Macro not found: %s\n",Name);
+
+  }
+}
+void macro3(char *Name,char *A,char *B,char *C)
+{
+  if (strcmp(Name,"new sub")==0) {
+    fprintf(F2,"\t; new sub %s = %s - %s \n",A,B,C);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",B,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",C,A,"?");
+
+  } else if (strcmp(Name,"new add")==0) {
+    fprintf(F2,"\t; new sub %s = %s + %s \n",A,B,C);
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",B,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",A,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,A,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",C,T,"?");
+    fprintf(F2,"\t%s\t%s\t%s\n",T,A,"?");
+
+  } else {
+    fprintf(stderr,"Macro not found: %s\n",Name);
+
+  }
+}
+
+void compositeMacro(char *Name, int operand)
+{
+  char sData[16];
+  char sVarAdr[16];
+  char sOPCAdr[20]="_OPC";
+  itoa(operand,sData,10);
+  strcpy(sVarAdr,sData);
+  strcat(sOPCAdr,sData);
+
+  // Warning: do not use "Z" or "T" to pass values between macros, use "t"
+  if (strcmp(Name,"system")==0) {
+    // Initialise SubLEq Model
+    macro2("absolute","HALT","0");      // Same as reset
+    macro2("absolute","OUTPUT","-1");   // Output port
+    macro2("absolute","INPUT","-2");    // Input port
+    macro2("absolute","Z","-9");        // Zero
+    macro2("absolute","T","-10");       // Temp
+    macro2("absolute","t","-11");       // Secondary temp
+    // CPU Model
+    macro2("absolute","Ax","-12");      // Primary register
+    macro2("absolute","Bx","-13");      // Secondary register
+    macro2("absolute","Fx","-14");      // Flags
+    macro2("absolute","SP","-15");      // Stack pointer
+    macro2("absolute","DP","-16");      // Data pointer
+    // PPC - POINTER TO POINTER COPY
+    // PPC Entry Points (Addresses)
+    macro2("absolute","PPC","-32");     // [SRC] -> NDATA -> [DST]
+    macro2("absolute","PPR","-32");     // [SRC] -> NDATA -> [SRC]
+    macro2("absolute","PPW","-26");     // NDATA -> [DST]
+    // PPC Data Addresses
+    macro2("absolute","SRC","-29");     // PPC source address
+    macro2("absolute","DSTA","-26");    // PPC destination A address
+    macro2("absolute","DSTB","-25");    // PPC destination A address
+    macro2("absolute","DSTC","-22");    // PPC destination address
+    macro2("absolute","RTN","-18");     // PPC return address
+    macro2("absolute","NDATA","-17");   // PPC negative data address\n");
+    // PPC Code Addresses
+    macro2("absolute","PPC1","-32");    // NDATA
+    macro2("absolute","PPC2","-31");    // NDATA
+    macro2("absolute","PPC3","-30");    // ?
+    macro2("absolute","PPC4","-29");    // SRC
+    macro2("absolute","PPC5","-28");    // NDATA
+    macro2("absolute","PPC6","-27");    // ?
+    macro2("absolute","PPC7","-26");    // DSTA
+    macro2("absolute","PPC8","-25");    // DSTB
+    macro2("absolute","PPC9","-24");    // ?
+    macro2("absolute","PPC10","-23");   // NDATA
+    macro2("absolute","PPC11","-22");   // DSTC
+    macro2("absolute","PPC12","-21");   // ?
+    macro2("absolute","PPC13","-20");   // T
+    macro2("absolute","PPC14","-19");   // T
+    macro2("absolute","PPC15","-18");   // RTN
+    // COPY PPC ROM CODE INTO RAM
+    macro2("copy","PPC1","_PPC1");
+    macro2("copy","PPC2","_PPC2");
+    macro2("copy","PPC3","_PPC3");
+    macro2("copy","PPC4","_PPC4");
+    macro2("copy","PPC5","_PPC5");
+    macro2("copy","PPC6","_PPC6");
+    macro2("copy","PPC7","_PPC7");
+    macro2("copy","PPC8","_PPC8");
+    macro2("copy","PPC9","_PPC9");
+    macro2("copy","PPC10","_PPC10");
+    macro2("copy","PPC11","_PPC11");
+    macro2("copy","PPC12","_PPC12");
+    macro2("copy","PPC13","_PPC13");
+    macro2("copy","PPC14","_PPC14");
+    macro2("copy","PPC15","_PPC15");
+    macro1("jump","STARTf");
+    // PPC Constants
+    macro2("store","_PPC1","NDATA");
+    macro2("store","_PPC2","NDATA");
+    macro2("store","_PPC3","PPC4");
+    macro2("store","_PPC4","SRC");
+    macro2("store","_PPC5","NDATA");
+    macro2("store","_PPC6","PPC7");
+    macro2("store","_PPC7","DSTA");
+    macro2("store","_PPC8","DSTB");
+    macro2("store","_PPC9","PPC10");
+    macro2("store","_PPC10","NDATA");
+    macro2("store","_PPC11","DSTC");
+    macro2("store","_PPC12","PPC13");
+    macro2("store","_PPC13","T");
+    macro2("store","_PPC14","T");
+    macro2("store","_PPC15","RTN");
+    // Subleq Constants
+    macro2("store","Version","102");
+    macro2("store","P","1");
+    macro2("store","N","-1");
+    macro2("store","_SP","-32");
+    macro2("store","_DP","-16384");
+    macro2("store","_MIN","-32768");
+    macro2("store","_CR","13");
+    macro2("store","_LF","10");
+    macro2("store","_SPACE","32");
+    macro2("store","_MINUS","45");
+    macro2("store","_ZERO","48");
+    macro2("store","_NINE","57");
+    macro1("label","START");
+    // Set Stck Pointer and Data Pointer
+    macro2("copy","SP","_SP");         // Copy SP <- -32
+    macro2("copy","DP","_DP");         // Copy DP <- -16384
+
+  } else if (strcmp(Name,"movAxVar")==0) {
+    macro2("ncopy","T","VarAdrf");     // Negative Copy T <- VarAdr
+    macro2("ncopy","SRC","T");         // Negative Copy SRC <- T
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPR");              // Call PPR
+    macro2("store","VarAdr",sVarAdr);  // Store VarAdr
+    macro1("return","rtn");            // Return address
+    macro2("ncopy","Ax","NDATA");      // Negative Ax <- NDATA
+
+  } else if (strcmp(Name,"movVarAx")==0) {
+    macro2("ncopy","NDATA","Ax");      // Negative NDATA <- Ax
+    macro2("ncopy","T","VarAdrf");     // Negative Copy T <- VarAdr
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPW");              // Call PPW
+    macro2("store","VarAdr",sVarAdr);  // Store VarAdr
+    macro1("return","rtn");            // Return address
+
+  } else if (strcmp(Name,"movAxImm")==0) {
+    macro2("copy","Ax","ImmDataf");    // Copy Ax <- ImmData
+    macro1("jump","SKIPf");            // Store Data
+    macro2("store","ImmData",sData);   //
+    macro1("label","SKIP");            //
+
+  } else if (strcmp(Name,"movAxBx")==0) {
+    macro2("copy","Ax","Bx");          // Copy Ax <- Bx
+
+  } else if (strcmp(Name,"movBxAx")==0) {
+    macro2("copy","Bx","Ax");          // Copy Bx <- Ax
+
+  } else if (strcmp(Name,"pushAx")==0) {
+    macro1("dec","SP");                // Decrement Stack Pointer
+    macro2("ncopy","NDATA","Ax");      // Negative NDATA <- Ax
+    macro2("ncopy","T","SP");          // Negative Copy T <- SP
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPW");              // Call PPW
+    macro1("return","rtn");            // Return address
+
+  } else if (strcmp(Name,"pushBx")==0) {
+    macro1("dec","SP");                // Decrement Stack Pointer
+    macro2("ncopy","NDATA","Bx");      // Negative NDATA <- Bx
+    macro2("ncopy","T","SP");          // Negative Copy T <- SP
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPW");              // Call PPW
+    macro1("return","rtn");            // Return address
+
+  } else if (strcmp(Name,"pushFx")==0) {
+    macro1("dec","SP");                // Decrement Stack Pointer
+    macro2("ncopy","NDATA","Fx");      // Negative NDATA <- Fx
+    macro2("ncopy","T","SP");          // Negative Copy T <- SP
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPW");              // Call PPW
+    macro1("return","rtn");            // Return address
+
+  } else if (strcmp(Name,"popAx")==0) {
+    macro2("ncopy","T","SP");          // Negative Copy T <- SP
+    macro2("ncopy","SRC","T");         // Negative Copy SRC <- T
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPR");              // Call PPR
+    macro1("return","rtn");            // Return address
+    macro1("inc","SP");                // Increment Stack Pointer
+    macro2("ncopy","Ax","NDATA");      // Negative Ax <- NDATA
+
+  } else if (strcmp(Name,"popBx")==0) {
+    macro2("ncopy","T","SP");          // Negative Copy T <- SP
+    macro2("ncopy","SRC","T");         // Negative Copy SRC <- T
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPR");              // Call PPR
+    macro1("return","rtn");            // Return address
+    macro1("inc","SP");                // Increment Stack Pointer
+    macro2("ncopy","Bx","NDATA");      // Negative Bx <- NDATA
+
+  } else if (strcmp(Name,"popFx")==0) {
+    macro2("ncopy","T","SP");          // Negative Copy T <- SP
+    macro2("ncopy","SRC","T");         // Negative Copy SRC <- T
+    macro2("ncopy","DSTA","T");        // Negative Copy DSTA <- T
+    macro2("ncopy","DSTB","T");        // Negative Copy DSTB <- T
+    macro2("ncopy","DSTC","T");        // Negative Copy DSTC <- T
+    macro2("copy","RTN","rtnf");       // Copy RTN <- rtn
+    macro1("jump","PPR");              // Call PPR
+    macro1("return","rtn");            // Return address
+    macro1("inc","SP");                // Increment Stack Pointer
+    macro2("ncopy","Fx","NDATA");      // Negative Fx <- NDATA
+
+  } else if (strcmp(Name,"addBx")==0) {
+    macro2("add","Ax","Bx");           // Add Ax = Ax + Bx
+
+  } else if (strcmp(Name,"subBx")==0) {
+    macro2("sub","Ax","Bx");           // Sub Ax = Ax + Bx
+
+  } else if (strcmp(Name,"mulBx")==0) {
+    fprintf(F2,"; imul %s = %s * %s\n","Ax","Ax","Bx");
+    // Ax = Ax * Bx
+    // Ax = -32768 (_MIN) if overflow
+    macro1("jump","BEGINf");           // {
+    macro2("store","sgn","1");         //   int16_t sig=1;
+    macro2("store","res","0");         //   int16_t res=0;
+    macro2("store","word","1");        //   int16_t word=1; // To test word size
+    macro1("label","BEGIN");           //
+    macro2("jgez","Ax","ENDIFf");      //   if (Ax<0) {
+    macro1("chs","Ax");                //     Ax=-Ax;
+    macro1("chs","sgnb");              //     sgn=-sgn;
+    macro1("label","ENDIF");           //   }
+    macro2("jgez","Bx","ENDIFf");      //   if (Bx<0) {
+    macro1("chs","Bx");                //     Bx=-Bx;
+    macro1("chs","sgnb");              //     sgn=-sgn;
+    macro1("label","ENDIF");           //   }
+    macro1("label","LOOP");            //   LOOP:
+    macro1("shl","resb");              //     res=res<<1;
+    macro2("jgez","resb","ENDIFf");    //     if (res<0)
+    macro2("copy","resb","_MIN");      //       res==_MIN;
+    macro1("jump","ERRORf");           //       goto ERROR;
+    macro1("label","ENDIF");           //     }
+    macro1("shl","Ax");                //     Ax=Ax<<1;
+    macro2("jgez","Ax","ENDIFf");      //     if (Ax<0) {
+    macro2("sub","Ax","_MIN");         //       Ax=Ax-_MIN; // Clear sign bit
+    macro2("add","resb","Bx");         //       res=res+Bx;
+    macro2("jgez","resb","ENDIFf");    //       if (res<0) {
+    macro2("copy","resb","_MIN");      //         res==_MIN;
+    macro1("jump","ERRORf");           //         goto ERROR; }
+    macro1("label","ENDIF");           //     }
+    macro1("shl","wordb");             //     word=word<<1;
+    macro1("inc","wordb");             //     word=word++;
+    macro2("jgtz","wordb","LOOPb");    //   if (word>0) goto LOOP;
+    macro2("jgez","sgnb","ENDIFf");    //   if (sgn<0) {
+    macro1("chs","resb");              //     res=-res;
+    macro1("label","ENDIF");           //    }
+    macro1("label","ERROR");           //   ERROR:
+    macro2("copy","Ax","resb");        //   Ax=res;
+    macro1("label","END");             // }
+
+  } else if (strcmp(Name,"divBx")==0) {
+    fprintf(F2,"; idiv %s = %s * %s\n","Ax","Ax","Bx");
+    //   Ax = Ax / Bx
+    //   Bx = AX % Bx
+    //   Ax = -32768 (_MIN) if attempt to divide by zero
+    macro1("jump","BEGINf");           // {
+    macro2("store","sgn","1");         //   int16_t sgn=1;
+    macro2("store","rem","0");         //   int16_t rem=0;
+    macro2("store","res","0");         //   int16_t res=0;
+    macro2("store","word","1");        //   int16_t word=1; // To test word size
+    macro1("label","BEGIN");           //
+    macro2("copy","resb","Ax");        //   res=Ax;
+    macro2("jgez","resb","ENDIFf");    //   if (res<0) {
+    macro1("chs","resb");              //     res=-res;
+    macro1("chs","sgnb");              //     sgn=-sgn;
+    macro1("label","ENDIF");           //   }
+    macro2("jgez","Bx","ENDIFf");      //   if (Bx<0) {
+    macro1("chs","Bx");                //     Bx=-Bx;
+    macro1("chs","sgnb");              //     sgn=-sgn;
+    macro1("label","ENDIF");           //   }
+    macro2("jlez","Bx","ELSEf");       //   if (Bx>0) {
+    macro1("label","LOOP");            //   LOOP:
+    macro1("shl","resb");              //     res=res<<1;
+    macro1("shl","remb");              //     rem=rem<<1;
+    macro2("jgez","resb","ENDIFf");    //     if (res<0)
+    macro2("sub","resb","_MIN");       //       res=res-_MIN; // Clear sign bit
+    macro1("inc","remb");              //       rem++;
+    macro1("label","ENDIF");           //     }
+    macro3("new sub","t","remb","Bx"); //     if (rem>=Bx) {
+    macro2("jltz","t","ENDIFf");       //
+    macro2("sub","remb","Bx");         //       rem=rem-Bx;
+    macro1("inc","resb");             //        res++;
+    macro1("label","ENDIF");           //     }
+    macro1("shl","wordb");             //     word=word<<1;
+    macro1("inc","wordb");             //     word=word++;
+    macro2("jgez","wordb","LOOPb");    //   if (word>0) goto LOOP;
+    macro2("jgez","sgnb","ENDIFf");    //   if (sgn<0) {
+    macro1("chs","resb");              //     res=-res;
+    macro1("label","ENDIF");           //    }
+    macro2("jgez","Ax","ENDIFf");      //   if (Ax<0) {
+    macro1("chs","remb");              //     rem=-rem;
+    macro1("label","ENDIF");           //   }
+    macro2("copy","Ax","resb");        //   Ax=res;
+    macro2("copy","Bx","remb");        //   Bx=rem;
+    macro1("jump","ENDf");             // }
+    macro1("label","ELSE");            //  } else {
+    macro2("copy","Ax","_MIN");        //    Ax=_MIN;
+    macro1("label","END");             //  }
+
+  } else if (strcmp(Name,"wrtAx")==0) {
+    // print Ax as string
+    macro1("jump","BEGINf");              //  {
+    macro2("store","_10","10");           //    int _10=10;
+    macro2("store","_100","100");         //    int _100=100;
+    macro2("store","_1000","1000");       //    int _1000=1000;
+    macro2("store","_10000","10000");     //    int _10000=10000;
+    macro2("store","digit","0");          //    int digit=0;
+    macro2("store","zeroFlag","0");       //    int zeroFlag=0;
+    macro1("label","BEGIN");              //
+    macro1("putc","_SPACE");              //    putc(space);
+    macro2("jgez","Ax","ENDIFf");         //    if (Ax<0) {
+    macro1("chs","Ax");                   //      Ax=-Ax;
+    macro1("putc","_MINUS");              //      putc(minus);
+    macro1("label","ENDIF");              //    }
+    macro1("label","WHILE");              //    while (Ax>=10000) {
+    macro3("new sub","t","Ax","_10000b"); //
+    macro2("jltz","t","WENDf");           //
+    macro1("inc","digitb");               //        digit++;
+    macro2("sub","Ax","_10000b");         //        Ax=Ax-10000;
+    macro1("jump","WHILEb");              //    }
+    macro1("label","WEND");               //
+    macro2("add","zeroFlagb","digitb");   //    zeroFlag=zeroFlag+digit;
+    macro2("jlez","zeroFlagb","ENDIFf");  //    if (zeroFlag>0) {
+    macro2("add","digitb","_ZERO");       //      digit=digit+zero;
+    macro1("putc","digitb");              //      putc(digit);
+    macro1("label","ENDIF");              //    }
+    macro1("clear","digitb");             //    digit=0;
+    macro1("label","WHILE");              //    while (Ax>=1000) {
+    macro3("new sub","t","Ax","_1000b");  //
+    macro2("jltz","t","WENDf");           //
+    macro1("inc","digitb");               //        digit++;
+    macro2("sub","Ax","_1000b");          //        Ax=Ax-1000;
+    macro1("jump","WHILEb");              //    }
+    macro1("label","WEND");               //
+    macro2("add","zeroFlagb","digitb");   //    zeroFlag=zeroFlag+digit;
+    macro2("jlez","zeroFlagb","ENDIFf");  //    if (zeroFlag>0) {
+    macro2("add","digitb","_ZERO");       //      digit=digit+zero;
+    macro1("putc","digitb");              //      putc(digit);
+    macro1("jump","WHILEb");              //    }
+    macro1("label","ENDIF");              //
+    macro1("clear","digitb");             //    digit=0;
+    macro1("label","WHILE");              //    while (Ax>=100) {
+    macro3("new sub","t","Ax","_100b");   //
+    macro2("jltz","t","WENDf");           //
+    macro1("inc","digitb");               //        digit++;
+    macro2("sub","Ax","_100b");           //        Ax=Ax-100;
+    macro1("jump","WHILEb");              //    }
+    macro1("label","WEND");               //
+    macro2("add","zeroFlagb","digitb");   //    zeroFlag=zeroFlag+digit;
+    macro2("jlez","zeroFlagb","ENDIFf");  //    if (zeroFlag>0) {
+    macro2("add","digitb","_ZERO");       //      digit=digit+zero;
+    macro1("putc","digitb");              //      putc(digit);
+    macro1("label","ENDIF");              //    }
+    macro1("clear","digitb");             //    digit=0;
+    macro1("label","WHILE");              //    while (Ax>=10) {
+    macro3("new sub","t","Ax","_10b");    //
+    macro2("jltz","t","WENDf");           //
+    macro1("inc","digitb");               //        digit++;
+    macro2("sub","Ax","_10b");            //        Ax=Ax-10;
+    macro1("jump","WHILEb");              //    }
+    macro1("label","WEND");               //
+    macro2("add","zeroFlagb","digitb");   //    zeroFlag=zeroFlag+digit;
+    macro2("jlez","zeroFlagb","ENDIFf");  //    if (zeroFlag>0) {
+    macro2("add","digitb","_ZERO");       //      digit=digit+zero;
+    macro1("putc","digitb");              //      putc(digit);
+    macro1("label","ENDIF");              //    }
+    macro1("clear","digitb");             //    digit=0;
+    macro1("label","WHILE");              //    while (Ax>0) {
+    macro2("jlez","Ax","WENDf");          //
+    macro1("inc","digitb");               //        digit++;
+    macro1("dec","Ax");                   //        Ax--;
+    macro1("jump","WHILEb");              //    }
+    macro1("label","WEND");               //
+    macro2("add","digitb","_ZERO");       //      digit=digit+zero;
+    macro1("putc","digitb");              //      putc(digit);
+    macro1("label","END");                //  }
+
+  } else if (strcmp(Name,"wrtLn")==0) {
+    macro1("putc","_CR");
+    macro1("putc","_LF");
+
+  } else if (strcmp(Name,"rdAx")==0) {
+    // Read INPUT and convert to integer
+    macro1("jump","BEGINf");                     // {
+    macro2("store","number","0");                //   int16_t number=0;
+    macro2("store","t1","0");                    //   int16_t t1;
+    macro2("store","t3","0");                    //   int16_t t3;
+    macro2("store","digit","0");                 //   char digit;
+    macro2("store","sgn","1");                   //   int16_t sgn=1;
+    macro1("label","BEGIN");                     //
+    macro2("copy","Ax","_MIN");                  //   Ax=-32768;
+    macro1("label","NEXT");                      //   NEXT:
+    macro2("copy","digitb","INPUT");             //     digit=getchar();
+    macro3("new sub","t","digitb","_LF");        //     if (digit=='\n') goto DONE;
+    macro2("jeqz","t","DONEf");                    //
+    macro3("new sub","t","digitb","_SPACE");     //     if (digit<' ') goto NEXT;
+    macro2("jlez","t","NEXTb");                  //                                                 //
+    macro3("new sub","t","digitb","_MINUS");     //     if (digit==minus) {
+    macro2("jnez","t","ENDIFf");                  //
+    macro1("chs","sgnb");                        //       sgn=-sgn;
+    macro1("jump","NEXTb");                      //       goto NEXT;
+    macro1("label","ENDIF");                     //   }
+    macro3("new sub","t","digitb","_ZERO");      //     if (digit<zero) goto ERROR;
+    macro2("jltz","t","ERRORf");                 //
+    macro3("new sub","t","digitb","_NINE");      //     if (digit>nine) goto ERROR;
+    macro2("jgtz","t","ERRORf");                 //
+    macro3("new add","t1b","numberb","numberb"); //     t1=number+number;
+    macro3("new add","t3b","t1b","t1b");         //     t3=t1+t1;
+    macro1("shl","t3b");                         //     t3=t3+t3;
+    macro3("new add","numberb","t3b","t1b");     //     number=t3+t1;
+    macro2("add","numberb","digitb");            //     number=number+digit;
+    macro2("sub","numberb","_ZERO");             //     number=number-zero;
+    macro2("jltz","numberb","ERRORf");           //     if (number<0) goto ERROR;
+    macro1("jump","NEXTb");                      //   goto NEXT;
+    macro1("label","DONE");                      //   DONE:
+    macro2("jgez","sgnb","ENDIFf");              //   if (sgn<0) {
+    macro1("chs","numberb");                     //     number=-number;
+    macro1("label","ENDIF");                     //   }
+    macro2("copy","Ax","numberb");               //   Ax=number;
+    macro1("label","ERROR");                     //   ERROR:
+    macro1("label","END");                       // }
+
+  } else if (strcmp(Name,"cmpBx")==0) {
+    macro3("new sub","Fx","Ax","Bx");
+
+  } else if (strcmp(Name,"orAxAx")==0) {
+    macro2("copy","Fx","Ax");
+
+  } else if (strcmp(Name,"xorAxAx")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("copy","Fx","Ax");
+
+  } else if (strcmp(Name,"setEq")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("jnez","Fx","DONEf");
+    macro1("inc","Ax");
+    macro1("label","DONE");
+
+  } else if (strcmp(Name,"setNE")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("jeqz","Fx","DONEf");
+    macro1("inc","Ax");
+    macro1("label","DONE");
+
+  } else if (strcmp(Name,"setLT")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("jgez","Fx","DONEf");
+    macro1("inc","Ax");
+    macro1("label","DONE");
+
+  } else if (strcmp(Name,"setLE")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("jgtz","Fx","DONEf");
+    macro1("inc","Ax");
+    macro1("label","DONE");
+
+  } else if (strcmp(Name,"setGT")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("jlez","Fx","DONEf");
+    macro1("inc","Ax");
+    macro1("label","DONE");
+
+  } else if (strcmp(Name,"setGE")==0) {
+    macro2("sub","Ax","Ax");
+    macro2("jltz","Fx","DONEf");
+    macro1("inc","Ax");
+    macro1("label","DONE");
+
+  } else if (strcmp(Name,"jmp")==0) {
+    macro1("jump",sOPCAdr);
+
+  } else if (strcmp(Name,"jz")==0) {
+    macro2("jeqz","Ax",sOPCAdr);
+
+  } else if (strcmp(Name,"halt")==0) {
+    macro1("jump","HALT");
+
+  } else {
+    fprintf(stderr,"Composite macro not found: %s\n",Name);
+
+  }
+}
+
+int main(int argc, char **argv)
+{
+  char sIP[80]="";
+  char sOpCode[80]="";
+  int operand=0;
+
+  // Command line file names and flags
+  bool OpCodeFileFlag=false;
+  char OpCodeFileName[80]="";
+  bool SubleqFileFlag=false;
+  char SubleqFileName[80]="";
+
+  // Get command line parameters
+  {
+    int k;
+
+    for (k=1;k<argc;k++) {
+      if (strcmp(argv[k],"-i")==0) {
+        OpCodeFileFlag=true;
+        if (k+1<argc) strcpy(OpCodeFileName,argv[k+1]);
+      }
+      if (strcmp(argv[k],"-o")==0) {
+        SubleqFileFlag=true;
+        if (k+1<argc) strcpy(SubleqFileName,argv[k+1]);
+      }
+    }
+  }
+
+  if ((OpCodeFileFlag)&&(SubleqFileFlag)) {
+    F1=fopen(OpCodeFileName,"r");
+    F2=fopen(SubleqFileName,"w");
+    compositeMacro("system",0);
+    if (fgets(sOpCode,80,F1)!=NULL) {
+      while (fscanf(F1,"%s %s %d",sIP,sOpCode,&operand)!=EOF) {
+        // Export the OpCode IP Address as a label
+        memcpy(sIP+4,sIP,strlen(sIP));
+        strncpy(sIP,"_OPC",4);
+        fprintf(F2,"%s\n",sIP);
+        compositeMacro(sOpCode,operand);
+      }
+    }
+    fclose(F2);
+    fclose(F1);
+  } else {
+    fprintf(stderr,"Usage: OpCode2Subleq -i OpCode File -o Subleq File\n");
+  }
+  return 0;
+}
+
