@@ -1,0 +1,341 @@
+            .include MACROS.inc
+
+            .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+            JMP Start
+
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+ch:         .data 0             ;Used by tokenizing
+
+val_:       .data val
+val:        .data 0
+
+pToken_:    .data pToken               ; pToken_ is a constant holding the address of the pToken pointer
+pToken:     .data 0                    ; pToken is a pointer to the token being extracted
+
+token_:     .data token                 ; token_ is a constant holding the address of the token being extracted
+token:      .data "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+
+pProgram_:  .data pProgram              ; pProgram_ is a constant holding the address of the pProgram pointer
+pProgram:   .data 0                     ; pProgram is a pointer to the code array
+
+program_:   .data program               ; program_ is a constant holding the address of the program array
+program:                                ; The program source code to be run
+L10:         .data 10,  L20-$-1,  "GOTO 100",           "\0"
+L20:         .data 20,  L100-$-1, "END",                "\0"
+L100:        .data 100, L105-$-1, "PRINT 'Hello,'",     "\0"
+L105:        .data 105, L110-$-1, "PRINT ' world!'",    "\0"
+L110:        .data 110, L120-$-1, "PRINT 1234",          "\0" 
+L120:        .data 120, L130-$-1, "PRINT C",            "\0"
+L130:        .data 130, L140-$-1, "GOTO 20",            "\0"
+L140:        .data 0
+
+
+lineNo:             .data 0
+offsetToNextLine:   .data 0
+q:                  .data 0
+
+msgEXECUTING: .data $+1
+         .data "Executing line number \0"
+
+Start:
+    PRINTSTRING msgLogo
+
+    MOV program_ pProgram               
+
+MainLoop:
+    INDEXEDRD pProgram lineNo           ; Get Linenumber of current line as a binary value
+
+;        PRINTSTRING msgEXECUTING
+;        PRINTINTEGER lineNo
+;        PRINTCRLF
+    
+    INC pProgram
+
+    INDEXEDRD pProgram offsetToNextLine ; Get offset to next line
+    INC pProgram
+
+    CALLP GETTOKEN 0                     ; Get the next token
+;    PRINTSTRING token_                  ; (debug) Print the token buffer
+
+    INDEXEDRD token_ ch                 ; Get the first char of the token
+
+    CONST_E ch cmdEND                 ; If the token is an END handle it
+    ADD CONST_E ch                      ; Restore the char to its original value after comparisons
+
+    CONST_G ch cmdGOTO                ; If the token is a GOTO handle it
+    ADD CONST_G ch                      ; Restore the char to its original value after comparisons
+
+    CONST_P ch cmdPRINT                ; If the token is a PRINT handle it
+    ADD CONST_P ch                      ; Restore the char to its original value after comparisons
+
+
+    PRINTSTRING msgSyntaxError          ; If we reach this point, the token is invalid
+    HALT
+
+;-----------------------------------------------------------------------------------------------------
+
+cmdEND:
+    PRINTSTRING msgEnd
+    HALT
+
+;-----------------------------------------------------------------------------------------------------
+
+msgPRINT: .data $+1
+         .data "Handling a PRINT\r\n\0"
+
+cmdPRINT:
+;    PRINTSTRING msgPRINT
+    INC pProgram                        ; Skip SPACE
+    CALLP GETTOKEN 0                    ; Get the next token
+
+    INDEXEDRD token_ ch                 ; Get the first char of the token
+
+    CONST_QUOTE ch cmdPRINTstring ; If the token starts with a quote, it's a string
+    ADD CONST_QUOTE ch            ; Restore the char to its original value after comparisons
+
+    JMP cmdPRINTnumber                  ; Otherwise, it's a number
+
+    ;PRINTSTRING msgSyntaxError          ; If we reach this point, the token is invalid
+
+
+cmdPRINTstring:
+    OUT CONST_EQUAL
+    PRINTSTRING pToken
+    INC pProgram                        ; Skip EOL
+    JMP MainLoop
+
+cmdPRINTnumber:
+    MOV val_ (ATOI-2)                    ; Convert it to a binary value
+    MOV pToken_ (ATOI-1) 
+    CALLP ATOI 2
+    PRINTINTEGER val
+    INC pProgram                        ; Skip EOL
+    JMP MainLoop
+
+cmdPRINTvariable:
+    HALT
+
+;-----------------------------------------------------------------------------------------------------
+
+msgGOTO: .data $+1
+         .data "Handling a GOTO\r\n\0"
+
+pLine_:  .data pLine              ; pLine_ is a constant holding the address of the pLine pointer
+pLine:   .data 0                     ; pLine is a pointer to the code array
+
+
+cmdGOTO:
+;    PRINTSTRING msgGOTO
+    INC pProgram
+
+    CALLP GETTOKEN 0                     ; Get the destination token
+
+    MOV val_ (ATOI-2)                    ; Assume it's a number so convert it to a binary value
+    MOV pToken_ (ATOI-1) 
+    CALLP ATOI 2
+
+
+    MOV program_ pLine               ;Point to start of source code
+findLineLoop:
+    INDEXEDRD pLine lineNo           ; Get Linenumber of current line as a binary value
+    JEQZ lineNo notFound             ; If we reach the end of the program, the line was not found
+    INC pLine
+
+    INDEXEDRD pLine offsetToNextLine ; Get offset to next line
+    INC pLine
+
+    val lineNo                           ; Compare val (the desination target) with the current line number
+    JEQZ lineNo foundLine                ; If they are equal, jump to the destination line
+
+    ADD offsetToNextLine pLine      ; Otherwise, skip to the next line
+    JMP findLineLoop
+
+foundLine:
+    DEC pLine                       ; Back up to beginning of line 
+    DEC pLine
+    MOV pLine pProgram              ; ... and set the program pointer to the start of the line
+    JMP MainLoop                        ; ... to continue execution there
+
+
+    PRINTINTEGER val
+
+    HALT
+
+notFound:
+    PRINTSTRING msgLineNotFound
+    HALT
+
+
+;    MOV val_ (ATOI-2) 
+;    MOV pProgram_ (ATOI-1) 
+;    CALLP GETTOKEN 2
+
+
+
+    HALT;
+
+
+
+
+;    PRINTCRLF
+;    OUT CONST_P
+;    OUT CONST_EQUAL
+;    PRINTINTEGER pProgram
+;    PRINTCRLF
+
+    MOV val_ (ATOI-2) 
+    MOV pProgram_ (ATOI-1) 
+    CALLP ATOI 2
+    OUT CONST_EQUAL
+    PRINTINTEGER val
+    PRINTCRLF
+
+    INC pProgram
+
+    MOV val_ (ATOI-2) 
+    MOV pProgram_ (ATOI-1) 
+    CALLP ATOI 2
+    OUT CONST_EQUAL
+    PRINTINTEGER val
+    PRINTCRLF
+
+
+
+
+;    OUT CONST_P
+;    OUT CONST_EQUAL
+;    PRINTINTEGER pProgram
+;    PRINTCRLF
+
+    HALT
+
+
+
+
+
+
+
+
+;    PRINTCRLF
+;    PRINTINTEGER codeP
+;    OUT CONST_SPACE
+;    PRINTINTEGER val
+;    PRINTCRLF
+
+    HALT
+
+
+
+
+;    MOV string P
+;    CLR val
+;loop1:
+;    INDEXEDRD P digit
+;    CLRZ
+;    CONST_SLASH digit done1
+;    CONST_10 digit ok
+;    JMP done1
+;ok: ADD CONST_9 digit
+;    MULU CONST_10 val
+;    ADD digit val
+;    INC P
+;    JMP loop1
+;done1:
+;    PRINTINTEGER val
+;    HALT
+
+;    MOV string P
+;    MOV CONST_5 val
+;    ATOI P val
+;    PRINTINTEGER val
+;    PRINTCRLF
+;    PRINTINTEGER P
+;    HALT
+
+;    MOV program P
+;loop:
+;    INDEXEDRD P PVAL
+;    JEQZ PVAL stop
+;    PRINTINTEGER PVAL
+;    OUT CONST_SPACE
+;    INC P
+;    INC P
+;    INDEXEDRD P PVAL
+;    OUT PVAL
+
+
+;    INC P
+;    INDEXEDRD P T
+;    ADD T P
+;    JMP loop
+
+stop:
+    HALT
+
+
+
+
+
+
+
+P:          .data 0 
+PVAL:       .data 0
+LineNo:     .data 0
+LineNoAddr: .data 0
+
+
+CONST_20:   .data 20
+T:          .data 0     ; T is a temporary variable
+
+vars:   .data $+1
+        .data 1000         ; Variable A 
+        .data 1010         ; Variable B
+        .data 1020         ; Variable C
+        .data 0         ; Variable D
+        .data 0         ; Variable E
+        .data 0         ; Variable F
+        .data 0         ; Variable G
+        .data 0         ; Variable H
+        .data 0         ; Variable I
+        .data 0         ; Variable J
+        .data 0         ; Variable K
+        .data 0         ; Variable L
+        .data 0         ; Variable M
+        .data 0         ; Variable N
+        .data 0         ; Variable O
+        .data 0         ; Variable P
+        .data 0         ; Variable Q
+        .data 0         ; Variable R
+        .data 0         ; Variable S
+        .data 0         ; Variable T
+        .data 0         ; Variable U
+        .data 0         ; Variable V
+        .data 0         ; Variable W
+        .data 0         ; Variable X
+        .data 0         ; Variable Y
+        .data 0         ; Variable Z
+ 
+ 
+ 
+ 
+msgLogo:.data $+1   
+        .data "SUBASIC v0.00\r\n\0"
+
+msgEnd: .data $+1
+        .data "\r\nExecution halted by END\r\n\0"
+
+msgSyntaxError: .data $+1
+        .data "\r\nSyntax error\r\n\0"
+
+msgLineNotFound: .data $+1
+        .data "Line not found\r\n\0"
+
+        .include subasic/GETTOKEN.inc
+        .include IO.inc
+        .include ATOI.inc
+        .include CONSTANTS.inc

@@ -14,7 +14,7 @@ function Evaluate(expression) {
  //           console.error(`Error in pass ${G.pass}: ${err.message}`);
  //           process.exit(1);
  //       }
-        return 0;
+        return 16777216;
 //    }
 }
 
@@ -73,7 +73,7 @@ function shuntingYard(expression) {
             continue;
         }
 
-        console.log(`token='${token}'`);
+        // console.log(`token='${token}'`);
 
         // If the token is a local label, add the procedure name to it
         // So @FOO becomes PROCNAME_FOO

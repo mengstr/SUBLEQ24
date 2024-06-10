@@ -78,7 +78,7 @@ function ProcessFile(argFile, listFile) {
 function ProcessLine(originalLine, listFile) {
     const MAXDATADUMP = 3;
 
-    console.log(`${G.procName}>>>${originalLine}`);
+// console.log(`${G.procName}>>>${originalLine}`);
     let line=stripComment(originalLine);
     let pcAtLineStart=G.pc;
 
@@ -141,14 +141,14 @@ function ProcessLine(originalLine, listFile) {
 
     // if the first token is in the macro table, expand the macro
     if (G.macros.has(A)) {
-       console.log(`Expanding macro ${A} which have ${G.macros.get(A).params} as parameters`);
+    //    console.log(`Expanding macro ${A} which have ${G.macros.get(A).params} as parameters`);
     //    console.log(`A=${A} B=${B} C=${C} D=${D} E=${E} F=${F}`)
         B=fixLocalLabel(B);
         C=fixLocalLabel(C);
         D=fixLocalLabel(D);
         E=fixLocalLabel(E);
         F=fixLocalLabel(F);
-        console.log(`A=${A} B=${B} C=${C} D=${D} E=${E} F=${F}`)
+        // console.log(`A=${A} B=${B} C=${C} D=${D} E=${E} F=${F}`)
 
     // get a new local number for the macro
         G.localNo++;
@@ -159,13 +159,13 @@ function ProcessLine(originalLine, listFile) {
         // insert the expanded macro at beginning of macroLines in case we're already inside another macro
         let tmp = [];
         G.macros.get(A).lines.forEach(s => {
-            console.log(`Expanding s ${s}`);
+            // console.log(`Expanding s ${s}`);
             // replace the parameters in the macro with the actual args
             let line = s;
             let i = 0;
             if (G.macros.get(A).params) {
                 for (let param of G.macros.get(A).params.split(' ')) {
-                    console.log(`${i} Replacing ${param} s now is'${s}' `);
+                    // console.log(`${i} Replacing ${param} s now is'${s}' `);
                     param='\\b'+param+'\\b';
                     if (i==0) s = s.replace(new RegExp(param, 'g'), B);
                     if (i==1) s = s.replace(new RegExp(param, 'g'), C);
@@ -177,9 +177,9 @@ function ProcessLine(originalLine, listFile) {
             }
             // replace the local labels with the current local number
             s = s.replace(/@/g, 'LOCAL_'+G.macros.get(A).local+'_');
-            console.log(`Pushing ${s}`);
+            // console.log(`Pushing ${s}`);
             tmp.push(s);
-            console.table(tmp);
+            // console.table(tmp);
         });
         G.macroLines = tmp.concat(G.macroLines);
         return;
@@ -299,11 +299,11 @@ function HandleDirective(line, label, pass) {
         //
         case '.equ':
             [line, value]=getExpression(args);
-            try {
-                G.symbols.set(label, Evaluate(value));
-            } catch (err) {
-                if (G.pass==2) die(`Can't evaluate: ${err}`)
-            }
+            // try {
+            G.symbols.set(label, Evaluate(value));
+            // } catch (err) {
+            //     if (G.pass==2) die(`Can't evaluate: ${err}`)
+            // }
             break;
 
         //

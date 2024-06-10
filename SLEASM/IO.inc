@@ -1,92 +1,3 @@
-        .include MACROS.inc
-
-        .org 0
-
-Z:      .data 0 
-PLUS1:  .data 1 
-MINUS1: .data (-1)
-
-        JMP Start
-T:      .data 0         ; Temporary holding register, mostly used in the macros
-tmpA:      .data 0
-tmpB:      .data 0
-CONST_35: .data 35
-
-
-fib:     .data 0
-prevFib: .data 1
-key:     .data 0
-num:     .data 0
-
-        .org 100
-
-Start:
-        PRINTSTRING WelcomeMessage
-        PRINTCRLF
-
-Input_Integer:
-        CLR num
-loop:
-        IN key                          ; Poll for a key
-        JNEG key loop
-
-        JEQ  key CONST_CR done          ; If Enter/CR then we're done
-        JEQ  key CONST_DEL backspace
-
-        CONST_ASCII_ZERO key            ; Take it down to a number
-        MULU CONST_10 num              ; Multiply total by 10 and add the key
-        ADD key num
-        ADD CONST_ASCII_ZERO key
-        OUT key
-        JMP loop;
-
-backspace:
-        DIVU CONST_10 num
-        OUT CONST_BS
-        OUT CONST_SPACE
-        OUT CONST_BS
-        JMP loop
-
-
-done:
-        PRINTCRLF
-        PRINTINTEGER num
-        PRINTCRLF
-        HALT
-
-
-
-;loop:
-;        IN key
-;        JNEG key loop
-;        PRINTINTEGER key
-;        PRINTCRLF
-;        JMP loop
-
-
-;        .proc fibonacci
-;@loop:
-;        PRINTINTEGER fib
-;        PRINTCRLF
-;        ADD3 fib prevFib T
-;        MOV prevFib fib
-;        MOV T prevFib
-;        JGEZ fib @loop;
-;
-;        .endp
-;
-
-        HALT
-
-
-
-WelcomeMessage:
-        .data $+1         ; Location of the string to be printed
-        .data "\[[2J"
-        .data "\[[H"
-        .data "Welcome to the 24-bit \[[35mSUBLEQ\[[0m computer!\r\n"
-        .data "\0"
-
 ;-----------------------------------------------------------------------------------------
 
         .PROC PrintInt
@@ -104,13 +15,13 @@ Print_Integer_Return:
 
 Print_Integer:
                 JNEZ @val @valIsNotZero         ; If the value is zero, print it and return
-                OUT CONST_ASCII_ZERO            ; Print ASCII zero
+                OUT CONST_ASCII_0               ; Print ASCII zero
                 JMP Print_Integer_Return        ; ...and exit
 
 @valIsNotZero:  Z @val @valIsNeg                ; Check if the value is negative
                 JMP @startprint                 ; If it is positive, print it as is        
 
-@valIsNeg:      OUT CONST_ASCII_MINUS           ; If is is negative print a minus sign
+@valIsNeg:      OUT CONST_MINUS                 ; If is is negative print a minus sign
                 NEG @val                        ; ...and negate the number so it can be printed normally
 
 ;
@@ -127,7 +38,7 @@ Print_Integer:
                 MOV CONST_7 @digitCnt           ; Number of digits to print
                 MOV POW10_ADDR @pow10addr       ; Initialize the pointer to the POW10 array
 
-@digitsLoop:    MOV CONST_ASCII_ZERO @digit     ; Initialize counter to ASCII zero so we don't need to convert it later
+@digitsLoop:    MOV CONST_ASCII_0 @digit        ; Initialize counter to ASCII zero so we don't need to convert it later
 @l1:            MOV @val @lastPosVal
 @pow10addr:     0 @val @l2                      ; Subtract from val, and branch if reached zero or negative
 NotNeg:         INC @digit                      ; We still have more to subtract, so increment the counter
@@ -171,5 +82,3 @@ Print_String:
 
 POW10:          .data 1000000,100000,10000,1000,100,10,1
 POW10_ADDR:     .data POW10
-
-        .include CONSTANTS.inc
