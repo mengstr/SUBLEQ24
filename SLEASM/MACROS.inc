@@ -64,7 +64,7 @@
 
 ;--------------------------------------------------------------------------------------------
 
-    .macro MOV src dest      ; Copy value at src to dest using temp as a temporary location
+    .macro MOV src dest      ; Copy value at src to dest
         CLR dest
         src Z
         Z dest
@@ -73,13 +73,13 @@
     
 ;--------------------------------------------------------------------------------------------
 
-    .macro JMP addr
+    .macro JMP addr         ; Ucondtional JUMP
         Z Z addr
     .endm
 
 ;--------------------------------------------------------------------------------------------
 
-    .macro NEG src
+    .macro NEG src          ; Negate src
         CLR tmpA
         src tmpA
         MOV tmpA src
@@ -96,7 +96,6 @@
 @done:
     .endm
 
-
 ;--------------------------------------------------------------------------------------------
 
     .macro JNEZ src addr    ; Jump to addr if src is not zero
@@ -110,10 +109,9 @@
 ;--------------------------------------------------------------------------------------------
 
     .macro JGEZ src addr    ; Jump to addr if src is greater than or equal to zero
-        src Z @gte
-        Z Z @done
-@gte:   Z Z addr
-@done:  Z Z
+    MOV src tmpA 
+    CLR tmpB
+    tmpA tmpB addr
     .endm
 
 ;--------------------------------------------------------------------------------------------
@@ -125,10 +123,29 @@
     .endm      
 
 ;--------------------------------------------------------------------------------------------
-    .macro JEQ src val addr ; JUMP to addr if src = val
+
+    .macro JPOS src addr    ; Jump to addr if src is positive ( >0 )
+        JNEG src @done
+        JEQZ src @done
+        JMP addr
+@done:
+    .endm      
+
+;-------------------------------------------------------------------------------------------
+
+    .macro CMPEQ v1 v2 addr ; Compare and jump to addr if v1 = v2
+        MOV v1 tmpA
+        MOV v2 tmpB
+        tmpA tmpB
+        JEQZ tmpB addr
+    .endm
+
+;--------------------------------------------------------------------------------------------
+
+    .macro CMPNE src val addr ; Compare and jump to addr if src != val
         MOV src tmpA
         val tmpA
-        JEQZ tmpA addr
+        JNEZ tmpA addr
     .endm
 
 ;--------------------------------------------------------------------------------------------
@@ -233,7 +250,7 @@
 @zorm:  CLR dst
         INC dst
 @done:
-
     .endm
 
     ;--------------------------------------------------------------------------------------------
+

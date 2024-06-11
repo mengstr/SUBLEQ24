@@ -1,0 +1,83 @@
+                .include MACROS.inc
+
+; EXPECT ..XXX
+
+            .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+
+; JGEZ - Jump if greater than or zero
+
+        MOV M2  A
+        JGEZ A ok1
+        OUT CONST_DOT
+        JMP done1
+ok1:    OUT CONST_X
+done1: 
+
+        MOV M1 A
+        JGEZ A ok2
+        OUT CONST_DOT
+        JMP done2
+ok2:    OUT CONST_X
+done2: 
+
+        MOV ZERO  A
+        JGEZ A ok3
+        OUT CONST_DOT
+        JMP done3
+ok3:    OUT CONST_X
+done3:
+
+        MOV P1 A
+        JGEZ A ok4
+        OUT CONST_DOT
+        JMP done4
+ok4:    OUT CONST_X
+done4: 
+
+        MOV P2 A
+        JGEZ A ok5
+        OUT CONST_DOT
+        JMP done5
+ok5:    OUT CONST_X
+done5: 
+
+        PRINTCRLF
+        HALT
+
+
+P1:         .data 1
+P2:         .data 2
+P3:         .data 3
+P10:        .data 10
+P100:       .data 100
+P1000:      .data 1000
+P10000:     .data 10000
+P100000:    .data 100000
+P1000000:   .data 1000000
+ZERO:       .data 0
+M1:         .data -1
+M2:         .data -2
+M3:         .data -3
+M10:        .data -10
+M100:       .data -100
+M1000:      .data -1000
+M10000:     .data -10000
+M100000:    .data -100000
+M1000000:   .data -1000000
+
+
+
+A:          .data 0              ; test variable
+B:          .data 0              ; test variable
+T:          .data 0
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+
+
+        .include IO.inc
+        .include CONSTANTS.inc
+

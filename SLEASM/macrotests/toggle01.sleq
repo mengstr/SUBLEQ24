@@ -1,0 +1,50 @@
+                .include MACROS.inc
+
+; EXPECT XXX
+
+            .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+
+;TOGGLE01 - Toggle destination between 0 and 1
+
+        CLR A
+
+        CMPEQ A Z ok1
+        OUT CONST_DOT
+        JMP done1
+ok1:  OUT CONST_X
+done1
+
+        TOGGLE01 A
+
+        CMPNE A Z ok2
+        OUT CONST_DOT
+        JMP done2
+ok2:  OUT CONST_X
+done2:
+
+        TOGGLE01 A
+
+        CMPEQ A Z ok3
+        OUT CONST_DOT
+        JMP done3
+ok3:  OUT CONST_X
+done3:
+
+        PRINTCRLF
+        HALT
+
+
+A:          .data 0              ; test variable
+B:          .data 0              ; test variable
+T:          .data 0
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+
+
+        .include IO.inc
+        .include CONSTANTS.inc
+

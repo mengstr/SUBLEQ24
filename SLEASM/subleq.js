@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+
 const fs = require('fs');
 const readline = require('readline');
 
@@ -7,6 +10,7 @@ var key=NOKEY;
 var memory;
 var pc=0;
 var trace=false;
+var silent=false;
 
 const keypressHandler = (str, k) => {
     if (k.ctrl && k.name === 'c') {
@@ -16,14 +20,17 @@ const keypressHandler = (str, k) => {
     }
 };
 
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.on('keypress', keypressHandler);
-
+if (process.stdin.setRawMode) {
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
+    process.stdin.on('keypress', keypressHandler);
+}
 
 // Get the file name from the command line arguments
 const fileName = process.argv[2];
 if  (process.argv[3]=="-t") trace=true;
+if  (process.argv[3]=="-q") silent=true;
+
 
 try {
     const data = fs.readFileSync(fileName, 'utf8');
@@ -35,7 +42,7 @@ try {
         num = num << 8 >> 8; // Convert to 24-bit signed integer
         return num;
     });
-    console.log(`Loaded ${memory.length} instructions from ${fileName}`);
+    if (!silent) console.log(`Loaded ${memory.length} instructions from ${fileName}`);
 } catch (err) {
     console.error(`Error reading file from disk: ${err}`);
 }
@@ -84,5 +91,5 @@ async function run() {
     }
 
     process.stdin.pause();
-    console.log("\nDone");
+    if (!silent) console.log("\nDone");
 }

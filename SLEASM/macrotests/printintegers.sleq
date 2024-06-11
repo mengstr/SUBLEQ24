@@ -1,0 +1,97 @@
+            .include MACROS.inc
+
+; E.XPECT -3_-2_-1_0_1_2_3_-10_-100_-1000_-10000_-100000_-1000000_10_100_1000_10000_100000_1000000_8388607_0
+
+            .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+
+
+; Test printing of integers
+
+    PRINTINTEGER M3
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M2
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M1
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER ZERO
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P1
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P2
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P3
+    
+    PRINTINTEGER M10
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M100
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M1000
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M10000
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M100000
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER M1000000
+  
+    PRINTINTEGER P10
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P100
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P1000
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P10000
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P100000
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER P1000000
+    OUT CONST_UNDERSCORE
+  
+    PRINTINTEGER MAXINT
+    OUT CONST_UNDERSCORE
+    PRINTINTEGER MININT
+  
+    PRINTCRLF
+    HALT
+
+
+P1:         .data 1
+P2:         .data 2
+P3:         .data 3
+P10:        .data 10
+P100:       .data 100
+P1000:      .data 1000
+P10000:     .data 10000
+P100000:    .data 100000
+P1000000:   .data 1000000
+ZERO:       .data 0
+M1:         .data -1
+M2:         .data -2
+M3:         .data -3
+M10:        .data -10
+M100:       .data -100
+M1000:      .data -1000
+M10000:     .data -10000
+M100000:    .data -100000
+M1000000:   .data -1000000
+
+MAXINT:     .data 8388607
+MININT:     .data -8388608
+MAXINT1:    .data 8388606
+MININT1:    .data -8388607
+
+OVERFLOW:    .data 8388605
+
+
+A:          .data 0              ; test variable
+B:          .data 0              ; test variable
+T:          .data 0
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+
+        .include IO.inc
+        .include CONSTANTS.inc
+
