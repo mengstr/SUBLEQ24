@@ -1,57 +1,42 @@
-                .include MACROS.inc
+;# SCRIPT
+;for A in $(seq -6 6); do
+;    if (( A == 0 )); then
+;        echo -n "X"
+;    else
+;        echo -n "."
+;    fi
+;done
+; echo ""
+;# END
 
-; EXPECT ..X..
+        .include MACROS.inc
 
-            .org 0
+        .org 0
 
 Z:          .data 0 
 PLUS1:      .data 1 
 MINUS1:     .data (-1)
 
-;JEQZ - Jump if equal to zero
+;JEQZ - Jump if A is equal to zero
 
-        MOV M2  A
-        JEQZ A ok1
-        OUT CONST_DOT
-        JMP done1
-ok1:    OUT CONST_X
-done1: 
-
-        MOV M1 A
-        JEQZ A ok2
-        OUT CONST_DOT
-        JMP done2
-ok2:    OUT CONST_X
-done2: 
-
-        MOV ZERO  A
-        JEQZ A ok3
-        OUT CONST_DOT
-        JMP done3
-ok3:    OUT CONST_X
-done3:
-
-        MOV P1 A
-        JEQZ A ok4
-        OUT CONST_DOT
-        JMP done4
-ok4:    OUT CONST_X
-done4: 
-
-        MOV P2 A
-        JEQZ A ok5
-        OUT CONST_DOT
-        JMP done5
-ok5:    OUT CONST_X
-done5: 
+        MOV M6 A
+loop1:  JEQZ A ok
+        OUT ASCII_DOT
+        JMP incs
+ok:     OUT ASCII_X
+incs:   INC A
+        MOV A T
+        P6 T loop1
 
         PRINTCRLF
         HALT
 
-
 P1:         .data 1
 P2:         .data 2
 P3:         .data 3
+P4:         .data 4
+P5:         .data 5
+P6:         .data 6
 P10:        .data 10
 P100:       .data 100
 P1000:      .data 1000
@@ -62,6 +47,9 @@ ZERO:       .data 0
 M1:         .data -1
 M2:         .data -2
 M3:         .data -3
+M4:         .data -4
+M5:         .data -5
+M6:         .data -6
 M10:        .data -10
 M100:       .data -100
 M1000:      .data -1000
@@ -69,15 +57,13 @@ M10000:     .data -10000
 M100000:    .data -100000
 M1000000:   .data -1000000
 
-
-
 A:          .data 0              ; test variable
 B:          .data 0              ; test variable
 T:          .data 0
 tmpA:       .data 0             ;Used by macros
 tmpB:       .data 0             ;Used by macros
 
-
         .include IO.inc
         .include CONSTANTS.inc
+        .include STACK.inc
 

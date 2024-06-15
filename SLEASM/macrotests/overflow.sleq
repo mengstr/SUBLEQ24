@@ -11,22 +11,30 @@ MINUS1:     .data (-1)
 ;
 ; TEST OVERFLOW
 ;
-        PRINTINTEGER OVERFLOW
-        OUT CONST_SEMICOLON
+        MOV stack_ SP                              ; Initialize the stack pointer
+
+        PUSH OVERFLOW
+        CALL PrintInteger
+        OUT ASCII_SEMICOLON
         INC OVERFLOW
-        PRINTINTEGER OVERFLOW
-        OUT CONST_SEMICOLON
+        PUSH OVERFLOW
+        CALL PrintInteger
+        OUT ASCII_SEMICOLON
         INC OVERFLOW
-        PRINTINTEGER OVERFLOW
+        PUSH OVERFLOW
+        CALL PrintInteger
 
         INC OVERFLOW
-        PRINTINTEGER OVERFLOW
-        OUT CONST_SEMICOLON
+        PUSH OVERFLOW
+        CALL PrintInteger
+        OUT ASCII_SEMICOLON
         INC OVERFLOW
-        PRINTINTEGER OVERFLOW
-        OUT CONST_SEMICOLON
+        PUSH OVERFLOW
+        CALL PrintInteger
+        OUT ASCII_SEMICOLON
         INC OVERFLOW
-        PRINTINTEGER OVERFLOW
+        PUSH OVERFLOW
+        CALL PrintInteger
 
         PRINTCRLF
         HALT
@@ -41,3 +49,4 @@ tmpB:       .data 0             ;Used by macros
 
         .include IO.inc
         .include CONSTANTS.inc
+        .include STACK.inc

@@ -1,110 +1,49 @@
-                .include MACROS.inc
+;# SCRIPT
+;for A in $(seq -6 6); do
+;    for B in $(seq -6 6); do
+;        if (( A == B )); then
+;            echo -n "X"
+;        else
+;            echo -n "."
+;        fi
+;    done
+;done
+; echo ""
+;# END
 
-; EXPECT .X... ...X.
 
-            .org 0
+        .include MACROS.inc
+
+        .org 0
 
 Z:          .data 0 
 PLUS1:      .data 1 
 MINUS1:     .data (-1)
 
-; CMPEQ - Jump if the two arguments are equal
+; CMPEQ A B addr - Jump if the two arguments are equal
 
-        MOV M1 A
-        MOV M2 B
-        CMPEQ A B ok1m
-        OUT CONST_DOT
-        JMP done1m
-ok1m:   OUT CONST_X
-done1m: 
-
-        MOV M1 A
-        MOV M1 B
-        CMPEQ A B ok2m
-        OUT CONST_DOT
-        JMP done2m
-ok2m:   OUT CONST_X
-done2m: 
-
-        MOV M1 A
-        MOV ZERO B
-        CMPEQ A B ok3m
-        OUT CONST_DOT
-        JMP done3m
-ok3m:   OUT CONST_X
-done3m:
-
-        MOV M1 A
-        MOV P1 B
-        CMPEQ A B ok4m
-        OUT CONST_DOT
-        JMP done4m
-ok4m:   OUT CONST_X
-done4m: 
-
-        MOV M1 A
-        MOV P2 B
-        CMPEQ A B ok5m
-        OUT CONST_DOT
-        JMP done5m
-ok5m:   OUT CONST_X
-done5m: 
-
-;----------------------------
-
-        OUT CONST_SPACE
-
-;----------------------------
-
-        MOV P1 A
-        MOV M2 B
-        CMPEQ A B ok1p
-        OUT CONST_DOT
-        JMP done1p
-ok1p:   OUT CONST_X
-done1p: 
-
-        MOV P1 A
-        MOV M1 B
-        CMPEQ A B ok2p
-        OUT CONST_DOT
-        JMP done2p
-ok2p:   OUT CONST_X
-done2p: 
-
-        MOV P1 A
-        MOV ZERO B
-        CMPEQ A B ok3p
-        OUT CONST_DOT
-        JMP done3p
-ok3p:   OUT CONST_X
-done3p:
-
-        MOV P1 A
-        MOV P1 B
-        CMPEQ A B ok4p
-        OUT CONST_DOT
-        JMP done4p
-ok4p:   OUT CONST_X
-done4p: 
-
-        MOV P1 A
-        MOV P2 B
-        CMPEQ A B ok5p
-        OUT CONST_DOT
-        JMP done5p
-ok5p:   OUT CONST_X
-done5p: 
-
+        MOV M6 A
+loop1:  MOV M6 B
+loop2:  CMPEQ A B ok
+        OUT ASCII_DOT
+        JMP incs
+ok:     OUT ASCII_X
+incs:   INC B
+        MOV B T
+        P6 T loop2
+done1:  INC A
+        MOV A T
+        P6 T loop1
 
         PRINTCRLF
-
         HALT
-
 
 P1:         .data 1
 P2:         .data 2
 P3:         .data 3
+P4:         .data 4
+P5:         .data 5
+P6:         .data 6
 P10:        .data 10
 P100:       .data 100
 P1000:      .data 1000
@@ -115,13 +54,15 @@ ZERO:       .data 0
 M1:         .data -1
 M2:         .data -2
 M3:         .data -3
+M4:         .data -4
+M5:         .data -5
+M6:         .data -6
 M10:        .data -10
 M100:       .data -100
 M1000:      .data -1000
 M10000:     .data -10000
 M100000:    .data -100000
 M1000000:   .data -1000000
-
 
 
 A:          .data 0              ; test variable
@@ -133,4 +74,6 @@ tmpB:       .data 0             ;Used by macros
 
         .include IO.inc
         .include CONSTANTS.inc
+        .include STACK.inc
+
 

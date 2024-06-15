@@ -26,10 +26,13 @@ let filename = argFile.includes('.') ? argFile.replace(/\.[^/.]+$/, '.lst') : ar
 let fdList = fs.openSync(filename, 'w');
 
 G.pass=1;                   // First pass
+G.localNo=1000;
 ProcessFile(argFile,0);       
 
+// console.table(G.symbols);
+
 G.pass=2;                    // Second pass
-G.localNo=0;
+G.localNo=1000;
 ProcessFile(argFile,fdList); 
 fs.writeSync(fdList,"\n\n\n");
 
@@ -79,22 +82,23 @@ function ProcessFile(argFile, listFile) {
 function ProcessLine(originalLine, listFile) {
     const MAXDATADUMP = 3;
 
-// console.log(`${G.procName}>>>${originalLine}`);
-    let line=stripComment(originalLine);
-    let pcAtLineStart=G.pc;
+    logger.debug(`${G.procName}>>>${originalLine}`);
 
     // If we're in defining a macro, add the line to the macro
     if (G.macroname!='') {
-        logger.verbose(`'${line.trim().substring(5)}'`);
-        if (line.trim().substring(0,5)=='.endm') {
+        logger.verbose(`'${originalLine.trim().substring(5)}'`);
+        if (originalLine.trim().substring(0,5)=='.endm') {
             logger.verbose(`End of macro ${G.macroname}`);
             G.macroname='';
             return;
         }
         logger.verbose(`Adding line to macro ${G.macroname}`);
-        G.macros.get(G.macroname).lines.push(line);
+        G.macros.get(G.macroname).lines.push(originalLine);
         return;
     }
+
+    let line=stripComment(originalLine);
+    let pcAtLineStart=G.pc;
 
     // If there's a label on the line, parse it and remove it from the line
     let label;

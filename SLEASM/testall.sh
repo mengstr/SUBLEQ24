@@ -2,13 +2,21 @@
 
 ls macrotests | grep .sleq | sed 's/.sleq//' | while read line; do 
 
-    expected=$(cat macrotests/$line.sleq | grep EXPECT | sed 's/; EXPECT //' | tr -d '\n'  | tr -d '\r')
+    echo -n "$line "
+
+    script=$(sed -n '/;# SCRIPT/,/;# END/p' macrotests/$line.sleq | sed 's/^;//')
+    expected=$(eval "$script")
     if [ "$expected" = "" ]; then
+        echo "not tested"
         continue
     fi
 
-    echo -n "$line "
-    result=$(./sleasm.js macrotests/$line.sleq -0 && ./subleq.js macrotests/$line.v20raw -q |  tr -d '\n'  | tr -d '\r')
+    result=$(   \
+        ./sleasm.js macrotests/$line.sleq && \
+        ./subleq.js macrotests/$line.v20raw -q | \
+        tr -d '\n' | \
+        tr -d '\r' \
+    )
 
     if [ "$expected" = "$result" ]; then
         echo OK

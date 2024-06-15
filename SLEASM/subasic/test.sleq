@@ -1,0 +1,82 @@
+            .include MACROS.inc
+
+;    .macro INDEXEDRD srcP dest   ; Copy [srcP] to dest
+;    .macro INDEXEDWR src destP   ; Copy src to [destP]
+
+    .macro PUSH var
+        ; MACRO START - PUSH
+        INDEXEDWR var SP
+        INC SP
+        ; MACRO END
+    .endm
+
+    .macro POP var
+        ; MACRO START - POP
+        DEC SP
+        INDEXEDRD SP var
+        ; MACRO END
+    .endm
+
+  .macro CALL addr
+        ; MACRO START - CALL
+        PUSH @ra
+        JMP addr
+@ra:    .data $+1
+        ; MACRO END
+    .endm
+
+    .macro RET
+        ; MACRO START - RET
+        POP @j
+        .data 0,0
+@j:     .data 0x555555
+        ; MACRO END
+    .endm
+
+
+
+            .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+            JMP Start
+
+Start:
+    MOV stack_ SP                              ; Initialize the stack pointer
+    OUT ASCII_a
+    CALL F1
+    OUT ASCII_A
+    HALT
+
+
+F1: OUT ASCII_F
+    OUT ASCII_1
+    RET
+
+
+
+P:          .data 0 
+PVAL:       .data 0
+LineNo:     .data 0
+LineNoAddr: .data 0
+T:          .data 0     ; T is a temporary variable
+
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+
+
+stack_:     .data $+1
+stack:      .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+            .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+            .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+            .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+SP:         .data 0
+
+
+
+
+        .include IO.inc
+        .include STRINGS.inc
+        .include CONSTANTS.inc
+        

@@ -1,0 +1,325 @@
+            .include MACROS.inc
+
+; E.XPECT -3_-2_-1_0_1_2_3_-10_-100_-1000_-10000_-100000_-1000000_10_100_1000_10000_100000_1000000_8388607_0
+
+            .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+
+
+; Test printing of hex numbers
+
+    MOV stack_ SP                              ; Initialize the stack pointer
+    
+    MOV CONST_X0 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X1 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+        
+    MOV COMST_X10 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X11 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X12 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X13 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X14 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X15 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X16 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X17 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X18 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X19 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X1A q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X1B q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X1C q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X1D q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X1E q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV COMST_X1F q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    MOV CONST_X100 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X1000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X10000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X100000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X200000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X300000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X400000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X500000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X600000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X700000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X800000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_X900000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XA00000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XB00000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XC00000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XD00000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XE00000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XF00000 q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+    
+    MOV CONST_XFFFFFF q
+    PUSH q 
+    CALL PrintHex
+    OUT ASCII_SPACE
+    PUSH q 
+    CALL PrintInteger
+    PRINTCRLF
+
+    HALT
+
+
+q:          .data 0 
+A:          .data 0              ; test variable
+B:          .data 0              ; test variable
+T:          .data 0
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+
+        .include IO.inc
+        .include CONSTANTS.inc
+        .include STACK.inc
+

@@ -7,6 +7,7 @@ PLUS1:      .data 1
 MINUS1:     .data (-1)
             JMP Start
 
+
 tmpA:       .data 0             ;Used by macros
 tmpB:       .data 0             ;Used by macros
 ch:         .data 0             ;Used by tokenizing
@@ -14,25 +15,42 @@ ch:         .data 0             ;Used by tokenizing
 val_:       .data val
 val:        .data 0
 
-pToken_:    .data pToken               ; pToken_ is a constant holding the address of the pToken pointer
-pToken:     .data 0                    ; pToken is a pointer to the token being extracted
-
-token_:     .data token                 ; token_ is a constant holding the address of the token being extracted
-token:      .data "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
 
 pProgram_:  .data pProgram              ; pProgram_ is a constant holding the address of the pProgram pointer
 pProgram:   .data 0                     ; pProgram is a pointer to the code array
 
 program_:   .data program               ; program_ is a constant holding the address of the program array
 program:                                ; The program source code to be run
+
+
+
+;L10:         .data 10,  L20-$-1,  "GOTO 100",           "\0"
+;L20:         .data 20,  L100-$-1, "END",                "\0"
+;L100:        .data 100, L101-$-1, "PRINT 'Hello.'",     "\0"
+;L101:        .data 101, L110-$-1, "PRINT 'Hallu.'",     "\0"
+;L110:        .data 110, L120-$-1, "PRINT 5",            "\0"
+;L120:        .data 120, L200-$-1, "PRINT C",            "\0"
+;L200:        .data 200, Lend-$-1, "GOTO 20",            "\0"
+;Lend:        .data 0
+
 L10:         .data 10,  L20-$-1,  "GOTO 100",           "\0"
 L20:         .data 20,  L100-$-1, "END",                "\0"
 L100:        .data 100, L105-$-1, "PRINT 'Hello,'",     "\0"
 L105:        .data 105, L110-$-1, "PRINT ' world!'",    "\0"
-L110:        .data 110, L120-$-1, "PRINT 1234",          "\0" 
-L120:        .data 120, L130-$-1, "PRINT C",            "\0"
-L130:        .data 130, L140-$-1, "GOTO 20",            "\0"
-L140:        .data 0
+L110:        .data 110, L120-$-1, "PRINT 1234",         "\0" 
+L120:        .data 120, L121-$-1, "PRINT Q",            "\0"
+L121:        .data 121, L122-$-1, "LET Q=4711",         "\0"
+L122:        .data 122, L130-$-1, "PRINT Q",            "\0"
+L130:        .data 130, L131-$-1, "LET A=1",            "\0"
+L131:        .data 131, L132-$-1, "LET B=10",           "\0"
+L132:        .data 132, L133-$-1, "LET C=100",          "\0"
+L133:        .data 133, L140-$-1, "LET D=1000",         "\0"
+L140:        .data 140, L141-$-1, "LET E = A + B + C + D",      "\0"
+L141:        .data 141, L150-$-1, "PRINT E",            "\0"
+L150:        .data 150, L151-$-1, "LET F=1+2+3+4+5",    "\0"
+L151:        .data 151, L160-$-1, "PRINT F",            "\0"
+L160:        .data 160, Lend-$-1, "GOTO 20",            "\0"
+Lend:        .data 0
 
 
 lineNo:             .data 0
@@ -42,103 +60,59 @@ q:                  .data 0
 msgEXECUTING: .data $+1
          .data "Executing line number \0"
 
-Start:
-    PRINTSTRING msgLogo
 
+Stop:
+    PUSH msgEndOfFile
+    CALL PrintString
+    HALT
+
+Start:
+    MOV stack_ SP                              ; Initialize the stack pointer
+
+    PUSH msgLogo
+    CALL PrintString
     MOV program_ pProgram               
 
 MainLoop:
     INDEXEDRD pProgram lineNo           ; Get Linenumber of current line as a binary value
-
-;        PRINTSTRING msgEXECUTING
-;        PRINTINTEGER lineNo
-;        PRINTCRLF
-    
+    JEQZ lineNo stop                    ; If we reach the end of the program, halt
     INC pProgram
 
     INDEXEDRD pProgram offsetToNextLine ; Get offset to next line
     INC pProgram
 
-    CALLP GETTOKEN 0                     ; Get the next token
-;    PRINTSTRING token_                  ; (debug) Print the token buffer
+    CALL debugShowLine  ; Prints the entire line in magenta
 
-    INDEXEDRD token_ ch                 ; Get the first char of the token
+TokenLoop:
+    CALL GetToken                       ; Get the next token
+    CALL debugTokenType
 
-    CONST_E ch cmdEND                 ; If the token is an END handle it
-    ADD CONST_E ch                      ; Restore the char to its original value after comparisons
+    CMPEQ CONST_1 tokenType MainLoop    ; IF EOL then go up and fetch the next line
+    CMPEQ CONST_3 tokenType tokenIsKeyword
+    JMP TokenLoop
 
-    CONST_G ch cmdGOTO                ; If the token is a GOTO handle it
-    ADD CONST_G ch                      ; Restore the char to its original value after comparisons
-
-    CONST_P ch cmdPRINT                ; If the token is a PRINT handle it
-    ADD CONST_P ch                      ; Restore the char to its original value after comparisons
-
-
-    PRINTSTRING msgSyntaxError          ; If we reach this point, the token is invalid
+tokenIsKeyword:
+    CMPEQ tokenNum kwEND cmdEND
+    CMPEQ tokenNum kwLET cmdLET
+    CMPEQ tokenNum kwGOTO cmdGOTO
+    CMPEQ tokenNum kwPRINT cmdPRINT
     HALT
 
-;-----------------------------------------------------------------------------------------------------
 
+;-----------------------------------------------------------------------------------------------------
+; COMMAND - END
+;-----------------------------------------------------------------------------------------------------
 cmdEND:
-    PRINTSTRING msgEnd
+    PUSH msgEnd
+    CALL PrintString
     HALT
 
-;-----------------------------------------------------------------------------------------------------
-
-msgPRINT: .data $+1
-         .data "Handling a PRINT\r\n\0"
-
-cmdPRINT:
-;    PRINTSTRING msgPRINT
-    INC pProgram                        ; Skip SPACE
-    CALLP GETTOKEN 0                    ; Get the next token
-
-    INDEXEDRD token_ ch                 ; Get the first char of the token
-
-    CONST_QUOTE ch cmdPRINTstring ; If the token starts with a quote, it's a string
-    ADD CONST_QUOTE ch            ; Restore the char to its original value after comparisons
-
-    JMP cmdPRINTnumber                  ; Otherwise, it's a number
-
-    ;PRINTSTRING msgSyntaxError          ; If we reach this point, the token is invalid
-
-
-cmdPRINTstring:
-    OUT CONST_EQUAL
-    PRINTSTRING pToken
-    INC pProgram                        ; Skip EOL
-    JMP MainLoop
-
-cmdPRINTnumber:
-    MOV val_ (ATOI-2)                    ; Convert it to a binary value
-    MOV pToken_ (ATOI-1) 
-    CALLP ATOI 2
-    PRINTINTEGER val
-    INC pProgram                        ; Skip EOL
-    JMP MainLoop
-
-cmdPRINTvariable:
-    HALT
 
 ;-----------------------------------------------------------------------------------------------------
-
-msgGOTO: .data $+1
-         .data "Handling a GOTO\r\n\0"
-
-pLine_:  .data pLine              ; pLine_ is a constant holding the address of the pLine pointer
-pLine:   .data 0                     ; pLine is a pointer to the code array
-
-
+;COMMAND - GOTO
+;-----------------------------------------------------------------------------------------------------
 cmdGOTO:
-;    PRINTSTRING msgGOTO
-    INC pProgram
-
-    CALLP GETTOKEN 0                     ; Get the destination token
-
-    MOV val_ (ATOI-2)                    ; Assume it's a number so convert it to a binary value
-    MOV pToken_ (ATOI-1) 
-    CALLP ATOI 2
-
+    CALL GetToken                    ; Get the destination token
 
     MOV program_ pLine               ;Point to start of source code
 findLineLoop:
@@ -161,19 +135,116 @@ foundLine:
     MOV pLine pProgram              ; ... and set the program pointer to the start of the line
     JMP MainLoop                        ; ... to continue execution there
 
-
-    PRINTINTEGER val
-
-    HALT
-
 notFound:
-    PRINTSTRING msgLineNotFound
+    PUSH msgLineNotFound
+    CALL PrintString
     HALT
 
 
-;    MOV val_ (ATOI-2) 
-;    MOV pProgram_ (ATOI-1) 
-;    CALLP GETTOKEN 2
+
+;-----------------------------------------------------------------------------------------------------
+; COMMAND - LET
+;-----------------------------------------------------------------------------------------------------
+
+cmdLET:
+    CALL GetToken                      ; Get the next token (the variable to be assigned)
+    MOV tokenVar expressionVariable
+
+    CALL GetToken                      ; Get the next token (the equal-sign)
+
+
+handleExpression:
+    CLR expressionValue
+expressionLoop:
+    CALL GetToken                       ; Get the next token
+    CMPEQ CONST_1 tokenType expDone     ; end of line
+    CMPEQ CONST_2 tokenType expDone     ; end of stetement (a colon)
+    CMPEQ CONST_4 tokenType expOp       ; operator
+    CMPEQ CONST_6 tokenType expNum      ; numeric value
+    CMPEQ CONST_7 tokenType expNum      ; variable
+    PUSH msgSyntaxError
+    CALL PrintString
+    HALT 
+
+expDone:
+    INDEXEDWR expressionValue expressionVariable
+    JMP MainLoop    ;TODO - Go to tokenLoop if we got a colon
+
+expOp:
+    OUT ASCII_y
+    JMP expressionLoop
+
+expNum:
+    MOV tokenNum expressionValue
+    JMP expressionLoop
+
+expressionVariable: .data 0
+expressionValue:    .data 0
+
+
+;-----------------------------------------------------------------------------------------------------
+; COMMAND - PRINT
+;-----------------------------------------------------------------------------------------------------
+red: .data $+1,27,"[31m",0
+green: .data $+1,27,"[32m",0
+blue: .data $+1,27,"[34m",0
+yellow: .data $+1,27,"[33m",0
+magenta: .data $+1,27,"[35m",0
+cyan: .data $+1,27,"[36m",0
+white: .data $+1,27,"[0m",0
+
+cmdPRINT:
+    CALL GetToken                      ; Get the next token
+    CMPEQ CONST_5 tokenType cmdPRINTstring
+    CMPEQ CONST_6 tokenType cmdPRINTnumber
+    CMPEQ CONST_7 tokenType cmdPRINTvariable
+    HALT
+
+cmdPRINTstring:
+    PUSH tokenStr_
+    CALL PrintString
+    CALL debugCRLF
+    JMP TokenLoop
+
+cmdPRINTnumber:
+    PUSH tokenNum
+    CALL PrintInteger
+    CALL debugCRLF
+    JMP TokenLoop
+
+cmdPRINTvariable:
+    PUSH tokenNum
+    CALL PrintInteger
+    CALL debugCRLF
+    JMP TokenLoop
+
+
+;expressionNumber:
+;    MOV val_ (ATOI-2)                    ; Convert it to a binary value
+;    MOV pToken_ (ATOI-1) 
+;    ;CALLP ATOI 2
+;    PUSH val
+;    CALL PrintInteger
+;    PRINTCRLF
+;    INC pProgram                        ; Skip EOL
+;    JMP MainLoop
+
+;cmdPRINTstring:
+;    OUT ASCII_EQUAL
+;    PUSH pToken
+;    CALL PrintString
+;    INC pProgram                        ; Skip EOL
+;    JMP MainLoop
+
+
+
+;-----------------------------------------------------------------------------------------------------
+
+
+pLine_:  .data pLine              ; pLine_ is a constant holding the address of the pLine pointer
+pLine:   .data 0                     ; pLine is a pointer to the code array
+
+
 
 
 
@@ -183,53 +254,45 @@ notFound:
 
 
 ;    PRINTCRLF
-;    OUT CONST_P
-;    OUT CONST_EQUAL
+;    OUT ASCII_P
+;    OUT ASCII_EQUAL
 ;    PRINTINTEGER pProgram
 ;    PRINTCRLF
 
-    MOV val_ (ATOI-2) 
-    MOV pProgram_ (ATOI-1) 
-    CALLP ATOI 2
-    OUT CONST_EQUAL
-    PRINTINTEGER val
-    PRINTCRLF
+;    MOV val_ (ATOI-2) 
+;    MOV pProgram_ (ATOI-1) 
+;    ;CALLP ATOI 2
+;    OUT ASCII_EQUAL
+;    PUSH val
+;    CALL PrintInteger
+;    PRINTCRLF
 
-    INC pProgram
+;    INC pProgram
 
-    MOV val_ (ATOI-2) 
-    MOV pProgram_ (ATOI-1) 
-    CALLP ATOI 2
-    OUT CONST_EQUAL
-    PRINTINTEGER val
-    PRINTCRLF
+;    MOV val_ (ATOI-2) 
+;    MOV pProgram_ (ATOI-1) 
+;    ; ATOI 2
+;    OUT ASCII_EQUAL
+;    PUSH val
+;    CALL PrintInteger
+;    PRINTCRLF
 
 
-
-
-;    OUT CONST_P
-;    OUT CONST_EQUAL
+;    OUT ASCII_P
+;    OUT ASCII_EQUAL
 ;    PRINTINTEGER pProgram
 ;    PRINTCRLF
 
-    HALT
-
-
-
-
-
-
+;    HALT
 
 
 ;    PRINTCRLF
 ;    PRINTINTEGER codeP
-;    OUT CONST_SPACE
+;    OUT ASCII_SPACE
 ;    PRINTINTEGER val
 ;    PRINTCRLF
 
-    HALT
-
-
+;    HALT
 
 
 ;    MOV string P
@@ -237,7 +300,7 @@ notFound:
 ;loop1:
 ;    INDEXEDRD P digit
 ;    CLRZ
-;    CONST_SLASH digit done1
+;    ASCII_SLASH digit done1
 ;    CONST_10 digit ok
 ;    JMP done1
 ;ok: ADD CONST_9 digit
@@ -262,7 +325,7 @@ notFound:
 ;    INDEXEDRD P PVAL
 ;    JEQZ PVAL stop
 ;    PRINTINTEGER PVAL
-;    OUT CONST_SPACE
+;    OUT ASCII_SPACE
 ;    INC P
 ;    INC P
 ;    INDEXEDRD P PVAL
@@ -280,24 +343,20 @@ stop:
 
 
 
-
-
-
 P:          .data 0 
 PVAL:       .data 0
 LineNo:     .data 0
 LineNoAddr: .data 0
-
-
-CONST_20:   .data 20
 T:          .data 0     ; T is a temporary variable
 
+
+
 vars:   .data $+1
-        .data 1000         ; Variable A 
-        .data 1010         ; Variable B
-        .data 1020         ; Variable C
+        .data 111         ; Variable A 
+        .data 2222         ; Variable B
+        .data 33333         ; Variable C
         .data 0         ; Variable D
-        .data 0         ; Variable E
+        .data 12         ; Variable E
         .data 0         ; Variable F
         .data 0         ; Variable G
         .data 0         ; Variable H
@@ -329,13 +388,18 @@ msgLogo:.data $+1
 msgEnd: .data $+1
         .data "\r\nExecution halted by END\r\n\0"
 
+msgEndOfFile: .data $+1
+        .data "\r\nExecution halted by End Of File\r\n\0"
+
 msgSyntaxError: .data $+1
         .data "\r\nSyntax error\r\n\0"
 
 msgLineNotFound: .data $+1
         .data "Line not found\r\n\0"
 
+        .include subasic/debug.inc
         .include subasic/GETTOKEN.inc
         .include IO.inc
-        .include ATOI.inc
+        .include STRING.inc
         .include CONSTANTS.inc
+        .include STACK.inc

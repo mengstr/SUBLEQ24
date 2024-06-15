@@ -1,10 +1,12 @@
 ;# SCRIPT
 ;for A in $(seq -6 6); do
-;    if (( A != 0 )); then
-;        echo -n "X"
-;    else
-;        echo -n "."
-;    fi
+;    for B in $(seq -6 6); do
+;        if (( A < B )); then
+;            echo -n "X"
+;        else
+;            echo -n "."
+;        fi
+;    done
 ;done
 ; echo ""
 ;# END
@@ -17,19 +19,24 @@ Z:          .data 0
 PLUS1:      .data 1 
 MINUS1:     .data (-1)
 
-; JNEZ - Jump if A is not equal to zero
+; JLT A B addr - Jump if A is less than B
 
         MOV M6 A
-loop1:  JNEZ A ok
+loop1:  MOV M6 B
+loop2:  JLT A B ok
         OUT ASCII_DOT
         JMP incs
 ok:     OUT ASCII_X
-incs:   INC A
+incs:   INC B
+        MOV B T
+        P6 T loop2
+done1:  INC A
         MOV A T
         P6 T loop1
 
         PRINTCRLF
         HALT
+
 
 P1:         .data 1
 P2:         .data 2
@@ -57,12 +64,16 @@ M10000:     .data -10000
 M100000:    .data -100000
 M1000000:   .data -1000000
 
+
+
 A:          .data 0              ; test variable
 B:          .data 0              ; test variable
 T:          .data 0
 tmpA:       .data 0             ;Used by macros
 tmpB:       .data 0             ;Used by macros
 
+
         .include IO.inc
         .include CONSTANTS.inc
         .include STACK.inc
+

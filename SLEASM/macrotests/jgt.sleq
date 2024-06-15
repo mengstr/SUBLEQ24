@@ -1,10 +1,12 @@
 ;# SCRIPT
 ;for A in $(seq -6 6); do
-;    if (( A != 0 )); then
-;        echo -n "X"
-;    else
-;        echo -n "."
-;    fi
+;    for B in $(seq -6 6); do
+;        if (( A > B )); then
+;            echo -n "X"
+;        else
+;            echo -n "."
+;        fi
+;    done
 ;done
 ; echo ""
 ;# END
@@ -17,14 +19,18 @@ Z:          .data 0
 PLUS1:      .data 1 
 MINUS1:     .data (-1)
 
-; JNEZ - Jump if A is not equal to zero
+; JGT A B addr - Jump if A is greater than B
 
         MOV M6 A
-loop1:  JNEZ A ok
+loop1:  MOV M6 B
+loop2:  JGT A B ok
         OUT ASCII_DOT
         JMP incs
 ok:     OUT ASCII_X
-incs:   INC A
+incs:   INC B
+        MOV B T
+        P6 T loop2
+done1:  INC A
         MOV A T
         P6 T loop1
 

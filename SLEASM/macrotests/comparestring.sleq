@@ -1,5 +1,5 @@
 ;# SCRIPT
-; echo "0101"
+; echo "01000"
 ;# END
 
         .include MACROS.inc
@@ -9,34 +9,55 @@
 Z:          .data 0 
 PLUS1:      .data 1 
 MINUS1:     .data (-1)
+        JMP Start
 
-;TOGGLE01 - Toggle destination between 0 and 1
+S:          .data $+1, "MATS",0
 
+S1:         .data $+1, "OLLE",0
+S2:         .data $+1, "MATS",0
+S3:         .data $+1, "ENGSTROM",0
+S4:         .data $+1, "Z",0
+S5:         .data $+1, "",0  
+
+Start:
         MOV stack_ SP                              ; Initialize the stack pointer
 
-
-        CLR val
+        PUSH S
+        PUSH S1
+        CALL CompareString   
         PUSH val
         CALL PrintInteger
 
-        TOGGLE01 val
+        PUSH S
+        PUSH S2
+        CALL CompareString   
         PUSH val
         CALL PrintInteger
 
-        TOGGLE01 val
+        PUSH S
+        PUSH S3
+        CALL CompareString   
         PUSH val
         CALL PrintInteger
 
-        TOGGLE01 val
+        PUSH S
+        PUSH S4
+        CALL CompareString   
+        PUSH val
+        CALL PrintInteger
+
+        PUSH S
+        PUSH S5
+        CALL CompareString   
         PUSH val
         CALL PrintInteger
 
         PRINTCRLF
         HALT
 
-
 val_:       .data val
 val:        .data 0
+
 A:          .data 0              ; test variable
 B:          .data 0              ; test variable
 T:          .data 0
@@ -45,6 +66,6 @@ tmpB:       .data 0             ;Used by macros
 
 
         .include IO.inc
+        .include STRING.inc
         .include CONSTANTS.inc
         .include STACK.inc
-
