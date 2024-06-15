@@ -171,10 +171,9 @@
 
     .macro CMPEQ v1 v2 addr ; Compare and jump to addr if v1 = v2
         ; MACRO START - CMPEQ
-        MOV v1 tmpA
-        MOV v2 tmpB
-        tmpA tmpB
-        JEQZ tmpB addr
+        MOV v2 tmpA
+        v1 tmpA
+        JEQZ tmpA addr
         ; MACRO END - CMPEQ
     .endm
 
@@ -188,45 +187,6 @@
         ; MACRO END - CMPNE
     .endm
 
-;--------------------------------------------------------------------------------------------
-
-;    .macro CALLP addr paramcnt
-;        ; MACRO START - CALLP
-;        CLR addr-(1+paramcnt)       ; Zero the return address 
-;        $+6 addr-(1+paramcnt)       ; Copy the return address (the .data directive)
-;        JMP addr                    ; Call the subroutine, it will jump back to the return address
-;        .data 0-$-1                 ; The next instruction is the return address
-;        ; MACRO END - CALLP
-;    .endm
-
-;--------------------------------------------------------------------------------------------
-
-;    .macro ATOI pStr val
-;        ; MACRO START - ATOI
-;        MOV pStr Atoi-2
-;        MOV val Atoi-1
-;        CALLP Atoi 2
-;        ; MACRO END - ATOI
-;    .endm
-
-;--------------------------------------------------------------------------------------------
-
-;    .macro PRINTSTRING addr
-;        ; MACRO START - PRINTSTRING
-;        MOV addr Print_String+1
-;        MOV addr Print_String+3
-;        CALLP Print_String 0
-;        ; MACRO END - PRINTSTRING
-;    .endm
-
-;--------------------------------------------------------------------------------------------
-
-;    .macro PRINTINTEGER addr
-;        ; MACRO START - PRINTINTEGER
-;        MOV addr Print_Integer-1
-;        CALLP Print_Integer 1
-;        ; MACRO END - PRINTINTEGER
-;    .endm
 
 ;--------------------------------------------------------------------------------------------
 

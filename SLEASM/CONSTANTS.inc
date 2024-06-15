@@ -60,9 +60,6 @@ CONST_XE00000:      .data 0xE00000
 CONST_XF00000:      .data 0xF00000
 CONST_XFFFFFF:      .data 0xFFFFFF
 
-
-
-
 ASCII_NUL:          .data 0
 ASCII_SOH:          .data 1
 ASCII_STX:          .data 2
@@ -191,3 +188,13 @@ ASCII_VERTICAL_BAR: .data 124
 ASCII_RIGHT_BRACE:  .data 125
 ASCII_TILDE:        .data 126
 ASCII_DEL:          .data 127
+
+
+red:        .data $+1,27,"[31m",0
+green:      .data $+1,27,"[32m",0
+blue:       .data $+1,27,"[34m",0
+yellow:     .data $+1,27,"[33m",0
+magenta:    .data $+1,27,"[35m",0
+cyan:       .data $+1,27,"[36m",0
+white:      .data $+1,27,"[0m",0
+
