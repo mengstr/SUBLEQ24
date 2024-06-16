@@ -35,8 +35,10 @@ FindLine:
         RET
 
 @notFound:
-        PUSH msgLineNotFound
-        CALL PrintString
-        HALT
-
+        MOV @p pFound                   ; ... and set the program pointer to the start of the line
+        OUT ASCII_SPACE
+        PUSH pFound
+        CALL PrintHex
+        OUT ASCII_SPACE
+        RET
     .endp

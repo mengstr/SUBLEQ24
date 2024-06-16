@@ -13,7 +13,19 @@ var trace=false;
 var silent=false;
 
 const keypressHandler = (str, k) => {
-    if (k.ctrl && k.name === 'c') {
+    if (k.ctrl && k.name === 'd') {
+        let cnt=0;
+        for (let i=0x6000; i<0x6200; i++) {
+            if (cnt==0) {
+                process.stdout.write("\r\n");
+                process.stdout.write(`${i.toString(16)}: `);
+            }
+            process.stdout.write(`${(memory[i].toString(16)).padStart(3, '0')} `);
+            cnt++;
+            if (cnt==32) cnt=0;
+        }
+        process.stdout.write('\r\n');
+    } else if (k.ctrl && k.name === 'c') {
         process.exit(0);
     } else {
         key = k.sequence.charCodeAt(0);
