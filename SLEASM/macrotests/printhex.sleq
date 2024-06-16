@@ -319,6 +319,46 @@ T:          .data 0
 tmpA:       .data 0             ;Used by macros
 tmpB:       .data 0             ;Used by macros
 
+
+CONST_X0:           .data 0x0
+CONST_X1:           .data 0x1
+COMST_X10:          .data 0x10
+COMST_X11:          .data 0x11
+COMST_X12:          .data 0x12
+COMST_X13:          .data 0x13
+COMST_X14:          .data 0x14
+COMST_X15:          .data 0x15
+COMST_X16:          .data 0x16
+COMST_X17:          .data 0x17
+COMST_X18:          .data 0x18
+COMST_X19:          .data 0x19
+COMST_X1A:          .data 0x1A
+COMST_X1B:          .data 0x1B
+COMST_X1C:          .data 0x1C
+COMST_X1D:          .data 0x1D
+COMST_X1E:          .data 0x1E
+COMST_X1F:          .data 0x1F
+CONST_X100:         .data 0x100
+CONST_X1000:        .data 0x1000
+CONST_X10000:       .data 0x10000
+CONST_X100000:      .data 0x100000
+CONST_X200000:      .data 0x100000
+CONST_X300000:      .data 0x300000
+CONST_X400000:      .data 0x400000
+CONST_X500000:      .data 0x500000
+CONST_X600000:      .data 0x600000
+CONST_X700000:      .data 0x700000
+CONST_X800000:      .data 0x800000
+CONST_X900000:      .data 0x900000
+CONST_XA00000:      .data 0xA00000
+CONST_XB00000:      .data 0xB00000
+CONST_XC00000:      .data 0xC00000
+CONST_XD00000:      .data 0xD00000
+CONST_XE00000:      .data 0xE00000
+CONST_XF00000:      .data 0xF00000
+CONST_XFFFFFF:      .data 0xFFFFFF
+
+
         .include IO.inc
         .include CONSTANTS.inc
         .include STACK.inc

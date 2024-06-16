@@ -16,8 +16,8 @@ token:  .data $+1
 
     .proc GetToken
 
-@pToken: .data 0
-@ch:    .data 0
+@pToken:    .data 0
+@ch:        .data 0
 
 GetToken:
     MOV token @pToken
@@ -72,8 +72,7 @@ LoopSkipSpaces:
     RET
 
 @collectString:
-;    INC pProgram    ; Skip the first quote
-    INDEXEDRD pProgram @ch
+    INDEXEDRD pProgram @ch      ; We store the initial quoue in the string
 @loopCollectString:
     INDEXEDWR @ch @pToken
     INC @pToken
@@ -81,6 +80,7 @@ LoopSkipSpaces:
     INDEXEDRD pProgram @ch
     CMPEQ @ch ASCII_QUOTE @collectStringDone
     JMP @loopCollectString
+
 @collectStringDone:
     INC pProgram
     INDEXEDWR CONST_0 @pToken

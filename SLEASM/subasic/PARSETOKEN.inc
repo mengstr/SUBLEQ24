@@ -33,15 +33,14 @@ ParseToken:
 
     JBETWEEN token+1 ASCII_0 ASCII_9 @isNumeric
 
-
-    MOV keywords_ @k                ; If we are here, then it is a keyword or a variable
+    MOV keywords_ @k                    ; If we are here, then it is a keyword or a variable
 @loopKw:
     INDEXEDRD @k @p
     JEQZ @p @notAKeyword                ; If we reached the end of the keyword table, then it is not a keyword
 
     PUSH @p                             ; Compare the token with the current keyword from the table
     PUSH token
-    CALL CompareString
+    CALL CompareStringIgnoreCase
     JNEZ val @isKeyword
 
     INC @k                              ; Nope, try the next keyword
@@ -103,9 +102,12 @@ keywords:   .data kwREM+1
             .data kwTHEN+1
             .data kwGOTO+1 
             .data kwPRINT+1 
+            .data kwGOSUB+1
+            .data kwRETURN+1
             .data kwEND+1
             .data kwLIST+1
             .data kwNEW+1 
+            .data kwRUN+1 
             0
 
 kwREM:      .data 1, "REM"   ,0
@@ -114,9 +116,12 @@ kwIF:       .data 3, "IF"    ,0
 kwTHEN:     .data 4, "THEN"  ,0
 kwGOTO:     .data 5, "GOTO"  ,0
 kwPRINT:    .data 6, "PRINT" ,0
-kwEND:      .data 7, "END"   ,0
-kwLIST:     .data 8, "LIST"  ,0
-kwNEW:      .data 9, "NEW"   ,0
+kwGOSUB:    .data 7, "GOSUB" ,0
+kwRETURN:   .data 8, "RETURN",0
+kwEND:      .data 9, "END"   ,0
+kwLIST:     .data 10, "LIST"  ,0
+kwNEW:      .data 11, "NEW"   ,0
+kwRUN:      .data 12, "RUN"   ,0
 
 
     .endp

@@ -22,93 +22,142 @@ pProgram_:  .data pProgram              ; pProgram_ is a constant holding the ad
 pProgram:   .data 0                     ; pProgram is a pointer to the code array
 
 program_:   .data program               ; program_ is a constant holding the address of the program array
-program:                                ; The program source code to be run
-
-
-L10:     .data 10,  L11-$-1,  "PRINT 'ABC123'", "\0"
-L11:     .data 11,  L12-$-1,  "PRINT A", "\0"
-L12:     .data 12,  L13-$-1,  "PRINT 5", "\0"
-L13:     .data 13,  L14-$-1,  "PRINT 5+1", "\0"
-L14:     .data 14,  L15-$-1,  "PRINT A+A", "\0"
-L15:         .data 15,  L20-$-1,  "GOTO 100",           "\0"
-L20:         .data 20,  L100-$-1, "END",                "\0"
-L100:        .data 100, L105-$-1, "PRINT 'Hello,'",     "\0"
-L105:        .data 105, L110-$-1, "PRINT ' world!'",    "\0"
-L110:        .data 110, L120-$-1, "PRINT 1234",         "\0" 
-L120:        .data 120, L121-$-1, "PRINT Q",            "\0"
-L121:        .data 121, L122-$-1, "LET Q=4711",         "\0"
-L122:        .data 122, L130-$-1, "PRINT Q",            "\0"
-L130:        .data 130, L131-$-1, "LET A=1",            "\0"
-L131:        .data 131, L132-$-1, "LET B=10",           "\0"
-L132:        .data 132, L133-$-1, "LET C=100",          "\0"
-L133:        .data 133, L140-$-1, "LET D=1000",         "\0"
-L140:        .data 140, L141-$-1, "LET E = A + B + C + D",      "\0"
-L141:        .data 141, L150-$-1, "PRINT E",            "\0"
-L150:        .data 150, L151-$-1, "LET F=1+2+3+4+5",    "\0"
-L151:        .data 151, L160-$-1, "PRINT F",            "\0"
-L160:        .data 160, Lend-$-1, "GOTO 20",            "\0"
-Lend:        .data 0
 
 
 lineNo:             .data 0
-offsetToNextLine:   .data 0
+offsetNextLine:   .data 0
 q:                  .data 0
 
-msgEXECUTING: .data $+1
-         .data "Executing line number \0"
-
-
-Stop:
-    PUSH msgEndOfFile
-    CALL PrintString
-    HALT
+;-----------------------------------------------------------------------------
+; START OF SUBLEQ CODE
+;-----------------------------------------------------------------------------
 
 Start:
-    MOV stack_ SP                              ; Initialize the stack pointer
+        MOV stack_ SP                              ; Initialize the stack pointer
 
-    PUSH msgLogo
-    CALL PrintString
-    MOV program_ pProgram               
+        PUSH msgLogo
+        CALL PrintString
+
+;-----------------------------------------------------------------------------
+; COMMAND LINE PROMPT
+;-----------------------------------------------------------------------------
+Prompt:
+        PRINTCRLF
+        OUT ASCII_GREATER
+
+        CALL InputString        
+        MOV buf pProgram
+        CALL GetToken
+        CALL ParseToken
+
+        CMPEQ tokenType CONST_6 Editor          ; Starts with a number, so it's an editor command
+        CMPNE tokenType CONST_3 Syntax          ; If it's not a keyword, it's a syntax error
+        CMPEQ tokenValue kwLIST PromptLIST
+        CMPEQ tokenValue kwRUN PromptRUN
+        CMPEQ tokenValue kwNEW PromptNEW
+        JMP Prompt
+
+Editor:
+        JMP Prompt
+
+
+Syntax:
+        PUSH msgSyntaxError
+        CALL PrintString
+        JMP Prompt
+
+PromptLIST:
+        CALL cmdLIST
+        JMP Prompt
+
+PromptNEW:
+        CLR program
+        JMP Prompt
+
+PromptRUN:
+        MOV program_ pProgram               
+
 
 newProgramLine:
-    INDEXEDRD pProgram lineNo           ; Get Linenumber of current line as a binary value
-    JEQZ lineNo cmdEND                    ; If we reach the end of the program, halt
-    INC pProgram
+        INDEXEDRD pProgram lineNo           ; Get Linenumber of current line as a binary value
+        JEQZ lineNo cmdEND                    ; If we reach the end of the program, halt
+        INC pProgram
 
-    INDEXEDRD pProgram offsetToNextLine ; Get offset to next line
-    INC pProgram
+        INDEXEDRD pProgram offsetNextLine ; Get offset to next line
+        INC pProgram
 
-    CALL debugShowLine  ; Prints the entire line in magenta
+        CALL debugShowLine  ; Prints the entire line in magenta
 
 loop:
-    CALL GetToken
-    CALL ParseToken
+        CALL GetToken
+        CALL ParseToken
 
-    CMPEQ tokenType CONST_0 syntax
-    CMPEQ tokenType CONST_1 newProgramLine
-;    CMPEQ tokenType CONST_2 newProgramLine
-    CMPEQ tokenType CONST_3 kw
+        CMPEQ tokenType CONST_0 Syntax
+        CMPEQ tokenType CONST_1 newProgramLine
+;       CMPEQ tokenType CONST_2 newProgramLine
+        CMPEQ tokenType CONST_3 kw
     
-    JMP loop
+        JMP loop
 
-syntax:
-    PUSH msgSyntaxError
-    CALL PrintString
-    HALT
 
 kw:
-    CMPEQ tokenValue kwEND cmdEND
-    CMPEQ tokenValue kwPRINT cmdPRINT
-    CMPEQ tokenValue kwGOTO cmdGOTO
-    CMPEQ tokenValue kwLET cmdLET
-    JMP loop
+        CMPEQ tokenValue kwEND cmdEND
+        CMPEQ tokenValue kwPRINT cmdPRINT
+        CMPEQ tokenValue kwGOTO cmdGOTO
+        CMPEQ tokenValue kwLET cmdLET
+        CMPEQ tokenValue kwGOSUB cmdGOSUB
+        CMPEQ tokenValue kwRETURN cmdRETURN
+        CMPEQ tokenValue kwLIST cmdLIST
+        HALT
 
+
+;-----------------------------------------------------------------------------
+        .proc cmdLIST
+@p:             .data 0
+@lineNo:        .data 0
+@ch:            .data 0
+
+cmdLIST:
+;-----------------------------------------------------------------------------
+        MOV program_ @p                 ; Point to start of source code
+
+@loop: 
+        INDEXEDRD @p @lineNo            ; Get Linenumber of current line as a binary value
+        INC @p
+        JEQZ @lineNo @done              ; Reached the end of the code?
+
+        PUSH @lineNo                    ; Print the line number and a space
+        CALL PrintInteger
+        OUT ASCII_SPACE
+
+        INC @p                          ; Skip the offset to the next line
+
+@loop1:
+        INDEXEDRD @p @ch                ; Get Linenumber of current line as a binary value
+        INC @p
+        JEQZ @ch @eol                   ; Reached the end of the line?
+        OUT @ch                         ; Print the character
+        JMP @loop1      
+
+@eol:
+        PRINTCRLF                       ; Print a CRLF and go print the next line
+        JMP @loop
+
+@done:
+        RET
+
+        .endp
+
+;-----------------------------------------------------------------------------
 cmdEND:
+;-----------------------------------------------------------------------------
     PUSH msgEnd
     CALL PrintString
     HALT
 
+;-----------------------------------------------------------------------------
 cmdPRINT:
+;-----------------------------------------------------------------------------
         CALL ParseExpression
         CMPEQ tokenType CONST_5 cmdPRINTstring 
         PUSH expression
@@ -120,7 +169,10 @@ cmdPRINTstring:
         JMP loop
 
 letDest: .data 0
+
+;-----------------------------------------------------------------------------
 cmdLET:
+;-----------------------------------------------------------------------------
         CALL GetToken
         CALL ParseToken
         MOV tokenVariable letDest
@@ -130,37 +182,34 @@ cmdLET:
         JMP newProgramLine
 
 
-pLine:  .data 0
-
+;-----------------------------------------------------------------------------
 cmdGOTO:
+;-----------------------------------------------------------------------------
         CALL ParseExpression
-        MOV program_ pLine               ;Point to start of source code
-findLineLoop:
-        INDEXEDRD pLine lineNo           ; Get Linenumber of current line as a binary value
-        JEQZ lineNo notFound             ; If we reach the end of the program, the line was not found
-        INC pLine
+        PUSH expression
+        CALL FindLine
+        MOV  pFound pProgram
+        JMP newProgramLine
 
-        INDEXEDRD pLine offsetToNextLine ; Get offset to next line
-        INC pLine
+;-----------------------------------------------------------------------------
+cmdGOSUB:
+;-----------------------------------------------------------------------------
+        PUSH pProgram
+        CALL ParseExpression
+        PUSH expression
+        CALL FindLine
+        MOV  pFound pProgram
+        JMP newProgramLine
 
-        expression lineNo                           ; Compare val (the desination target) with the current line number
-        JEQZ lineNo foundLine                ; If they are equal, jump to the destination line
+;-----------------------------------------------------------------------------
+cmdRETURN:
+;-----------------------------------------------------------------------------
+        POP pProgram
+        JMP loop
 
-        ADD offsetToNextLine pLine      ; Otherwise, skip to the next line
-        JMP findLineLoop
-
-foundLine:
-        DEC pLine                       ; Back up to beginning of line 
-        DEC pLine
-        MOV pLine pProgram              ; ... and set the program pointer to the start of the line
-        JMP newProgramLine                        ; ... to continue execution there
-
-notFound:
-        PUSH msgLineNotFound
-        CALL PrintString
-        HALT
-
-
+;-----------------------------------------------------------------------------
+; VARIABLES A..Z
+;-----------------------------------------------------------------------------
 vars:   .data $+1
         .data 111       ; Variable A 
         .data 2222      ; Variable B
@@ -189,11 +238,12 @@ vars:   .data $+1
         .data 0         ; Variable Y
         .data 0         ; Variable Z
  
- 
- 
+;-----------------------------------------------------------------------------
+; MESSAGE STRING
+;-----------------------------------------------------------------------------
  
 msgLogo:.data $+1   
-        .data "SUBASIC v0.00\r\n\0"
+        .data "\r\nSUBASIC v0.00\r\n\r\n",0
 
 msgEnd: .data $+1
         .data "\r\nExecution halted by END\r\n\0"
@@ -207,7 +257,13 @@ msgSyntaxError: .data $+1
 msgLineNotFound: .data $+1
         .data "Line not found\r\n\0"
 
+;-----------------------------------------------------------------------------
+; INCLUDE FILES
+;-----------------------------------------------------------------------------
+
         .include subasic/debug.inc
+        .include subasic/KEYBOARD.inc
+        .include subasic/FINDLINE.inc
         .include subasic/PARSEEXPRESSION.inc
         .include subasic/PARSETOKEN.inc
         .include subasic/GETTOKEN.inc
@@ -215,3 +271,44 @@ msgLineNotFound: .data $+1
         .include STRING.inc
         .include CONSTANTS.inc
         .include STACK.inc
+
+;-----------------------------------------------------------------------------
+; KEYBOARD BUFFER
+;-----------------------------------------------------------------------------
+
+buf:        .data $+1
+            .data 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,0
+            .data 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,0
+
+;-----------------------------------------------------------------------------
+; BASIC PROGRAM SOURCE CODE
+;-----------------------------------------------------------------------------
+
+program:                                ; The program source code to be run
+L10:     .data 10,  L11-$-1,  "PRINT 'ABC123'", "\0"
+L11:     .data 11,  L12-$-1,  "PRINT A", "\0"
+L12:     .data 12,  L13-$-1,  "PRINT 5", "\0"
+L13:     .data 13,  L14-$-1,  "PRINT 5+1", "\0"
+L14:     .data 14,  L15-$-1,  "PRINT A+A", "\0"
+L15:         .data 15,  L20-$-1,  "GOTO 100",           "\0"
+L20:         .data 20,  L100-$-1, "END",                "\0"
+L100:        .data 100, L105-$-1, "PRINT 'Hello,'",     "\0"
+L105:        .data 105, L110-$-1, "PRINT ' world!'",    "\0"
+L110:        .data 110, L120-$-1, "PRINT 1234",         "\0" 
+L120:        .data 120, L121-$-1, "PRINT Q",            "\0"
+L121:        .data 121, L122-$-1, "LET Q=4711",         "\0"
+L122:        .data 122, L130-$-1, "PRINT Q",            "\0"
+L130:        .data 130, L131-$-1, "LET A=1",            "\0"
+L131:        .data 131, L132-$-1, "LET B=10",           "\0"
+L132:        .data 132, L133-$-1, "LET C=100",          "\0"
+L133:        .data 133, L140-$-1, "LET D=1000",         "\0"
+L140:        .data 140, L141-$-1, "LET E = A + B + C + D",      "\0"
+L141:        .data 141, L150-$-1, "PRINT E",            "\0"
+L150:        .data 150, L151-$-1, "LET F=1+2+3+4+5",    "\0"
+L151:        .data 151, L160-$-1, "PRINT F",            "\0"
+L155:        .data 155, L160-$-1, "GOSUB 200",          "\0"
+L160:        .data 160, L170-$-1, "PRINT 'After gosub'",   "\0"
+L170:        .data 170, L200-$-1, "GOTO 20",            "\0"
+L200:        .data 200, L201-$-1, "PRINT 'In gosub'",  "\0"
+L201:        .data 201, Lend-$-1, "RETURN",             "\0"
+Lend:        .data 0

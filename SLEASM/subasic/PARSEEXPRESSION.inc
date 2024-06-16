@@ -19,7 +19,7 @@ ParseExpression:
         CMPEQ tokenType CONST_4 @isOp
         CMPEQ tokenType CONST_6 @isNum
         CMPEQ tokenType CONST_7 @isVar
-        JMP syntax
+        JMP Syntax
 
 @isDone:
         RET
