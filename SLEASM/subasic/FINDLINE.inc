@@ -13,9 +13,6 @@ FindLine:
         POP @target
         PUSH @t                         ; Push the return address back onto the stack
 
-        PUSH @target
-        CALL PrintInteger
-
         MOV program_ @p                 ; Point to start of source code
 
 @loop:
@@ -26,7 +23,7 @@ FindLine:
         INDEXEDRD @p offsetNextLine     ; Get offset to next line
         INC @p
     
-        CMPEQ @target @lineNo @found    ; Are we at the target line number?
+        CMPLEQ @target @lineNo @found    ; Are we at the (or higher) target line number?
 
         ADD offsetNextLine @p           ; Otherwise, skip to the next line
         JMP @loop

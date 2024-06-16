@@ -71,6 +71,7 @@ B:          .data 0              ; test variable
 T:          .data 0
 tmpA:       .data 0             ;Used by macros
 tmpB:       .data 0             ;Used by macros
+tmpC:       .data 0             ;Used by macros
 
 
         .include IO.inc

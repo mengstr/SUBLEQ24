@@ -10,9 +10,11 @@ MINUS1:     .data (-1)
 tokenNum:       .data 0
 tokenVar:       .data 0
 
-tmpA:       .data 0             ;Used by macros
-tmpB:       .data 0             ;Used by macros
-ch:         .data 0             ;Used by tokenizing
+tmpA:       .data 0             ; Used by macros
+tmpB:       .data 0             ; Used by macros
+tmpC:       .data 0             ; Used by macros
+
+ch:         .data 0             ; Used by tokenizing
 
 val_:       .data val
 val:        .data 0
@@ -108,7 +110,7 @@ kw:
         CMPEQ tokenValue kwGOSUB cmdGOSUB
         CMPEQ tokenValue kwRETURN cmdRETURN
         CMPEQ tokenValue kwLIST cmdLIST
-        HALT
+        JMP Syntax
 
 
 ;-----------------------------------------------------------------------------
@@ -151,9 +153,7 @@ cmdLIST:
 ;-----------------------------------------------------------------------------
 cmdEND:
 ;-----------------------------------------------------------------------------
-    PUSH msgEnd
-    CALL PrintString
-    HALT
+    JMP Prompt
 
 ;-----------------------------------------------------------------------------
 cmdPRINT:
@@ -207,55 +207,28 @@ cmdRETURN:
         POP pProgram
         JMP loop
 
-;-----------------------------------------------------------------------------
-; VARIABLES A..Z
-;-----------------------------------------------------------------------------
-vars:   .data $+1
-        .data 111       ; Variable A 
-        .data 2222      ; Variable B
-        .data 33333     ; Variable C
-        .data 0         ; Variable D
-        .data 12        ; Variable E
-        .data 0         ; Variable F
-        .data 0         ; Variable G
-        .data 0         ; Variable H
-        .data 0         ; Variable I
-        .data 0         ; Variable J
-        .data 0         ; Variable K
-        .data 0         ; Variable L
-        .data 0         ; Variable M
-        .data 0         ; Variable N
-        .data 0         ; Variable O
-        .data 0         ; Variable P
-        .data 0         ; Variable Q
-        .data 0         ; Variable R
-        .data 0         ; Variable S
-        .data 0         ; Variable T
-        .data 0         ; Variable U
-        .data 0         ; Variable V
-        .data 0         ; Variable W
-        .data 0         ; Variable X
-        .data 0         ; Variable Y
-        .data 0         ; Variable Z
  
 ;-----------------------------------------------------------------------------
 ; MESSAGE STRING
 ;-----------------------------------------------------------------------------
- 
-msgLogo:.data $+1   
-        .data "\r\nSUBASIC v0.00\r\n\r\n",0
 
-msgEnd: .data $+1
-        .data "\r\nExecution halted by END\r\n\0"
 
-msgEndOfFile: .data $+1
-        .data "\r\nExecution halted by End Of File\r\n\0"
+msgLogo:        
+        .data $+1
+        .data "\r\n"
+        .data " __        __        ___  __     ___                __        __     __  "       ,"\r\n"
+        .data "/__` |  | |__) |    |__  /  \\     |  | |\\ | \\ /    |__)  /\\  /__` | /  ` "       ,"\r\n"
+        .data ".__/ \\__/ |__) |___ |___ \\__X     |  | | \\|  |     |__) /--\\ .__/ | \\__, "       ,"\r\n"
+        .data "\r\n"
+        .data "[ ver 0.00 - (c) 2024 Mats Engstrom - github.com/mengstr/sleqTinyBasic ]\r\n", 0
+        .data "\r\n"
 
-msgSyntaxError: .data $+1
-        .data "\r\nSyntax error\r\n\0"
+        .data 0                                         
 
-msgLineNotFound: .data $+1
-        .data "Line not found\r\n\0"
+msgEnd:         .data $+1, "\r\nExecution halted by END\r\n", 0
+msgEndOfFile:   .data $+1 "\r\nExecution halted by End Of File\r\n", 0
+msgSyntaxError: .data $+1 "\r\nSyntax error\r\n", 0
+msgLineNotFound:.data $+1 "\r\nLine not found\r\n", 0
 
 ;-----------------------------------------------------------------------------
 ; INCLUDE FILES
@@ -267,6 +240,7 @@ msgLineNotFound: .data $+1
         .include subasic/PARSEEXPRESSION.inc
         .include subasic/PARSETOKEN.inc
         .include subasic/GETTOKEN.inc
+        .include subasic/VARIABLES.inc
         .include IO.inc
         .include STRING.inc
         .include CONSTANTS.inc
@@ -292,8 +266,9 @@ L13:     .data 13,  L14-$-1,  "PRINT 5+1", "\0"
 L14:     .data 14,  L15-$-1,  "PRINT A+A", "\0"
 L15:         .data 15,  L20-$-1,  "GOTO 100",           "\0"
 L20:         .data 20,  L100-$-1, "END",                "\0"
-L100:        .data 100, L105-$-1, "PRINT 'Hello,'",     "\0"
-L105:        .data 105, L110-$-1, "PRINT ' world!'",    "\0"
+L100:        .data 100, L102-$-1, "PRINT 'Hello,'",     "\0"
+L102:        .data 102, L105-$-1, "PRINT ' world!'",    "\0"
+L105:        .data 105, L110-$-1, "GOSUB 450",    "\0"
 L110:        .data 110, L120-$-1, "PRINT 1234",         "\0" 
 L120:        .data 120, L121-$-1, "PRINT Q",            "\0"
 L121:        .data 121, L122-$-1, "LET Q=4711",         "\0"
@@ -310,5 +285,12 @@ L155:        .data 155, L160-$-1, "GOSUB 200",          "\0"
 L160:        .data 160, L170-$-1, "PRINT 'After gosub'",   "\0"
 L170:        .data 170, L200-$-1, "GOTO 20",            "\0"
 L200:        .data 200, L201-$-1, "PRINT 'In gosub'",  "\0"
-L201:        .data 201, Lend-$-1, "RETURN",             "\0"
+L201:        .data 201, L300-$-1, "RETURN",             "\0"
+L300:        .data 300, L310-$-1, "PRINT 300",          "\0"
+L310:        .data 310, L400-$-1, "RETURN",          "\0"
+L400:        .data 400, L410-$-1, "PRINT 400",          "\0"
+L410:        .data 410, L500-$-1, "RETURN",          "\0"
+L500:        .data 500, L510-$-1, "PRINT 500",          "\0"
+L510:        .data 510, Lend-$-1, "RETURN",          "\0"
+
 Lend:        .data 0

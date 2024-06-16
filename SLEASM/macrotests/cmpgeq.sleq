@@ -1,7 +1,7 @@
 ;# SCRIPT
 ;for A in $(seq -6 6); do
 ;    for B in $(seq -6 6); do
-;        if (( A == B )); then
+;        if (( A >= B )); then
 ;            echo -n "X"
 ;        else
 ;            echo -n "."
@@ -20,11 +20,11 @@ Z:          .data 0
 PLUS1:      .data 1 
 MINUS1:     .data (-1)
 
-; CMPEQ A B addr - Jump if the two arguments are equal
+; CMPGEQ A B addr - Jump if A >= B
 
         MOV M6 A
 loop1:  MOV M6 B
-loop2:  CMPEQ A B ok
+loop2:  CMPGEQ A B ok
         OUT ASCII_DOT
         JMP incs
 ok:     OUT ASCII_X
@@ -71,6 +71,7 @@ T:          .data 0
 tmpA:       .data 0             ;Used by macros
 tmpB:       .data 0             ;Used by macros
 tmpC:       .data 0             ;Used by macros
+
 
         .include IO.inc
         .include CONSTANTS.inc

@@ -179,14 +179,36 @@
 
 ;--------------------------------------------------------------------------------------------
 
-    .macro CMPNE src val addr ; Compare and jump to addr if src != val
+    .macro CMPNE v1 v2 addr ; Compare and jump to addr if v1 != v2
         ; MACRO START - CMPNE
-        MOV src tmpA
-        val tmpA
+        MOV v1 tmpA
+        v2 tmpA
         JNEZ tmpA addr
         ; MACRO END - CMPNE
     .endm
 
+;--------------------------------------------------------------------------------------------
+
+    .macro CMPGEQ v1 v2 addr ; Compare and jump to addr if v1 >= v2
+        ; MACRO START - CMPGEQ
+        MOV v1 tmpC
+        v2 tmpC
+        JEQZ tmpC addr
+        JPOS tmpC addr
+        ; MACRO END - CMPGEQ
+    .endm
+
+;--------------------------------------------------------------------------------------------
+
+
+    .macro CMPLEQ v1 v2 addr ; Compare and jump to addr if v1 <= v2
+        ; MACRO START - CMPGEQ
+        MOV v1 tmpC
+        v2 tmpC
+        JEQZ tmpC addr
+        JNEG tmpC addr
+        ; MACRO END - CMPGEQ
+    .endm
 
 ;--------------------------------------------------------------------------------------------
 
