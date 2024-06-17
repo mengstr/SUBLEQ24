@@ -20,6 +20,7 @@ const keypressHandler = (str, k) => {
                 process.stdout.write("\r\n");
                 process.stdout.write(`${i.toString(16)}: `);
             }
+            if (memory[i]==undefined) memory[i]=0;
             process.stdout.write(`${(memory[i].toString(16)).padStart(3, '0')} `);
             cnt++;
             if (cnt==32) cnt=0;

@@ -6,7 +6,7 @@ const G = require('./G.js');
 
 const { logger,die } = require('./logger');
 const { Evaluate } = require('./evaluate');
-const { WriteInfoToListfile, WriteV20RawFile } = require('./WriteInfoToListfile');
+const { WriteInfoToListfile, WriteV20RawFile } = require('./listfile');
 const { stripComment,splitAtCommas,expandTabs,parseNumber } = require('./stringUtils');
 const { openFileAndPushToStack,readLine } = require('./fileUtils');
 const { log } = require('console');

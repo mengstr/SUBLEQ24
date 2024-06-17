@@ -23,6 +23,7 @@ CONST_100000:       .data 100000
 CONST_1000000:      .data 1000000
 
 CONST_32:           .data 32
+CONST_MAXINT        .data 8388607;
 
 ASCII_NUL:          .data 0
 ASCII_SOH:          .data 1

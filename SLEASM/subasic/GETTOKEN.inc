@@ -2,7 +2,7 @@
 ; GETTOKEN.inc
 ;-----------------------------------------------------------------------------
 
-token1: .data $+3                               ; Address of the second character int the token
+token1: .data $+3                               ; Address of the second character in the token
 token:  .data $+1
         .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -35,7 +35,7 @@ LoopSkipSpaces:
     RET
 
 @atAcharacter:
-    CMPEQ @ch ASCII_QUOTE @collectString
+    CMPEQ @ch ASCII_DOUBLEQUOTE @collectString
 
     CMPEQ @ch ASCII_PLUS @storeOp
     CMPEQ @ch ASCII_MINUS @storeOp
@@ -78,7 +78,7 @@ LoopSkipSpaces:
     INC @pToken
     INC pProgram
     INDEXEDRD pProgram @ch
-    CMPEQ @ch ASCII_QUOTE @collectStringDone
+    CMPEQ @ch ASCII_DOUBLEQUOTE @collectStringDone
     JMP @loopCollectString
 
 @collectStringDone:

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const G = require('./G.js');
-const { logger,die } = require('./logger');
+const { logger,die } = require('./logger.js');
 
 function WriteInfoToListfile(fdListfile) {
     // Create a file having the same name as the input with extension .lst

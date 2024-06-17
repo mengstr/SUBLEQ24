@@ -23,7 +23,7 @@ ParseToken:
 
     CMPEQ token+1 CONST_0 @isEndOfLine
 
-    CMPEQ token+1 ASCII_QUOTE @isString
+    CMPEQ token+1 ASCII_DOUBLEQUOTE @isString
 
     CMPEQ token+1 ASCII_PLUS @isOperator
     CMPEQ token+1 ASCII_MINUS @isOperator

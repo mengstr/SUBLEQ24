@@ -2,113 +2,126 @@
     .proc Editor
 ;-----------------------------------------------------------------------------
 
+@t:             .data 0                 ; Temporary hold variable
 @s:     .data 0     ; Source for moving
 @d:     .data 0     ; Destination for moving
 @p:     .data 0     ; Pointer for moving
 @ch:    .data 0     ; Character for moving
 @len:   .data 0     ; Length of the line to be inserted
 
+
+
+@arraylen: .data 0  ; Length of the array
+@blocklen: .data 0  ; Length of the block to be manipulated
+
 @msgAtLine: .data $+1,"\r\nAt line\r\n",0
 @msgReplace: .data $+1,"\r\nReplace line\r\n",0
 @msgAtEnd: .data $+1,"\r\nInsert at end\r\n",0
 
+
+CalculateArrayLength:
+        PUSH CONST_MAXINT       ; Calculate the length of the program array in use by searching for the last
+        CALL FindLine           ; possible line number resulting in a pointer to the final "zero" line number
+        MOV pFound @arraylen    ; The length is the found location minus the start location plus 1
+        program_ @arraylen
+        INC @arraylen
+        RET
+
+
+CalculateLineLength:
+        POP @t                          ; Pop off the return address and parameters
+        CALL FindLine                   ; Here I still have the target line number on the stack
+        PUSH @t                         ; Push the return address back onto the stack
+
+        MOV pFound @t                   ; Calculate the length of the line.
+        INC @t                          ; Do this by taking the offset to the next line and add two
+        INDEXEDRD @t @blocklen          ; ... to ajust for the line number and the offset itself 
+        ADD CONST_2 @blocklen
+
+        RET
+
+
+CalculateBufLength:
+    MOV pProgram @t
+    CLR @blocklen
+@loopBL:
+    INDEXEDRD @t @ch
+    CMPEQ @ch CONST_0 @doneBL
+    INC @t
+    INC @blocklen
+    JMP @loopBL        
+@doneBL:
+    RET
+
+    ;-----------------------------------------------------------------------------
+    ; Editor
+    ;-----------------------------------------------------------------------------
+
 Editor:
         PRINTCRLF
-        PUSH tokenValue
+
+        PUSH tokenValue                         ; Check if the specified line number already exists
         CALL FindLine
-        INDEXEDRD pFound lineNo
-        CMPEQ lineNo tokenValue replace
-        CMPEQ lineNo CONST_0 insertAtEnd
 
-insertAtLine:
-        PUSH @msgAtLine
-        CALL PrintString
-        JMP Prompt
+        INDEXEDRD pFound lineNo                 ; The FindLine can get the next larger number if the exact
+                                                ; number is not found so we need to load the actual found number 
+        CMPNE tokenValue lineNo @insert         ; If the line number is not found, the user wants insert a new line  
 
-replace:
-        PUSH @msgReplace
-        CALL PrintString
-        JMP Prompt        
+        ; If the line number is found, the user wants to replace or delete it.
+        ; Start by deleting the line and then insert the new line if the user wants to replace it.
 
-insertAtEnd:
-        PUSH @msgAtEnd
-        CALL PrintString
+        CALL CalculateArrayLength               
 
-        MOV pFound @d
+        PUSH lineNo
+        CALL CalculateLineLength
 
-        CLR @len
-@loop:
-        CALL GetToken
-        CALL ParseToken
-        CMPEQ tokenType CONST_1 @endOfLine
-        CMPEQ tokenType CONST_3 @keyword
-        CMPEQ tokenType CONST_4 @operator
-        CMPEQ tokenType CONST_5 @string
-        CMPEQ tokenType CONST_6 @numeric
-        CMPEQ tokenType CONST_7 @variable
-        OUT ASCII_SPACE
-        PUSH tokenValue
-        CALL PrintHex
-        PRINTCRLF
-        JMP @loop
+        MOV pFound @t
+        SUB program_ @t
 
+        PUSH program                ; Point to start of the array to manipulate
+        PUSH @arraylen              ; Total length of the array
+        PUSH @t                     ; Offset into the array where the manipulated block starts
+        PUSH @blocklen              ; Length of the manipulated block
+        CALL DeleteBlock
 
-@endOfLine:
-        JMP Prompt
+        ; The old line is now deleted. So now we can insert the new line if the user wants to replace it.
+        ; But we first check if the new line is empty, we then just return to the prompt.
+@insert:
+        CALL CalculateArrayLength               
 
+        CALL CalculateBufLength
+        CMPEQ @blocklen CONST_0 @done
 
-@variable:
-    MOV token+1 @ch
-    OUT @ch
-    OUT ASCII_SPACE
-    JMP @loop
+        PUSH tokenValue                         ; Check if the specified line number already exists
+        CALL FindLine
 
-@operator:
-    OUT tokenValue
-    OUT ASCII_SPACE
-    JMP @loop
+        ADD CONST_3 @blocklen               ; Add three to the length to make room for the line number and the offset to the next line
+        MOV pFound @t
+        SUB program_ @t
 
-@string:
-    PUSH token
-    CALL PrintString
-    OUT ASCII_QUOTE
-    OUT ASCII_SPACE
-    JMP @loop
+        PUSH program             ; Point to start of the array to manipulate
+        PUSH @arraylen           ; Total length of the array
+        PUSH @t                  ; Offset into the array where the manipulated block starts
+        PUSH @blocklen           ; Length of the manipulated block
+        CALL InsertBlock
 
-@numeric:
-    PUSH tokenValue
-    CALL PrintInteger
-    OUT ASCII_SPACE
-    JMP @loop
+        INDEXEDWR tokenValue pFound     ; Write the line number
+        INC pFound
+        DEC @blocklen                   ; Adjust the length/offset
+        DEC @blocklen
+        INDEXEDWR @blocklen pFound      ; Write the offset to the next line
+        INC pFound
 
-@keyword:
-        MOV keywords_ @p
-        ADD tokenValue @p
-        DEC @p
-        INDEXEDRD @p @p
-@kwLoop:
-        INDEXEDRD @p @ch
-        CMPEQ @ch CONST_0 @kwEnd
-        INC @p
-        OUT @ch
-        JMP @kwLoop
-@kwEnd: OUT ASCII_SPACE
-        JMP @loop
+        MOV pProgram @t
+        DEC @blocklen
+@loopIB:
+        INDEXEDRD @t @ch
+        INDEXEDWR @ch pFound
+        INC @t
+        INC pFound
+        JNEZ @ch @loopIB
 
-        INDEXEDWR tokenValue @d; Write the line number
-        INC @d
-        INDEXEDWR CONST_4 @d   ; Write the offset to the next line
-        INC @d
-        INDEXEDWR ASCII_R @d; Write a REM statement
-        INC @d
-        INDEXEDWR ASCII_E @d
-        INC @d
-        INDEXEDWR ASCII_M @d
-        INC @d
-        INDEXEDWR CONST_0 @d   ; Write a null terminator
-        INC @d
-        INDEXEDWR CONST_0 @d   ; Write the end of source (lineNo zero)
-
+@done:
         JMP Prompt
 
     .endp

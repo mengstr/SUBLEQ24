@@ -65,6 +65,14 @@
 
 ;--------------------------------------------------------------------------------------------
 
+    .macro SUB a b         ; Subtract a from b and store in b
+        ; MACRO START - SUB
+        a b
+        ; MACRO END - SUB
+    .endm
+
+;--------------------------------------------------------------------------------------------
+
     .macro ADD a b         ; Add a to b and store in b
         ; MACRO START - ADD
         a Z                ; Z = -a

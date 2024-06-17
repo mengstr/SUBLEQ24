@@ -52,18 +52,18 @@ Start:
         PUSH msgLogo
         CALL PrintString
 
-        PUSH program            ; Point to start of the array to manipulate
-        PUSH CONST_256          ; Total length of the array
-        PUSH CONST_x40          ; Offset into the array where the manipulated block starts
-        PUSH CONST_8            ; Length of the manipulated block
-        CALL DeleteBlock
+;        PUSH program            ; Point to start of the array to manipulate
+;        PUSH CONST_256          ; Total length of the array
+;        PUSH CONST_x40          ; Offset into the array where the manipulated block starts
+;        PUSH CONST_8            ; Length of the manipulated block
+;        CALL DeleteBlock
 
 
-        PUSH program            ; Point to start of the array to manipulate
-        PUSH CONST_256          ; Total length of the array
-        PUSH CONST_x20          ; Offset into the array where the manipulated block starts
-        PUSH CONST_8            ; Length of the manipulated block
-        CALL InsertBlock
+ ;       PUSH program            ; Point to start of the array to manipulate
+ ;       PUSH CONST_256          ; Total length of the array
+ ;       PUSH CONST_x20          ; Offset into the array where the manipulated block starts
+ ;       PUSH CONST_8            ; Length of the manipulated block
+ ;       CALL InsertBlock
 
 ;-----------------------------------------------------------------------------
 ; COMMAND LINE PROMPT
@@ -281,62 +281,34 @@ buf:        .data $+1
 ;-----------------------------------------------------------------------------
         .org 0x6000
 program:                                ; The program source code to be run
-        .data 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
-        .data 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
-        .data 32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47
-        .data 48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
-        .data 64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79
-        .data 80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95
-        .data 96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111
-        .data 112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127
-        .data 128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143
-        .data 144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159
-        .data 160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175
-        .data 176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191
-        .data 192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207
-        .data 208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223
-        .data 224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239
-        .data 240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255
+;        .data 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+;        .data 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+;        .data 32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47
+;        .data 48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+;        .data 64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79
+;        .data 80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95
+;        .data 96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111
+;        .data 112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127
+;        .data 128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143
+;        .data 144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159
+;        .data 160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175
+;        .data 176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191
+;        .data 192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207
+;        .data 208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223
+;        .data 224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239
+;        .data 240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255
 
 
-
-
-L10:     .data 10,  L11-$-1,  "PRINT 'ABC123'", "\0"
-L11:     .data 11,  L12-$-1,  "PRINT A", "\0"
-L12:     .data 12,  L13-$-1,  "PRINT 5", "\0"
-L13:     .data 13,  L14-$-1,  "PRINT 5+1", "\0"
-L14:     .data 14,  L15-$-1,  "PRINT A+A", "\0"
-L15:         .data 15,  L20-$-1,  "GOTO 100",           "\0"
-L20:         .data 20,  L100-$-1, "END",                "\0"
-L100:        .data 100, L102-$-1, "PRINT 'Hello,'",     "\0"
-L102:        .data 102, L105-$-1, "PRINT ' world!'",    "\0"
-L105:        .data 105, L110-$-1, "GOSUB 450",    "\0"
-L110:        .data 110, L120-$-1, "PRINT 1234",         "\0" 
-L120:        .data 120, L121-$-1, "PRINT Q",            "\0"
-L121:        .data 121, L122-$-1, "LET Q=4711",         "\0"
-L122:        .data 122, L125-$-1, "REM",            "\0"
-L125:        .data 125, L130-$-1, "GOSUB 155",          "\0"
-L130:        .data 130, L131-$-1, "LET A=1",            "\0"
-L131:        .data 131, L132-$-1, "LET B=10",           "\0"
-L132:        .data 132, L133-$-1, "LET C=100",          "\0"
-L133:        .data 133, L140-$-1, "LET D=1000",         "\0"
-L140:        .data 140, L141-$-1, "LET E = A + B + C + D",      "\0"
-L141:        .data 141, L150-$-1, "PRINT E",            "\0"
-L150:        .data 150, L151-$-1, "LET F=1+2+3+4+5",    "\0"
-L151:        .data 151, L160-$-1, "PRINT F",            "\0"
-L155:        .data 155, L160-$-1, "GOSUB 200",          "\0"
-L160:        .data 160, L170-$-1, "PRINT 'After gosub'",   "\0"
-L170:        .data 170, L200-$-1, "GOTO 20",            "\0"
-L200:        .data 200, L201-$-1, "PRINT 'In gosub'",  "\0"
-L201:        .data 201, L300-$-1, "RETURN",             "\0"
-L300:        .data 300, L310-$-1, "PRINT 300",          "\0"
-L310:        .data 310, L400-$-1, "RETURN",          "\0"
-L400:        .data 400, L410-$-1, "PRINT 400",          "\0"
-L410:        .data 410, L500-$-1, "RETURN",          "\0"
-L500:        .data 500, L510-$-1, "PRINT 500",          "\0"
-L510:        .data 510, L520-$-1, "RETURN",          "\0"
-L520:        .data 520, L530-$-1, "PRINT 'abcdefghijklmnopqrstuvwxyz'",          "\0"
-L530:        .data 530, L540-$-1, "PRINT 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'",          "\0"
-L540:        .data 540, L550-$-1, "PRINT '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'",          "\0"
-L550:        .data 550, Lend-$-1, "PRINT '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'",          "\0"
-Lend:        .data 0
+L10:     .data 10,    L20-$-1,    "LET A=5",                    0
+L20:     .data 20,    L30-$-1,    "LET B=80",                   0
+L30:     .data 30,    L40-$-1,    "LET C=A+B",                  0
+L40:     .data 40,    L50-$-1,    "PRINT C+0",                    0
+L50:     .data 50,    L60-$-1,    "PRINT \"PLUS 1 IS \"",        0
+L60:     .data 60,    L100-$-1,   "PRINT C+1",                  0
+L100:    .data 100,   L110-$-1,   "GOSUB 10000",                0
+L110:    .data 110,   L120-$-1,   "GOTO 9999",                  0
+L120:    .data 120,   L9999-$-1,  "PRINT \"Should not get here\"", 0
+L9999:   .data 9999,  L10000-$-1, "END",                        0
+L10000:  .data 10000, L10010-$-1, "PRINT \"In subroutine\"",    0
+L10010:  .data 10010, Lend-$-1,   "RETURN",                     0
+Lend:    .data 0
