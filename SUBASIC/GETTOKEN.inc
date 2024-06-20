@@ -127,7 +127,6 @@ GetParsedToken:
     ; Check if it is a keyword
     ;
 
-     ; Check if it is a keyword
     MOV keywords_ @k                    ; If we are here, then it is a keyword or a variable
 @loopKw:
     INDEXEDRD @k @p
@@ -159,14 +158,18 @@ GetParsedToken:
     JMP @peekNextToken
 
 @peekNextToken:
-    MOV @pToken @p
-@pnt
-    INDEXEDRD @p @ch
-    INC @p
-    CMPEQ @ch ASCII_SPACE @pnt
+    MOV pProgram @pToken
+@pnt:
+    INDEXEDRD @pToken @ch
     MOV @ch peekedToken
+    INC @pToken
+    CMPEQ @ch ASCII_SPACE @pnt
+
+    CMPEQ @ch CONST_0 @pnt1
     RET
-    
+@pnt1:
+    MOV ASCII_E peekedToken
+    RET
 
 @k:         .data 0
 @p:         .data 0

@@ -9,16 +9,16 @@ cmdIF:        .proc cmdIF
 ;-------|-----------------------------------|-------------------------------------
 
 ;        OUT ASCII_AT           ;debug
-        CALL ParseExpression
-        MOV expression @var1
+;        CALL ParseExpression
+;        MOV expression @var1
 
 ;        OUT ASCII_AT           ;debug
-        CALL GetToken
-        CALL ParseToken
+;        CALL GetToken
+;        CALL ParseToken
 
 ;        OUT ASCII_AT           ;debug
-        CALL ParseExpression
-        MOV expression @var2
+;        CALL ParseExpression
+;        MOV expression @var2
 
 ;        OUT ASCII_AT           ;debug
 ;        PUSH @var1        ;debug

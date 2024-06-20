@@ -10,14 +10,14 @@ cmdFOR:        .proc cmdFOR
 
 ;        OUT ASCII_AT       ;debug
 
-        CALL GetToken                           ; Get the variable name
-        CALL ParseToken
+;        CALL GetToken                           ; Get the variable name
+;        CALL ParseToken
         MOV tokenAddr @var1
 
 ;        OUT ASCII_AT       ;debug
 
-        CALL GetToken                           ; Get the equals sign
-        CALL ParseToken
+;        CALL GetToken                           ; Get the equals sign
+;        CALL ParseToken
         MOV tokenAddr @var2
 
 ;        OUT ASCII_AT       ;debug
@@ -27,13 +27,13 @@ cmdFOR:        .proc cmdFOR
 
 ;        OUT ASCII_AT       ;debug
 
-        CALL GetToken                           ; Get the TO keyword
-        CALL ParseToken
+;        CALL GetToken                           ; Get the TO keyword
+;        CALL ParseToken
         MOV tokenAddr @var4
 
 ;        OUT ASCII_AT       ;debug
 
-        CALL ParseExpression                      ; Get the end value
+;        CALL ParseExpression                      ; Get the end value
         MOV expression @var5
 
 ;        OUT ASCII_AT       ;debug

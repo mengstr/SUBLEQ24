@@ -1,0 +1,112 @@
+    .include MACROS.inc
+
+    .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+
+    JMP Start  
+ 
+; Addresses
+R:          .data 0
+M:          .data 900
+N:          .data 800
+ZERO:       .data 0
+ONE:        .data 1
+TEMP:       .data 0
+SHIFT:      .data 0
+CHECK: .data 0
+NEG_ONE:    .data (-1)
+
+
+tmpA:       .data 0
+tmpB:       .data 0
+tmpC:       .data 0
+
+
+Start:
+    MOV stack_ SP                              ; Initialize the stack pointer
+
+    OUT ASCII_M
+    OUT ASCII_EQUAL
+    PUSH M
+    CALL PrintInteger
+    OUT ASCII_SPACE
+
+    OUT ASCII_N
+    OUT ASCII_EQUAL
+    PUSH N
+    CALL PrintInteger
+    OUT ASCII_SPACE
+
+
+
+; Multiply function start
+; Initialize result to zero
+     R  R       ; R = 0
+
+; Main multiplication loop
+loop:
+    OUT ASCII_a
+; Check if N is zero  if so  jump to END
+     N  CHECK   ; CHECK = N - 0 (CHECK = N)
+    OUT ASCII_b
+     CHECK  ZERO  END ; If CHECK <= 0  jump to END
+    OUT ASCII_c
+
+; Copy N to TEMP
+     ZERO  TEMP ; TEMP = 0
+     N  TEMP    ; TEMP = N
+    OUT ASCII_d
+
+; Check if LSB of TEMP (TEMP % 2 == 1)
+     ONE  TEMP  skip_add ; TEMP = TEMP - 1; if TEMP < 0  jump to skip_add
+    OUT ASCII_e
+
+; Add M to R (since LSB of N is 1)
+     M  R       ; R = R - M (addition)
+    OUT ASCII_f
+
+skip_add:
+; Right shift N (N = N // 2)
+right_shift:
+     N  N       ; N = N - N (clear N)
+     NEG_ONE  N ; N = N - (-1) (N = 1)
+     N  N       ; N = N - N (clear N)
+     N  CHECK   ; CHECK = N - 0 (CHECK = N)
+     CHECK  CHECK ; CHECK = 0 - CHECK (negate N)
+     CHECK  N   ; N = N - CHECK (restore N to -N)
+     CHECK  CHECK ; Clear CHECK
+    OUT ASCII_g
+
+; Left shift M (M = M * 2)
+left_shift:
+     M  CHECK   ; CHECK = M
+     CHECK  CHECK ; CHECK = -M
+     CHECK  M   ; M = M - CHECK (double M)
+     CHECK  CHECK ; Clear CHECK
+
+    OUT ASCII_h
+
+; Repeat loop
+     ZERO  ZERO  loop
+    OUT ASCII_i
+
+END:
+    OUT ASCII_j
+
+    OUT ASCII_R
+    OUT ASCII_EQUAL
+    PUSH R
+    CALL PrintInteger
+    OUT ASCII_SPACE
+
+; End of program
+    HALT
+
+    .include CONSTANTS.inc
+    .include IO.INC
+    .include STACK.inc
+
+

@@ -13,11 +13,11 @@ tmpC:       .data 0             ; Used by macros
 
 atoiVal:        .data 0         ; Result from ATOI operation
 compResult:     .data 0         ; Result from string compare operations
+pFound:         .data 0         ; Result from FindLine operation
 
 lineNo:         .data 0         ; The current line number executing
 offsetNextLine: .data 0         ; Offset to the next line
 addrNextLine:   .data 0         ; The computed address of the next line
-
 
 pProgram_:  .data pProgram      ; pProgram_ is a constant holding the address of the pProgram pointer
 pProgram:   .data 0             ; pProgram is a pointer to the code array
@@ -27,7 +27,7 @@ program_:   .data program       ; program_ is a constant holding the address of 
 
 
 ;-----------------------------------------------------------------------------
-; START OF SUBLEQ CODE
+; START OF CODE
 ;-----------------------------------------------------------------------------
 
 Start:
@@ -37,10 +37,10 @@ Start:
         CALL PrintString
         DEBUGPRINT "[Debug mode enabled]\r\n"
 
-
 ;-----------------------------------------------------------------------------
 ; COMMAND LINE PROMPT WITH RESETTING THE STACK AFTER ERROR
 ;-----------------------------------------------------------------------------
+
 Restart:
         MOV program_ pProgram
         MOV stack_ SP                              ; Initialize the stack pointer
@@ -48,6 +48,7 @@ Restart:
 ;-----------------------------------------------------------------------------
 ; COMMAND LINE PROMPT
 ;-----------------------------------------------------------------------------
+
 Prompt:
         PRINTCRLF
         OUT ASCII_GREATER
@@ -55,40 +56,27 @@ Prompt:
         CALL InputString        
         MOV buf pProgram
         CALL GetParsedToken
-;       PRINTCRLF                       ;debug
-;       CALL debugToken             ;debug
+        CMPEQ tokenType ASCII_E Prompt          ; Empty line, prompt again
         PRINTCRLF
 
+;       PRINTCRLF                    ;debug
+;       CALL debugToken              ;debug
+
         CMPEQ tokenType ASCII_N Editor          ; Starts with a number, so it's an editor command
-        CMPNE tokenType ASCII_K notAkw          ; If it's not a keyword, it's a syntax error
-        CMPEQ tokenValue kwLIST PromptLIST
-        CMPEQ tokenValue kwRUN PromptRUN
-        CMPEQ tokenValue kwNEW cmdNEW
-        JMP Prompt
-
-notAkw:
-        PUSH msgInvalidPrompt
+        CMPEQ tokenValue kwLIST PromptLIST      ; LIST command
+        CMPEQ tokenValue kwRUN PromptRUN        ; RUN command
+        CMPEQ tokenValue kwNEW cmdNEW           ; NEW command
+        PUSH msgInvalidPrompt                   ; All other things are invalid
         JMP SyntaxError
-
 
 ;-----------------------------------------------------------------------------
 SyntaxError:
 ;-----------------------------------------------------------------------------
+
         PUSH msgSyntaxError
         CALL PrintString
         CALL PrintString
         JMP Restart
-
-
-GetToken:
-ParseToken:
-PeekToken:
-        OUT ASCII_EXCLAMATION
-        RET
-
-
-
-
 
 ;-----------------------------------------------------------------------------
 PromptRUN:
@@ -188,30 +176,30 @@ msgInvalidTokenType:    .data $+1, "Invalid token type", 0
         ; Subroutines for the BASIC commands
         ;
 
-        .include subasic/cmdEND.inc
-        .include subasic/cmdREM.inc
-        .include subasic/cmdPRINT.inc
-        .include subasic/cmdGOTO.inc
-        .include subasic/cmdIF.inc
-        .include subasic/cmdLET.inc
-        .include subasic/cmdGOSUB.inc
-        .include subasic/cmdRETURN.inc
-        .include subasic/cmdFOR.inc
-        .include subasic/cmdNEXT.inc
-        .include subasic/cmdLIST.inc
-        .include subasic/cmdNEW.inc
+        .include cmdEND.inc
+        .include cmdREM.inc
+        .include cmdPRINT.inc
+        .include cmdGOTO.inc
+        .include cmdIF.inc
+        .include cmdLET.inc
+        .include cmdGOSUB.inc
+        .include cmdRETURN.inc
+        .include cmdFOR.inc
+        .include cmdNEXT.inc
+        .include cmdLIST.inc
+        .include cmdNEW.inc
 
         ;
         ; Subroutines for the BASIC utilities
         ;
 
-        .include subasic/EDITOR.inc
-        .include subasic/KEYBOARD.inc
-        .include subasic/FINDLINE.inc
-        .include subasic/PARSEEXPRESSION.inc
-        .include subasic/GETTOKEN.inc
-        .include subasic/VARIABLES.inc
-        .include subasic/debug.inc
+        .include EDITOR.inc
+        .include KEYBOARD.inc
+        .include FINDLINE.inc
+        .include PARSEEXPRESSION.inc
+        .include GETTOKEN.inc
+        .include VARIABLES.inc
+        .include debug.inc
 
 
 ;-----------------------------------------------------------------------------

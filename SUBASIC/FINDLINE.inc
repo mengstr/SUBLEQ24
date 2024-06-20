@@ -2,7 +2,6 @@
 .proc FindLine
 ;-----------------------------------------------------------------------------
 
-pFound:         .data 0                 ; Pointer to the start of the found line
 @target:        .data 0                 ; Target line number from caller
 @lineNo:        .data 0                 ; Line number of current line
 @p:             .data 0

@@ -11,10 +11,10 @@ cmdGOSUB:        .proc cmdGOSUB
 ;
 ;-------|-----------------------------------|-------------------------------------
 
+        CALL ParseExpression                ; Get the target line number
+
         PUSH pProgram                       ; Save the current location on the stack for
                                             ; the later RETURN command
-
-        CALL ParseExpression                ; Get the target line number
 
         PUSH expression                     ; Find the target line number in the program
         CALL FindLine                       

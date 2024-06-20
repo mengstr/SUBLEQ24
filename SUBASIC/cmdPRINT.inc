@@ -14,6 +14,10 @@ cmdPRINT:       .proc cmdPRINT
 ;
 ;-----------------------------------------------------------------------------
 
+    ; Check for an empty print statement first
+    CMPEQ peekedToken ASCII_E @doneCrlf       ; If the token is an EOL, we're done
+    CMPEQ peekedToken ASCII_COLON @doneCrlf   ; If the token is an colon, we're done
+
     CALL ParseExpression
 
     CMPEQ tokenType ASCII_E @doneCrlf       ; If the token is an EOL, we're done

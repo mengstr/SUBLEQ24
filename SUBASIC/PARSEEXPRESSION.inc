@@ -9,29 +9,14 @@ expression:     .data 0
 @op:            .data 0
 
 ParseExpression:
-        OUT ASCII_P
-        OUT ASCII_a
-        OUT ASCII_r
-        OUT ASCII_s
-        OUT ASCII_e
-        OUT ASCII_E
-        OUT ASCII_x
-        OUT ASCII_p
-        OUT ASCII_r
-        OUT ASCII_e
-        OUT ASCII_s
-        OUT ASCII_s
-        OUT ASCII_i
-        OUT ASCII_o
-        OUT ASCII_n
-        PRINTCRLF
-
+        DEBUGPRINT "ParseExpression\r\n"
         CLR expression
         CLR @op
 @loop:
-;        CMPEQ peekedToken ASCII_E @isDone
-;        CMPEQ peekedToken ASCII_SEMICOLON @isDone
-;        CMPEQ peekedToken ASCII_COLON @isDone
+
+        CMPEQ peekedToken ASCII_E @isDone
+        CMPEQ peekedToken ASCII_SEMICOLON @isDone
+        CMPEQ peekedToken ASCII_COLON @isDone
 
         CALL GetParsedToken
 ;       CALL debugToken                 ;debug

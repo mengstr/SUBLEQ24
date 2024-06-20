@@ -6,8 +6,8 @@ cmdNEXT:        .proc cmdNEXT
 ;
 ;-------|-----------------------------------|-------------------------------------
 
-        CALL GetToken                           ; Get the variable name
-        CALL ParseToken
+;        CALL GetToken                           ; Get the variable name
+;        CALL ParseToken
         MOV tokenAddr @var1
 
 ;        OUT ASCII_N        ;debug
