@@ -7,48 +7,36 @@ PLUS1:      .data 1
 MINUS1:     .data (-1)
             JMP Start
 
-tokenNum:       .data 0
-tokenVar:       .data 0
-
 tmpA:       .data 0             ; Used by macros
 tmpB:       .data 0             ; Used by macros
 tmpC:       .data 0             ; Used by macros
 
-ch:         .data 0             ; Used by tokenizing
+atoiVal:        .data 0         ; Result from ATOI operation
+compResult:     .data 0         ; Result from string compare operations
 
-val_:       .data val
-val:        .data 0
+lineNo:         .data 0         ; The current line number executing
+offsetNextLine: .data 0         ; Offset to the next line
+addrNextLine:   .data 0         ; The computed address of the next line
 
 
-pProgram_:  .data pProgram              ; pProgram_ is a constant holding the address of the pProgram pointer
-pProgram:   .data 0                     ; pProgram is a pointer to the code array
+pProgram_:  .data pProgram      ; pProgram_ is a constant holding the address of the pProgram pointer
+pProgram:   .data 0             ; pProgram is a pointer to the code array
 
-program_:   .data program               ; program_ is a constant holding the address of the program array
+program_:   .data program       ; program_ is a constant holding the address of the program array
 
-lineNo:                 .data 0
-offsetNextLine:         .data 0
-addrNextLine:           .data 0
 
-q:                  .data 0
 
 ;-----------------------------------------------------------------------------
 ; START OF SUBLEQ CODE
 ;-----------------------------------------------------------------------------
-
-delStart:       .data 0
-delLen:         .data 0
-bufLen:         .data 0
-pS:        .data 0
-pD:        .data 0
-cnt:       .data 0
 
 Start:
         MOV stack_ SP                              ; Initialize the stack pointer
 
         PUSH msgLogo
         CALL PrintString
-;       PUSH msgDebug           ;debug
-;       CALL PrintString        ;debug
+        DEBUGPRINT "[Debug mode enabled]\r\n"
+
 
 ;-----------------------------------------------------------------------------
 ; COMMAND LINE PROMPT WITH RESETTING THE STACK AFTER ERROR
@@ -158,13 +146,6 @@ StatementEOL:
 
 
 
-
-
-
-
-
-
-
 ;-----------------------------------------------------------------------------
 ; MESSAGE STRINGS
 ;-----------------------------------------------------------------------------
@@ -179,9 +160,8 @@ msgLogo:
         .data "[ ver 0.00 - (c) 2024 Mats Engstrom - github.com/mengstr/sleqTinyBasic ]\r\n", 0
         .data "\r\n"
         .data 0                                         
-;msgDebug:              .data $+1, "[Debug mode enabled]\r\n", 0       ;debug
 
-msgEnd:                 .data $+1, "\r\nExecution halted by END\r\n", 0
+msgHaltedByEnd:         .data $+1, "\r\nExecution halted by END\r\n", 0
 msgEndOfFile:           .data $+1, "\r\nExecution halted by End Of File\r\n", 0
 msgLineNotFound:        .data $+1, "\r\nLine not found\r\n", 0
 msgSyntaxError:         .data $+1, "\r\nSyntax error: ", 0
@@ -241,10 +221,14 @@ msgInvalidTokenType:    .data $+1, "Invalid token type", 0
         .org 0x7000
 
 program:                                ; The program source code to be run
-L2:      .data 2,    L5-$-1,    "LET A=64",                    0
-L5:      .data 5,    L10-$-1,    "PRINT \"Start\"",                    0        
-L10:     .data 10,    L20-$-1,    "FOR A = 1 TO 10",                    0
-L20:     .data 20,    L30-$-1,    "PRINT A",                   0
-L30:     .data 30,    L40-$-1,    "NEXT A",                  0
-L40:     .data 50,    Lend-$-1,    "END",        0
-Lend:    .data 0
+
+L10: .data 10, L20-$-1, "PRINT 1"                                 ,0      
+L20: .data 20, L30-$-1, "PRINT A"                                 ,0
+L30: .data 30, L40-$-1, "PRINT \"Hello\""                         ,0
+L40: .data 40, L50-$-1, "PRINT 2;"                                ,0
+L50: .data 50, L60-$-1, "PRINT B;"                                ,0
+L60: .data 60, L65-$-1, "PRINT \"World\";"                        ,0
+L65: .data 65, L70-$-1, "PRINT"                                   ,0
+L70: .data 70, L80-$-1, "PRINT A;3;\"foo\";B;4;\"bar\""           ,0
+L80: .data 80, Lend-$-1,"END"                                    ,0
+Lend:.data 0

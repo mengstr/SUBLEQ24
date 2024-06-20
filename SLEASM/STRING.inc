@@ -1,14 +1,15 @@
     .proc ATOI
 
-@p:    .data 0  ; Pointer to the string to convert
-@t:    .data 0  ; Temporary hold variable
+@p:         .data 0  ; Pointer to the string to convert
+@t:         .data 0  ; Temporary hold variable
+@digit:     .data 0
 
 ATOI:
     POP @t              ; Pop off the return address and parameters
     POP @p
     PUSH @t             ; Push the return address back onto the stack
 
-    CLR val
+    CLR atoiVal
 
 @loop:
     INDEXEDRD @p @digit
@@ -17,13 +18,11 @@ ATOI:
 
 @valid:
     ASCII_0 @digit              ; Make the ascii digit to a number
-    MULU CONST_10 val          ; Collect the digit into the result
-    ADD @digit val
+    MULU CONST_10 atoiVal          ; Collect the digit into the result
+    ADD @digit atoiVal
 
     INC @p                      ; Point to the next character
     JMP @loop                   ; Loop back and continue processing digits
-
-@digit:     .data 0
 
     .endp
 
@@ -42,14 +41,15 @@ CompareString:
     POP @s1
     PUSH @t             ; Push the return address back onto the stack
 
-   CLR val
+    CLR compResult
+
 @loop:
     INDEXEDRD @s1 @ch1
     INDEXEDRD @s2 @ch2
     CMPNE @ch1 @ch2 @fail
     JNEZ @ch1 @next
     JNEZ @ch2 @next
-    INC val
+    INC compResult
     RET
 
 @next:
@@ -59,6 +59,7 @@ CompareString:
 
 @fail:
     RET
+
     .endp
 
 
@@ -75,7 +76,7 @@ CompareStringIgnoreCase:
         POP @s1
         PUSH @t             ; Push the return address back onto the stack
 
-        CLR val
+        CLR compResult
 @loop:
         INDEXEDRD @s1 @ch1
         INDEXEDRD @s2 @ch2
@@ -91,7 +92,7 @@ CompareStringIgnoreCase:
         CMPNE @ch1 @ch2 @fail
         JNEZ @ch1 @next
         JNEZ @ch2 @next
-        INC val
+        INC compResult
         RET
 
 @next:

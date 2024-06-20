@@ -393,3 +393,13 @@
 
     ;--------------------------------------------------------------------------------------------
 
+
+    .macro DEBUGPRINT str
+;        PUSH @yo                   ;debug
+;        CALL PrintString           ;debug
+;        JMP @bo                    ;debug
+;@yo:    .data $+1                  ;debug
+;        .data str                  ;debug
+;        .data 0                    ;debug
+;@bo:                               ;debug
+    .endm

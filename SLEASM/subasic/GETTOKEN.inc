@@ -9,6 +9,7 @@ token:      .data $+1
             .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
             .data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
+peekedToken:.data 0
 tokenType:  .data 0     ; E=EndOfLine 
                         ; :=EndOfStatement
                         ; ;=Inhibit CRLF after print
@@ -31,6 +32,7 @@ GetParsedToken:
     CLR token+1
     CLR tokenValue
     CLR tokenAddr
+    CLR peekedToken
 
 @LoopSkipSpaces:
     INDEXEDRD pProgram @ch
@@ -64,20 +66,24 @@ GetParsedToken:
     CMPEQ @ch ASCII_SLASH @isOperator
     CMPEQ @ch ASCII_ASTERISK @isOperator
     MOV ASCII_M tokenType
-    RET
+    JMP @peekNextToken
+
 @isSemicolon:
     MOV ASCII_SEMICOLON tokenType
-    RET
+    JMP @peekNextToken
+
 @isColon:
     MOV ASCII_COLON tokenType
-    RET
+    JMP @peekNextToken
+
 @isZero:
     MOV ASCII_E tokenType
-    RET
+    JMP @peekNextToken
+
 @isOperator:
     MOV @ch tokenValue
     MOV ASCII_O tokenType
-    RET
+    JMP @peekNextToken
 
 
 @collectString:
@@ -89,11 +95,10 @@ GetParsedToken:
     CMPNE @ch ASCII_DOUBLEQUOTE @collectString
     INC pProgram                    ; Remove the final quote in the string
 
-    INC @pToken                     ; Null-terminate token
-    INDEXEDWR CONST_0 @pToken
+    INDEXEDWR CONST_0 @pToken       ; Null-terminate token
 
     MOV ASCII_S tokenType           ; Return it as a string type to caller
-    RET
+    JMP @peekNextToken
 
 @collectNumber:
     SUB ASCII_0 @ch                 ; Make the ascii digit to a number
@@ -103,7 +108,7 @@ GetParsedToken:
     INDEXEDRD pProgram @ch
     JBETWEEN @ch ASCII_0 ASCII_9 @collectNumber
     MOV ASCII_N tokenType               
-    RET
+    JMP @peekNextToken
 
 @collectAlpha:
     INDEXEDWR @ch @pToken
@@ -131,7 +136,7 @@ GetParsedToken:
     PUSH @p                             ; Compare the token with the current keyword from the table
     PUSH token
     CALL CompareStringIgnoreCase
-    JNEZ val @isKeyword
+    JNEZ compResult @isKeyword
 
     INC @k                              ; Nope, try the next keyword
     JMP @loopKw
@@ -141,7 +146,7 @@ GetParsedToken:
     DEC @p
     INDEXEDRD @p tokenValue
     MOV ASCII_K tokenType               ; Return it as a keyword type to caller
-    RET
+    JMP @peekNextToken
 
 @notAKeyword:
     ; Convert it into a number into tokenValue and return the tokenType as V
@@ -151,12 +156,17 @@ GetParsedToken:
     MOV @p tokenAddr
     INDEXEDRD tokenAddr tokenValue
     MOV ASCII_V tokenType               
+    JMP @peekNextToken
+
+@peekNextToken:
+    MOV @pToken @p
+@pnt
+    INDEXEDRD @p @ch
+    INC @p
+    CMPEQ @ch ASCII_SPACE @pnt
+    MOV @ch peekedToken
     RET
-
     
-;    JBETWEEN token+1 ASCII_A ASCII_Z @isVariable
-
-
 
 @k:         .data 0
 @p:         .data 0
@@ -199,17 +209,3 @@ kwRUN:      .data 16, "RUN"   ,0
 
     .endp
 
-
-;----------------------------------------------------------------------------
- .proc PeekToken
-;----------------------------------------------------------------------------
-
-@t: .data 0
-
-PeekParsedToken:
-    MOV pProgram @t   
-    CALL GetParsedToken
-    MOV @t pProgram    
-    RET
-
-    .endp

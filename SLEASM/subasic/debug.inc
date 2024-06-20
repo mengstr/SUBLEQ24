@@ -55,25 +55,3 @@ debugToken:
 ;    PRINTCRLF              ;debug
 ;    RET                    ;debug
 
-
-
-
-
-;-----------------------------------------------------------------------------
-debugCyanCh:
-;-----------------------------------------------------------------------------
-;    PUSH cyan                          ;debug
-;    CALL PrintString                   ;debug
-;    OUT ch                             ;debug
-;    PUSH white                         ;debug
-;    CALL PrintString                   ;debug
-;    RET
-
-
-;-----------------------------------------------------------------------------
-debugCRLF:
-;-----------------------------------------------------------------------------
-;    OUT ASCII_CR       ;debug
-;    OUT ASCII_LF       ;debug
-;    RET                ;debug
-

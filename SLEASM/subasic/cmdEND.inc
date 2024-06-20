@@ -6,5 +6,8 @@
 ;
 ;-----------------------------------------------------------------------------
 cmdEND:
+    PUSH  msgHaltedByEnd
+    CALL  PrintString
+
     JMP Prompt
 

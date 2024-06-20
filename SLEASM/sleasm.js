@@ -438,11 +438,21 @@ function getExpression(line) {
         if (line[i].match(/[a-zA-Z_$@]/)) current='symbol';
         if (line[i].match(/[0-9]/)) current='number';
         if ((line[i]).match(/[-]/)) current = 'number';
+        if (line[i].match(/"/)) current='string';
 
         if (current=='unknown') die(`Invalid character '${line[i]}' in expression`);
 
         s+=line[i];
         i++;
+
+        if (current=='string') {
+            while (i<line.length && line[i]!='"') {
+                s+=line[i];
+                i++;
+            }   
+            s+='" ';
+        }
+
 
         if (current=='symbol') {
             while (i<line.length && line[i].match(/[a-zA-Z0-9_]/)) {
