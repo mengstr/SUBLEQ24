@@ -10,6 +10,7 @@ var macroLines = [];        // FIFO queue of macro lines
 var localNo = 0;            // Number for local labels
 var procName = '';          // Current procedure name used for local labels
 var pc = 0;                 // Program counter
+var debug = false;          // Debug flag
 
 module.exports = {
     fileStack,

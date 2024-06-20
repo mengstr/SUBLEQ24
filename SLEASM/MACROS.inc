@@ -254,8 +254,8 @@
         INC   tmpA
         JMP @loop3
 @endLoop:    
-;        CONST_NEG1 b @done         ; If < 0
-;        INC tmpA
+        CONST_NEG1 b @done         ; If < 0
+        INC tmpA
 @done:  
         MOV tmpA b
         ; MACRO END - DIVU

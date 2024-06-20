@@ -12,32 +12,67 @@ ParseExpression:
         CLR expression
         CLR @op
 @loop:
-        CALL GetToken
-        CALL ParseToken
-        CMPEQ tokenType CONST_1 @isDone
-        CMPEQ tokenType CONST_5 @isStr
-        CMPEQ tokenType CONST_4 @isOp
-        CMPEQ tokenType CONST_6 @isNum
-        CMPEQ tokenType CONST_7 @isVar
-        JMP Syntax
+        CALL PeekParsedToken
+        CMPEQ tokenType ASCII_E @isDone
+        CMPEQ tokenType ASCII_SEMICOLON @isDone
+        CMPEQ tokenType ASCII_COLON @isDone
 
-@isDone:
-        RET
+        CALL GetParsedToken
+;       CALL debugToken                 ;debug
+;        PRINTCRLF                      ;debug;
+
+        CMPEQ tokenType ASCII_N @isNum
+        CMPEQ tokenType ASCII_S @isStr
+        CMPEQ tokenType ASCII_O @isOp
+        CMPEQ tokenType ASCII_V @isVar
+        PUSH msgInvalidTokenType
+        JMP SyntaxError
+
+@isDone
+
+     RET
 
 @isStr:
-;        PUSH token1
-;        CALL PrintString
         RET
 
 @isOp:
+        CMPEQ tokenValue ASCII_PLUS @opOk
+        CMPEQ tokenValue ASCII_MINUS @opOk
+        CMPEQ tokenValue ASCII_ASTERISK @opOk
+        CMPEQ tokenValue ASCII_SLASH @opOk
+        JMP @loop
+@opOk:
         MOV tokenValue @op
         JMP @loop
 
+
 @isNum:
 @isVar:
+        CMPEQ @op ASCII_PLUS @addition
+        CMPEQ @op ASCII_MINUS @subtraction
+        CMPEQ @op ASCII_ASTERISK @multiplication
+        CMPEQ @op ASCII_SLASH @division
+        MOV tokenValue expression
+        JMP @loop
+
+@addition
         ADD tokenValue expression
         CLR @op
         JMP @loop
 
+@multiplication:
+        MULU tokenValue expression
+        CLR @op
+        JMP @loop
+
+@division
+        DIVU tokenValue expression
+        CLR @op
+        JMP @loop
+
+@subtraction:
+        SUB tokenValue expression
+        CLR @op
+        JMP @loop
 
     .endp

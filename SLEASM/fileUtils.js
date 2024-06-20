@@ -43,6 +43,15 @@ function readLine(fd) {
         line += newLines.shift() || '';
         readLine.buffers[fd] = newLines;
     }
+
+    if (G.debug) {
+        if (line.includes(';debug')) {
+            if (line[0] === ';') {
+                line = line.slice(1);
+            }
+        }
+    }
+
     return line;
 }
 

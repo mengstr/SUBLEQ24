@@ -19,7 +19,13 @@ if (!argFile) {
     process.exit(1);
 }
 
-logger.setLogLevel(process.argv[3]);      // 0=Silent, 1=Info, 2=Debug, 3=Verbose
+
+logger.setLogLevel(0);          // 0=Silent, 1=Info, 2=Debug, 3=Verbose
+if (process.argv[3] > 0) logger.setLogLevel(process.argv[3]); 
+if (process.argv[4] > 0) logger.setLogLevel(process.argv[4]); 
+if (process.argv[3]=="debug") G.debug=true;
+if (process.argv[4]=="debug") G.debug=true;
+
 
 // Create a listing file with the same name as the input file but with the extension .lst
 let filename = argFile.includes('.') ? argFile.replace(/\.[^/.]+$/, '.lst') : argFile + '.lst';

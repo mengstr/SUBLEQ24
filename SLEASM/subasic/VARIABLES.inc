@@ -2,11 +2,11 @@
 ; VARIABLES A..Z
 ;-----------------------------------------------------------------------------
 vars:   .data $+1
-        .data 111       ; Variable A 
-        .data 2222      ; Variable B
-        .data 33333     ; Variable C
+        .data 77        ; Variable A 
+        .data 88        ; Variable B
+        .data 99        ; Variable C
         .data 0         ; Variable D
-        .data 12        ; Variable E
+        .data 0         ; Variable E
         .data 0         ; Variable F
         .data 0         ; Variable G
         .data 0         ; Variable H

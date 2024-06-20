@@ -36,9 +36,9 @@ FindLine:
 
 @notFound:
         MOV @p pFound                   ; ... and set the program pointer to the start of the line
-        OUT ASCII_SPACE
-        PUSH pFound
-        CALL PrintHex
-        OUT ASCII_SPACE
+;        OUT ASCII_SPACE        ;Xdebug
+;        PUSH pFound            ;Xdebug
+;        CALL PrintHex          ;Xdebug
+;        OUT ASCII_SPACE        ;Xdebug
         RET
     .endp

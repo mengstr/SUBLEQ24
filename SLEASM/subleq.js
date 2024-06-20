@@ -11,11 +11,16 @@ var memory;
 var pc=0;
 var trace=false;
 var silent=false;
+var keyBuffer = [];
 
 const keypressHandler = (str, k) => {
     if (k.ctrl && k.name === 'd') {
         let cnt=0;
-        for (let i=0x6000; i<0x6200; i++) {
+
+        process.stdout.write("\r\n");
+        process.stdout.write("       00  01  02  03  04  05  06  07  08  09  0A  0B  0C  0D  0E  0F  10  11  12  13  14  15  16  17  18  19  1A  1B  1C  1D  1E  1F\r\n");
+        process.stdout.write("-------------------------------------------------------------------------------------------------------------------------------------");
+        for (let i=0x7000; i<0x7200; i++) {
             if (cnt==0) {
                 process.stdout.write("\r\n");
                 process.stdout.write(`${i.toString(16)}: `);
@@ -29,9 +34,17 @@ const keypressHandler = (str, k) => {
     } else if (k.ctrl && k.name === 'c') {
         process.exit(0);
     } else {
-        key = k.sequence.charCodeAt(0);
+        for (let i = 0; i < k.sequence.length; i++) {
+            keyBuffer.push(k.sequence.charCodeAt(i));
+        }
     }
 };
+
+// Function to get the next key from the buffer
+function getNextKey() {
+    return keyBuffer.length > 0 ? keyBuffer.shift() : NOKEY;
+}
+
 
 if (process.stdin.setRawMode) {
     readline.emitKeypressEvents(process.stdin);
@@ -82,8 +95,7 @@ async function run() {
         if (a==-1){
             if (trace) console.log(`pc=${pc.toString(16)} IN to location ${b.toString(16)} key=${key.toString(16)}`);
             pc += 3;
-            memory[b] = key;
-            key = NOKEY;
+            memory[b] = getNextKey();
             continue;
         }
         

@@ -1,0 +1,77 @@
+;# SCRIPT
+;for A in $(seq 1 1 100); do
+;    for B in $(seq 1 1 100); do
+;       C=$(( A / B ))
+;       echo -n $C"_"
+;    done
+;done
+; echo ""
+;# END
+
+        .include MACROS.inc
+
+        .org 0
+
+Z:          .data 0 
+PLUS1:      .data 1 
+MINUS1:     .data (-1)
+
+; JGT A B addr - Jump if A is greater than B
+    MOV stack_ SP                              ; Initialize the stack pointer
+
+        MOV P1 A
+loop1:  MOV P1 B
+loop2:  MOV A T
+        DIVU B T
+        PUSH T
+        CALL PrintInteger
+        OUT ASCII_UNDERSCORE
+incs:   ADD P1 B
+        MOV B T
+        P100 T loop2
+done1:  ADD P1 A
+        MOV A T
+        P100 T loop1
+
+        PRINTCRLF
+        HALT
+
+P1:         .data 1
+P2:         .data 2
+P3:         .data 3
+P4:         .data 4
+P5:         .data 5
+P6:         .data 6
+P10:        .data 10
+P17:        .data 17
+P20:        .data 20
+P100:       .data 100
+P1000:      .data 1000
+P10000:     .data 10000
+P100000:    .data 100000
+P1000000:   .data 1000000
+ZERO:       .data 0
+M1:         .data -1
+M2:         .data -2
+M3:         .data -3
+M4:         .data -4
+M5:         .data -5
+M6:         .data -6
+M10:        .data -10
+M100:       .data -100
+M1000:      .data -1000
+M10000:     .data -10000
+M100000:    .data -100000
+M1000000:   .data -1000000
+
+A:          .data 0              ; test variable
+B:          .data 0              ; test variable
+T:          .data 0
+
+tmpA:       .data 0             ;Used by macros
+tmpB:       .data 0             ;Used by macros
+tmpC:       .data 0             ;Used by macros
+
+        .include IO.inc
+        .include CONSTANTS.inc
+        .include STACK.inc
