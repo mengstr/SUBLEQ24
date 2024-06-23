@@ -395,6 +395,8 @@
 
 
     .macro DEBUGPRINT str
+;        PUSH cyan                   ;debug
+;        CALL PrintString           ;debug
 ;        PUSH @yo                   ;debug
 ;        CALL PrintString           ;debug
 ;        JMP @bo                    ;debug
@@ -402,4 +404,15 @@
 ;        .data str                  ;debug
 ;        .data 0                    ;debug
 ;@bo:                               ;debug
+;        PUSH white                   ;debug
+;        CALL PrintString           ;debug
+    .endm
+
+
+    .macro cyanChar c
+;    PUSH cyan          ;debug
+;    CALL PrintString   ;debug
+;    OUT c              ;debug
+;    PUSH white         ;debug
+;    CALL PrintString   ;debug
     .endm

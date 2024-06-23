@@ -8,7 +8,10 @@ cmdRETURN:        .proc cmdRETURN
 ;
 ;-------|-----------------------------------|-------------------------------------
 
-        POP pProgram                        ; Restore the previous location from the stack  
+        DEBUGPRINT "cmdRETURN:\r\n"
+
+
+        POP pCode                        ; Restore the previous location from the stack  
         JMP Statement                       ; And continue execution from there
 
         .endp

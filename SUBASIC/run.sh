@@ -1,1 +1,1 @@
-../SLEASM/sleasm subasic.sleq 1 $1 && ../SLEASM/subleq  subasic.v20raw $1
+../SLEASM/sleasm subasic.sleq 0 $1 && ../SLEASM/subleq  subasic.v20raw $1

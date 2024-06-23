@@ -13,13 +13,13 @@ cmdGOSUB:        .proc cmdGOSUB
 
         CALL ParseExpression                ; Get the target line number
 
-        PUSH pProgram                       ; Save the current location on the stack for
+        PUSH pCode                       ; Save the current location on the stack for
                                             ; the later RETURN command
 
         PUSH expression                     ; Find the target line number in the program
         CALL FindLine                       
 
-        MOV  pFound pProgram                ; And set the execution to continue from there
+        MOV  pFound pCode                ; And set the execution to continue from there
         JMP ProgramLine
 
         .endp

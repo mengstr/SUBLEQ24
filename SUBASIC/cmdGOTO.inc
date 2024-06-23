@@ -15,7 +15,7 @@ cmdGOTO:        .proc cmdGOTO
         PUSH expression                     ; Find the target line number in the program
         CALL FindLine                       
 
-        MOV  pFound pProgram                ; And set the execution to continue from there
+        MOV  pFound pCode                ; And set the execution to continue from there
         JMP ProgramLine
 
         .endp

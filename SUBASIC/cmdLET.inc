@@ -9,12 +9,13 @@ cmdLET:        .proc cmdLET
 ;
 ;-------|-----------------------------------|-------------------------------------
 
+        DEBUGPRINT "cmdLET:\r\n"
+
         CALL GetParsedToken                 ; Get the variable name
         MOV tokenAddr @dest
 
         CALL GetParsedToken                 ; Get the equals sign
 
-;        CALL GetParsedToken                 ; Get the value expression
         CALL ParseExpression                ; Get the value expression
         INDEXEDWR expression @dest          ; Store the value in the variable
 

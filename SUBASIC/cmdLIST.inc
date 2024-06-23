@@ -7,6 +7,7 @@ cmdLIST:        .proc cmdLIST
 ;-------|-----------------------------------|-------------------------------------
 
         MOV program_ @p                     ; Point to start of source code
+        PRINTCRLF
 
 @loop1: 
         INDEXEDRD @p @lineNo                ; Get Linenumber of current line as a binary value

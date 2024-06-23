@@ -8,69 +8,29 @@ cmdFOR:        .proc cmdFOR
 ;
 ;-------|-----------------------------------|-------------------------------------
 
-;        OUT ASCII_AT       ;debug
 
-;        CALL GetToken                           ; Get the variable name
-;        CALL ParseToken
+        CALL GetParsedToken                       ; Get the variable name
         MOV tokenAddr @var1
 
-;        OUT ASCII_AT       ;debug
-
-;        CALL GetToken                           ; Get the equals sign
-;        CALL ParseToken
+        CALL GetParsedToken                       ; Get the equals sign
         MOV tokenAddr @var2
-
-;        OUT ASCII_AT       ;debug
 
         CALL ParseExpression                      ; Get the start value
         MOV expression @var3
 
-;        OUT ASCII_AT       ;debug
+        INDEXEDWR @var3 @var1                     ; Store the start value in the variable
 
-;        CALL GetToken                           ; Get the TO keyword
-;        CALL ParseToken
+        CALL GetParsedToken                       ; Get the TO keyword
         MOV tokenAddr @var4
 
-;        OUT ASCII_AT       ;debug
-
-;        CALL ParseExpression                      ; Get the end value
+        CALL ParseExpression                      ; Get the end value
         MOV expression @var5
 
-;        OUT ASCII_AT       ;debug
+        PUSH @var1                                ; Push the variable address
+        PUSH @var5                                ; Push the end value
+        PUSH pCode                                ; Push the loop address 
 
-        ; CALL GetToken                           ; Get the STEP keyword
-        ; CALL ParseToken
-        ; MOV tokenAddr @var6
-
-        ; CALL ParseExpression                      ; Get the step value
-        ; MOV expression @var7
-
-
-;        OUT ASCII_V       ;debug
-;        OUT ASCII_a       ;debug
-;        OUT ASCII_r       ;debug
-;        OUT ASCII_EQUAL       ;debug
-;        PUSH @var1       ;debug
-;        CALL PrintInteger       ;debug
-;        OUT ASCII_SPACE       ;debug
-
-;        OUT ASCII_S        ;debug
-;        OUT ASCII_t        ;debug
-;        OUT ASCII_a        ;debug
-;        OUT ASCII_EQUAL        ;debug
-;        PUSH @var3        ;debug
-;        CALL PrintInteger        ;debug
-;        OUT ASCII_SPACE        ;debug
-
-;        OUT ASCII_E        ;debug
-;        OUT ASCII_n        ;debug
-;        OUT ASCII_d        ;debug
-;        OUT ASCII_EQUAL        ;debug
-;        PUSH @var5        ;debug
-;        CALL PrintInteger        ;debug
-;        OUT ASCII_SPACE        ;debug
-
-        JMP ProgramLine
+        JMP Statement
 
 @var1:  .data 0
 @var2:  .data 0

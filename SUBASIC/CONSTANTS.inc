@@ -154,6 +154,7 @@ ASCII_VERTICAL_BAR: .data 124
 ASCII_RIGHT_BRACE:  .data 125
 ASCII_TILDE:        .data 126
 ASCII_DEL:          .data 127
+ASCII_DOUBLEDAGGER: .data 33
 
 
 red:        .data $+1,27,"[31m",0

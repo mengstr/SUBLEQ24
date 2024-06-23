@@ -19,10 +19,8 @@ lineNo:         .data 0         ; The current line number executing
 offsetNextLine: .data 0         ; Offset to the next line
 addrNextLine:   .data 0         ; The computed address of the next line
 
-pProgram_:  .data pProgram      ; pProgram_ is a constant holding the address of the pProgram pointer
-pProgram:   .data 0             ; pProgram is a pointer to the code array
-
 program_:   .data program       ; program_ is a constant holding the address of the program array
+
 
 
 
@@ -42,7 +40,7 @@ Start:
 ;-----------------------------------------------------------------------------
 
 Restart:
-        MOV program_ pProgram
+        MOV program_ pCode
         MOV stack_ SP                              ; Initialize the stack pointer
 
 ;-----------------------------------------------------------------------------
@@ -54,15 +52,15 @@ Prompt:
         OUT ASCII_GREATER
 
         CALL InputString        
-        MOV buf pProgram
+        MOV buf pCode
         CALL GetParsedToken
-        CMPEQ tokenType ASCII_E Prompt          ; Empty line, prompt again
-        PRINTCRLF
+        CMPEQ tokenType CONST_0 Prompt          ; Empty line, prompt again
 
 ;       PRINTCRLF                    ;debug
 ;       CALL debugToken              ;debug
 
-        CMPEQ tokenType ASCII_N Editor          ; Starts with a number, so it's an editor command
+        CMPEQ tokenType CONST_1 Editor          ; Starts with a number, so it's an editor command
+        PRINTCRLF
         CMPEQ tokenValue kwLIST PromptLIST      ; LIST command
         CMPEQ tokenValue kwRUN PromptRUN        ; RUN command
         CMPEQ tokenValue kwNEW cmdNEW           ; NEW command
@@ -84,35 +82,37 @@ PromptRUN:
         CALL GetParsedToken                       ; Get the line number to start running from
         PUSH tokenValue
         CALL FindLine
-        MOV pFound pProgram
+        MOV pFound pCode
 
 ProgramLine:
-;        PUSH pProgram                      ;debug
+;        PUSH pCode                      ;debug
 ;        CALL PrintHex                      ;debug
-;       OUT ASCII_SPACE                     ;debug
+;        OUT ASCII_SPACE                     ;debug
 
         CLR tokenType                       ; Clear the token type so we don't trigger the EOL check in the loop
-        INDEXEDRD pProgram lineNo           ; Get Linenumber of current line as a binary value
+        INDEXEDRD pCode lineNo           ; Get Linenumber of current line as a binary value
         JEQZ lineNo cmdEND                  ; If we reach the end of the code it's an implicit END instruction
-        INC pProgram
+        INC pCode
 
-        INDEXEDRD pProgram offsetNextLine   ; Get offset to next line
-        MOV pProgram addrNextLine           ; Calculate the address of the next line by adding the offset to the current location
+        INDEXEDRD pCode offsetNextLine   ; Get offset to next line
+        MOV pCode addrNextLine           ; Calculate the address of the next line by adding the offset to the current location
         ADD offsetNextLine addrNextLine     
         INC addrNextLine
 
-        INC pProgram
+        INC pCode
 
 ;        CALL debugLine             ;debug
 
 Statement:
         CALL GetParsedToken
 ;       CALL debugToken             ;debug
-;        PRINTCRLF              ;debug;
-        CMPEQ tokenType ASCII_E StatementEOL     ; If we reach the end of the line, go to the next line
-        CMPEQ tokenType ASCII_COLON Statement   ; If we reach the end of the statement, go to the next statement
-        CMPNE tokenType ASCII_K SyntaxError     ; If it's not a keyword, it's a syntax error
 
+        CMPEQ tokenType CONST_0 ProgramLine     ; End-Of-Line?
+        CMPNE tokenType CONST_5 notMisc
+        CMPEQ tokenValue ASCII_COLON Statement   ; End-Of-Statement?
+        JMP SyntaxError        
+
+notMisc:
         ; Check for keywords and handle them
         CMPEQ tokenValue kwEND cmdEND
         CMPEQ tokenValue kwREM cmdREM
@@ -125,12 +125,9 @@ Statement:
         CMPEQ tokenValue kwIF cmdIF
         CMPEQ tokenValue kwFOR cmdFOR
         CMPEQ tokenValue kwNEXT cmdNEXT
+        CMPEQ tokenValue kwINPUT cmdINPUT
         JMP SyntaxError
 
-
-StatementEOL:
-        INC pProgram                             ; Gobble up the EOL character
-        JMP ProgramLine                          ; And go fetch the next line
 
 
 
@@ -145,11 +142,12 @@ msgLogo:
         .data "/__` |  | |__) |    |__  /  \\     |  | |\\ | \\ /    |__)  /\\  /__` | /  ` "       ,"\r\n"
         .data ".__/ \\__/ |__) |___ |___ \\__\\\\    |  | | \\|  |     |__) /--\\ .__/ | \\__, "       ,"\r\n"
         .data "\r\n"
-        .data "[ ver 0.00 - (c) 2024 Mats Engstrom - github.com/mengstr/sleqTinyBasic ]\r\n", 0
+        .data "[ ver 0.01 - (c) 2024 Mats Engstrom - github.com/mengstr/sleqTinyBasic ]\r\n", 0
         .data "\r\n"
         .data 0                                         
 
-msgHaltedByEnd:         .data $+1, "\r\nExecution halted by END\r\n", 0
+msgHaltedByEnd:         .data $+1, "\r\n", 0
+;msgHaltedByEnd:         .data $+1, "\r\nExecution halted by END\r\n", 0
 msgEndOfFile:           .data $+1, "\r\nExecution halted by End Of File\r\n", 0
 msgLineNotFound:        .data $+1, "\r\nLine not found\r\n", 0
 msgSyntaxError:         .data $+1, "\r\nSyntax error: ", 0
@@ -177,6 +175,7 @@ msgInvalidTokenType:    .data $+1, "Invalid token type", 0
         ;
 
         .include cmdEND.inc
+        .include cmdINPUT.inc
         .include cmdREM.inc
         .include cmdPRINT.inc
         .include cmdGOTO.inc
@@ -206,10 +205,11 @@ msgInvalidTokenType:    .data $+1, "Invalid token type", 0
 ; BASIC PROGRAM SOURCE CODE
 ;-----------------------------------------------------------------------------
 
-        .org 0x7000
+;        .org 0x7000
 
 program:                                ; The program source code to be run
-
+L5:  .data 5,  L7-$-1, "REM This is a :test:"                    ,0
+L7:  .data 7,  L10-$-1, "PRINT"                                 ,0
 L10: .data 10, L20-$-1, "PRINT 1"                                 ,0      
 L20: .data 20, L30-$-1, "PRINT A"                                 ,0
 L30: .data 30, L40-$-1, "PRINT \"Hello\""                         ,0

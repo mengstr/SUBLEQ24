@@ -9,8 +9,6 @@
 @ch:    .data 0     ; Character for moving
 @len:   .data 0     ; Length of the line to be inserted
 
-
-
 @arraylen: .data 0  ; Length of the array
 @blocklen: .data 0  ; Length of the block to be manipulated
 
@@ -42,7 +40,7 @@ CalculateLineLength:
 
 
 CalculateBufLength:
-    MOV pProgram @t
+    MOV pCode @t
     CLR @blocklen
 @loopBL:
     INDEXEDRD @t @ch
@@ -58,7 +56,7 @@ CalculateBufLength:
     ;-----------------------------------------------------------------------------
 
 Editor:
-        PRINTCRLF
+;        PRINTCRLF
 
         PUSH tokenValue                         ; Check if the specified line number already exists
         CALL FindLine
@@ -112,7 +110,7 @@ Editor:
         INDEXEDWR @blocklen pFound      ; Write the offset to the next line
         INC pFound
 
-        MOV pProgram @t
+        MOV pCode @t
         DEC @blocklen
 @loopIB:
         INDEXEDRD @t @ch
