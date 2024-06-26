@@ -1,3 +1,6 @@
 [submodule "SUBASIC"]
 	path = SUBASIC
 	url = https://github.com/mengstr/SUBASIC
+[submodule "SLEQASM"]
+	path = SLEQASM
+	url = https://github.com/mengstr/SLEQASM
