@@ -1,0 +1,3 @@
+[submodule "SUBASIC"]
+	path = SUBASIC
+	url = https://github.com/mengstr/SUBASIC

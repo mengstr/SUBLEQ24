@@ -40,11 +40,15 @@ const keypressHandler = (str, k) => {
     }
 };
 
-// Function to get the next key from the buffer
-function getNextKey() {
-    return keyBuffer.length > 0 ? keyBuffer.shift() : NOKEY;
+// Function to get the next key from the buffer, waits for 10ms if a key has been pressed
+async function getNextKey() {
+    if (keyBuffer.length > 0) {
+        await new Promise(resolve => setTimeout(resolve, 10));
+        return keyBuffer.shift();
+    } else {
+        return NOKEY;
+    }
 }
-
 
 if (process.stdin.setRawMode) {
     readline.emitKeypressEvents(process.stdin);
@@ -82,7 +86,7 @@ async function run() {
         // Delay 1 ms for every 1000 instructions to allow for handlng of key input
         await (async () => {
             sleepCnt++;
-            if (sleepCnt === 1000) {
+            if (sleepCnt === 10000) {
                 sleepCnt = 0;
                 return new Promise(resolve => setTimeout(resolve, 1));
             }
@@ -95,7 +99,7 @@ async function run() {
         if (a==-1){
             if (trace) console.log(`pc=${pc.toString(16)} IN to location ${b.toString(16)} key=${key.toString(16)}`);
             pc += 3;
-            memory[b] = getNextKey();
+            memory[b] = await getNextKey();
             continue;
         }
         
